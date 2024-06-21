@@ -105,6 +105,14 @@ const Sidebar = () => {
               </NavLink>
             </li>}
            {authUserData && <li className="menu-item" >
+              <NavLink to={`/stats/${JSON.parse(localStorage.getItem('user'))?.user?.email}`} className="menu-link text-decoration-none">
+                <span className="menu-link-icon">
+                <i className="fa-solid fa-user-tie"></i>
+                </span>
+                <span className="menu-link-text">Stats</span>
+              </NavLink>
+            </li>}
+           {authUserData && <li className="menu-item" >
               <NavLink to="/createAdmin" className="menu-link text-decoration-none">
                 <span className="menu-link-icon">
                 <i className="fa-solid fa-user-tie"></i>
