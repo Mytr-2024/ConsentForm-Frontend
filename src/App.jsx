@@ -36,7 +36,7 @@ function App() {
           <Route element={<BaseLayout />}>
             <Route path="/das" element={<Dashboard />} />
             <Route path="/consentList" element={<ConsentList />} />
-            <Route path="/stats" element={<Stats />} />
+            {/* <Route path="/stats" element={<Stats />} /> */}
             <Route path="/stats/:email" element={<Stats />} />
             <Route path="/viewConsent/:_id" element={<ViewConsent />} />
             <Route path="/editConsent/:_id" element={<EditConsent />} />
