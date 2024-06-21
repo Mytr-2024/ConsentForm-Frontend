@@ -5,29 +5,36 @@ import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './caseTypeStats.css';
+import { getApi } from '../../helpers/requestHelpers';
 
 Chart.register(...registerables);
 
-const CaseTypeStats = ({ data, adminEmail, caseTypes }) => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+const CaseTypeStats = ({ adminEmail, caseTypes }) => {
+  const today = new Date();
+  const formattedToday = today.toISOString().split('T')[0];
+
+  const [caseStartDate, setCaseStartDate] = useState(new Date(formattedToday));
+  const [caseEndDate, setCaseEndDate] = useState(new Date(formattedToday));
   const [selectedCaseType, setSelectedCaseType] = useState('all');
-  const [filteredData, setFilteredData] = useState([]);
+  const [caseTypeStats, setCaseTypeStats] = useState([]);
 
-  console.log(caseTypes)
-
+  const fetchCaseTypeData = async () => {
+    try {
+      const startDateFormatted = moment(caseStartDate).format('YYYY-MM-DD');
+      const endDateFormatted = moment(caseEndDate).format('YYYY-MM-DD');
+      const res = await getApi('get', `api/analytics/caseTypes?startDate=${startDateFormatted}&endDate=${endDateFormatted}&caseType=${selectedCaseType}`);
+      setCaseTypeStats(res?.data || []);
+    } catch (error) {
+      console.error('Failed to fetch data:', error);
+    }
+  };
 
   useEffect(() => {
-    const filtered = data?.filter(entry =>
-      entry.admin === adminEmail &&
-      (selectedCaseType === 'all' || entry.caseType === selectedCaseType) &&
-      moment(entry.date).isBetween(moment(startDate).startOf('day'), moment(endDate).endOf('day'), undefined, '[]')
-    );
-    setFilteredData(filtered);
-  }, [startDate, endDate, selectedCaseType, data, adminEmail]);
+    fetchCaseTypeData();
+  }, [caseStartDate, caseEndDate, selectedCaseType]);
 
-  const generateChartData = (filteredData) => {
-    const groupedData = filteredData.reduce((acc, entry) => {
+  const generateChartData = (data) => {
+    const groupedData = data.reduce((acc, entry) => {
       const date = moment(entry.date).format('YYYY-MM-DD');
       acc[date] = (acc[date] || 0) + entry.cases;
       return acc;
@@ -46,7 +53,7 @@ const CaseTypeStats = ({ data, adminEmail, caseTypes }) => {
     };
   };
 
-  const chartData = generateChartData(filteredData);
+  const chartData = generateChartData(caseTypeStats);
 
   return (
     <div>
@@ -54,11 +61,11 @@ const CaseTypeStats = ({ data, adminEmail, caseTypes }) => {
       <div className='d-flex justify-content-between'>
         <div className="">
           <label className='me-3'>Start Date: </label>
-          <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
+          <DatePicker selected={caseStartDate} onChange={(date) => setCaseStartDate(date)} />
         </div>
         <div className="">
           <label className='me-3'>End Date: </label>
-          <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
+          <DatePicker selected={caseEndDate} onChange={(date) => setCaseEndDate(date)} />
         </div>
       </div>
       <div className="mt-3 w-100 d-flex justify-content-between">
@@ -70,7 +77,7 @@ const CaseTypeStats = ({ data, adminEmail, caseTypes }) => {
           ))}
         </select>
       </div>
-      <div style={{ width: '600px', height: '400px', margin: '0 auto' }}>
+      <div style={{ width: '100%', height: '100%', margin: '' }} className='caseTypeCanvas'>
         <Bar data={chartData} />
       </div>
     </div>

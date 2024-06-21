@@ -4,30 +4,38 @@ import { Chart, registerables } from 'chart.js';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { getApi } from '../../helpers/requestHelpers'; // Ensure this function is correctly implemented
 
 Chart.register(...registerables);
 
-const AgeGroup = ({ ageData }) => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [filteredAgeData, setFilteredAgeData] = useState([]);
+const AgeGroup = () => {
+  const today = new Date();
+  const formattedToday = today.toISOString().split('T')[0];
 
-  useEffect(() => {
-    filterAgeData();
-  }, [startDate, endDate, ageData]);
+  const [startDate, setStartDate] = useState(new Date(formattedToday));
+  const [endDate, setEndDate] = useState(new Date(formattedToday));
+  const [ageData, setAgeData] = useState([]);
 
-  const filterAgeData = () => {
-    const filtered = ageData?.filter(entry =>
-      moment(entry.date).isBetween(moment(startDate).startOf('day'), moment(endDate).endOf('day'), undefined, '[]')
-    );
-    setFilteredAgeData(filtered);
+  const fetchAgeData = async () => {
+    try {
+      const startDateFormatted = moment(startDate).format('YYYY-MM-DD');
+      const endDateFormatted = moment(endDate).format('YYYY-MM-DD');
+      const res = await getApi('get', `api/analytics/age?startDate=${startDateFormatted}&endDate=${endDateFormatted}`);
+      setAgeData(res?.data || []);
+    } catch (error) {
+      console.error('Failed to fetch data:', error);
+    }
   };
 
-  const generateAgeChartData = (filteredAgeData) => {
+  useEffect(() => {
+    fetchAgeData();
+  }, [startDate, endDate]);
+
+  const generateAgeChartData = (ageData) => {
     let aggregatedData = {};
 
     // Aggregate cases by ageType
-    filteredAgeData.forEach(entry => {
+    ageData.forEach(entry => {
       if (aggregatedData[entry.ageType]) {
         aggregatedData[entry.ageType] += entry.cases;
       } else {
@@ -49,7 +57,7 @@ const AgeGroup = ({ ageData }) => {
     };
   };
 
-  const ageChartData = generateAgeChartData(filteredAgeData);
+  const ageChartData = generateAgeChartData(ageData);
 
   return (
     <div>
@@ -65,7 +73,7 @@ const AgeGroup = ({ ageData }) => {
         </div>
       </div>
 
-      <div style={{ width: '600px', height: '400px', margin: '20px auto' }}>
+      <div style={{ width: '100%', height: '100%', margin: '' }}>
         <Bar data={ageChartData} options={{
           responsive: true,
           scales: {
@@ -83,6 +91,7 @@ const AgeGroup = ({ ageData }) => {
             }
           }
         }} />
+
       </div>
     </div>
   );

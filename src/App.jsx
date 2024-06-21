@@ -35,8 +35,9 @@ function App() {
           <Route element={<PrivateComponent/>}> 
           <Route element={<BaseLayout />}>
             <Route path="/das" element={<Dashboard />} />
-            <Route path="/stats" element={<Stats />} />
             <Route path="/consentList" element={<ConsentList />} />
+            <Route path="/stats" element={<Stats />} />
+            <Route path="/stats/:email" element={<Stats />} />
             <Route path="/viewConsent/:_id" element={<ViewConsent />} />
             <Route path="/editConsent/:_id" element={<EditConsent />} />
             {/* <Route path="/create-template" element={<CreateTemplate/>} /> */}

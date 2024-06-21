@@ -5,29 +5,40 @@ import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './patients.css';
+import { getApi } from '../../helpers/requestHelpers';
 
 Chart.register(...registerables);
 
-const Patients = ({ data, adminEmail, ageData }) => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [filteredData, setFilteredData] = useState([]);
+const Patients = () => {
+  const today = new Date();
+  const formattedToday = today.toISOString().split('T')[0];
+
+  const [startDate, setStartDate] = useState(new Date(formattedToday));
+  const [endDate, setEndDate] = useState(new Date(formattedToday));
+  const [genderStats, setGenderStats] = useState([]);
+
+  const fetchGenderData = async (startDate, endDate) => {
+    try {
+      const startDateFormatted = moment(startDate).format('YYYY-MM-DD');
+      const endDateFormatted = moment(endDate).format('YYYY-MM-DD');
+      const response = await getApi('get', `api/analytics/gender?startDate=${startDateFormatted}&endDate=${endDateFormatted}`);
+      setGenderStats(response?.data);
+    } catch (error) {
+      console.error('Failed to fetch gender data:', error);
+    }
+  };
 
   useEffect(() => {
-    const filtered = data?.filter(entry =>
-      entry.admin === adminEmail &&
-      moment(entry.date).isBetween(moment(startDate).startOf('day'), moment(endDate).endOf('day'), undefined, '[]')
-    );
-    setFilteredData(filtered);
-  }, [startDate, endDate, data, adminEmail]);
+    fetchGenderData(startDate, endDate);
+  }, [startDate, endDate]);
 
-  const generateChartData = (filteredData) => {
-    const maleCount = filteredData.filter(entry => entry.gender === 'male').length;
-    const femaleCount = filteredData.filter(entry => entry.gender === 'female').length;
-    const otherCount = filteredData.filter(entry => entry.gender === 'other').length;
+  const generateChartData = (genderStats) => {
+    const maleCount = genderStats?.find(entry => entry.gender === 'male')?.totalForms || 0;
+    const femaleCount = genderStats?.find(entry => entry.gender === 'female')?.totalForms || 0;
+    const otherCount = genderStats?.find(entry => entry.gender === 'others')?.totalForms || 0;
 
     return {
-      labels: ['Male', 'Female', 'Other'],
+      labels: ['Male', 'Female', 'Others'],
       datasets: [{
         label: 'Patient Gender Distribution',
         data: [maleCount, femaleCount, otherCount],
@@ -36,12 +47,7 @@ const Patients = ({ data, adminEmail, ageData }) => {
     };
   };
 
-  const chartData = generateChartData(filteredData);
-
-  // Calculate counts for summary
-  const maleCount = filteredData.filter(entry => entry.gender === 'male').length;
-  const femaleCount = filteredData.filter(entry => entry.gender === 'female').length;
-  const otherCount = filteredData.filter(entry => entry.gender === 'other').length;
+  const chartData = generateChartData(genderStats);
 
   return (
     <div>
@@ -56,28 +62,11 @@ const Patients = ({ data, adminEmail, ageData }) => {
           <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
         </div>
       </div>
-
       <div className="d-flex mt-3 justify-content-between align-items-center">
-      <div style={{ width: '300px', height: '300px', margin: '0 auto' }}>
-        <Pie data={chartData} />
+        <div style={{ width: '300px', height: '300px', margin: '0 auto' }}>
+          <Pie data={chartData} />
+        </div>
       </div>
-      {/* <div className="summary">
-        <p><strong>Male:</strong> {maleCount}</p>
-        <p><strong>Female:</strong> {femaleCount}</p>
-        <p><strong>Other:</strong> {otherCount}</p>
-      </div> */}
-
-
-      <div style={{ width: '300px', height: '300px', margin: '0 auto' }}>
-        <Pie data={chartData} />
-      </div>
-      {/* <div className="summary">
-        <p><strong>Male:</strong> {maleCount}</p>
-        <p><strong>Female:</strong> {femaleCount}</p>
-        <p><strong>Other:</strong> {otherCount}</p>
-      </div> */}
-      </div>
-
     </div>
   );
 };

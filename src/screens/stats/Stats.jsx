@@ -7,11 +7,13 @@ import { getApi } from "../../helpers/requestHelpers";
 import AgeGroup from "../../components/ageGroup/AgeGroup";
 
 export default function Stats() {
+
+
   const data = [
     { date: '2024-06-01', admin: 'Admin1', createdForms: 5, gender: 'male' },
     { date: '2024-07-02', admin: 'Admin1', createdForms: 7, gender: 'female' },
-    { date: '2024-06-02', admin: 'Admin1', createdForms: 3, gender: 'male' },
-    { date: '2024-06-03', admin: 'Admin1', createdForms: 6, gender: 'other' },
+    { date: '2024-06-02', admin: 'Admin2', createdForms: 3, gender: 'male' },
+    { date: '2024-06-03', admin: 'Admin2', createdForms: 6, gender: 'other' },
     { date: '2024-08-02', admin: 'Admin1', createdForms: 9, gender: 'female' },
     { date: '2024-06-04', admin: 'Admin1', createdForms: 70, gender: 'male' },
     { date: '2025-01-07', admin: 'Admin1', createdForms: 22, gender: 'male' },
@@ -74,27 +76,25 @@ useEffect(() => {
       <div className="container consentForm p-5">
         <form className="row g-3">
           <ConsentFormBarChart 
-            data={data} 
             adminEmail="Admin1" 
           />
         </form>
         <form className="row chart-container mt-5 g-3">
           <Patients 
-            data={data} 
-            adminEmail="Admin1" 
+            // data={data} 
+            // adminEmail="Admin1" 
           />
         </form>
 
 <form className="row mt-5 g-3">
         <CaseTypeStats 
-          data={data2} 
           adminEmail="Admin1" 
           caseTypes={allCaseType}
         />
       </form>
 <form className="row mt-5 g-3">
         <AgeGroup 
-          ageData={ageData}
+          // ageData={ageData}
         />
       </form>
 

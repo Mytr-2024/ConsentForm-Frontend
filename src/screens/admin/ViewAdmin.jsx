@@ -5,6 +5,7 @@ import Loader from "../../components/loader/Loader";
 import DataTable from "react-data-table-component";
 import { Toast } from "../../components/alert/Alert";
 import { AreaTop } from "../../components";
+import { useNavigate } from "react-router-dom";
 
 export default function ViewAdmin() {
   const [loader, setLoader] = useState(true);
@@ -62,11 +63,20 @@ export default function ViewAdmin() {
     });
   };
 
+  const navigate=useNavigate()
+
+  const handleViewStats=(email)=>{
+navigate(`/stats/${email}`)
+  }
+
+
   const generateActionButtons = (row) => (
     <div>
       <button className="btn btn-danger mx-2" onClick={() => handleDeleteConsent(row?.email)}>
         <i className="fa-solid fa-trash"></i>
       </button>
+      <button className="btn btn-warning mx-2" onClick={() => handleViewStats(row?.email)}>
+      <i className="fa-regular fa-chart-bar text-white"></i>      </button>
     </div>
   );
 
