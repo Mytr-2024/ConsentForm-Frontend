@@ -33,17 +33,17 @@ const ConsentFormBarChart = ({ adminEmail }) => {
 
   useEffect(() => {
     fetchConsentData();
-  }, [adminStartDate, adminEndDate]);
+  }, [adminStartDate, adminEndDate, email]);
 
   useEffect(() => {
     const filtered = adminConsentStats.filter(entry =>
-      moment(entry.date).isBetween(moment(adminStartDate).startOf('day'), moment(adminEndDate).endOf('day'), undefined, '[]')
+      moment(entry.date.date).isBetween(moment(adminStartDate).startOf('day'), moment(adminEndDate).endOf('day'), undefined, '[]')
     );
     setFilteredData(filtered);
   }, [adminConsentStats, adminStartDate, adminEndDate]);
 
   const generateChartData = (filteredData) => {
-    const labels = filteredData.map(entry => moment(entry.date).format('MMM DD, YYYY'));
+    const labels = filteredData.map(entry => moment(entry.date.date).format('MMM DD, YYYY'));
     const dataPoints = filteredData.map(entry => entry.createdForms);
 
     return {
@@ -51,9 +51,13 @@ const ConsentFormBarChart = ({ adminEmail }) => {
       datasets: [{
         label: `Created Forms by ${email}`,
         data: dataPoints,
-        backgroundColor: '#' + (Math.random().toString(16) + '000000').substring(2, 8), // Ensures six-digit hex codes
+        backgroundColor: generateRandomColor(), // Function to generate random colors
       }]
     };
+  };
+
+  const generateRandomColor = () => {
+    return '#' + (Math.random().toString(16) + '000000').substring(2, 8);
   };
 
   const chartData = generateChartData(filteredData);

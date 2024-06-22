@@ -4,7 +4,7 @@ import { Chart, registerables } from 'chart.js';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { getApi } from '../../helpers/requestHelpers'; // Ensure this function is correctly implemented
+import { getApi } from '../../helpers/requestHelpers';
 
 Chart.register(...registerables);
 
@@ -34,17 +34,15 @@ const AgeGroup = () => {
   const generateAgeChartData = (ageData) => {
     let aggregatedData = {};
 
-    // Aggregate cases by ageType
     ageData.forEach(entry => {
-      if (aggregatedData[entry.ageType]) {
-        aggregatedData[entry.ageType] += entry.cases;
+      if (aggregatedData[entry.ageRange]) {
+        aggregatedData[entry.ageRange] += entry.count;
       } else {
-        aggregatedData[entry.ageType] = entry.cases;
+        aggregatedData[entry.ageRange] = entry.count;
       }
     });
 
-    // Prepare chart data format
-    const labels = Object.keys(aggregatedData);
+    const labels = Object.keys(aggregatedData).map(ageRange => `Age ${ageRange}`);
     const dataPoints = Object.values(aggregatedData);
 
     return {
@@ -52,7 +50,7 @@ const AgeGroup = () => {
       datasets: [{
         label: 'Number of Cases by Age Group',
         data: dataPoints,
-        backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0'],
+        backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0'], // Adjust colors as needed
       }]
     };
   };
@@ -91,7 +89,6 @@ const AgeGroup = () => {
             }
           }
         }} />
-
       </div>
     </div>
   );
