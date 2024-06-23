@@ -72,6 +72,14 @@ const Sidebar = () => {
       <div className="sidebar-body">
         <div className="sidebar-menu">
           <ul className="menu-list p-0">
+          {authUserData && <li className="menu-item" >
+              <NavLink to={`/stats/${JSON.parse(localStorage.getItem('user'))?.user?.email}`} className="menu-link text-decoration-none">
+                <span className="menu-link-icon">
+                <i className="fa-solid fa-user-tie"></i>
+                </span>
+                <span className="menu-link-text">Dashboard</span>
+              </NavLink>
+            </li>}
             <li className="menu-item">
               <NavLink to="/das"  className="menu-link text-decoration-none" >
                 <span className="menu-link-icon">
@@ -80,6 +88,7 @@ const Sidebar = () => {
                 <span className="menu-link-text">Create Consent Form</span>
               </NavLink>
             </li>
+            
            {authUserData && <li className="menu-item">
               <NavLink to="/create-template" className="menu-link text-decoration-none">
                 <span className="menu-link-icon">
@@ -104,14 +113,7 @@ const Sidebar = () => {
                 <span className="menu-link-text">View Template</span>
               </NavLink>
             </li>}
-           {authUserData && <li className="menu-item" >
-              <NavLink to={`/stats/${JSON.parse(localStorage.getItem('user'))?.user?.email}`} className="menu-link text-decoration-none">
-                <span className="menu-link-icon">
-                <i className="fa-solid fa-user-tie"></i>
-                </span>
-                <span className="menu-link-text">Stats</span>
-              </NavLink>
-            </li>}
+           
            {authUserData && <li className="menu-item" >
               <NavLink to="/createAdmin" className="menu-link text-decoration-none">
                 <span className="menu-link-icon">

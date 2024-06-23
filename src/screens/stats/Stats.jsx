@@ -78,7 +78,7 @@ useEffect(() => {
 <div className="content-area">
       <AreaTop />
       <AreaCards />
-      <AreaCharts />
+      {/* <AreaCharts /> */}
       <AreaTable />
     </div>
 

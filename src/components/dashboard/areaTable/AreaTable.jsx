@@ -58,7 +58,6 @@ const AreaTable = () => {
   
   const getData=async()=>{
   const res= await getApi('get','/api/analytics/getRecentConsents')
-  console.log(res)
   setData(res?.data?.recentConsents)
   }
   

@@ -48,7 +48,7 @@ if(forgetPasswordActive){
       if(response?.data?.status==true){
         setLoading(false)
 
-        navigate('/das')
+        navigate(`/stats/${loginData?.email}`)
         Toast.fire({
           icon: "success",
           title: "Login Successfull"
