@@ -1,111 +1,92 @@
 import AreaTableAction from "./AreaTableAction";
 import "./AreaTable.scss";
+import { useEffect, useState } from "react";
+import { getApi } from "../../../helpers/requestHelpers";
 
 const TABLE_HEADS = [
-  "Products",
-  "Order ID",
-  "Date",
-  "Customer name",
-  "Status",
-  "Amount",
+  "Case Type",
+  "Created By",
+  "Created At",
   "Action",
 ];
 
-const TABLE_DATA = [
-  {
-    id: 100,
-    name: "Iphone 13 Pro",
-    order_id: 11232,
-    date: "Jun 29,2022",
-    customer: "Afaq Karim",
-    status: "delivered",
-    amount: 400,
-  },
-  {
-    id: 101,
-    name: "Macbook Pro",
-    order_id: 11232,
-    date: "Jun 29,2022",
-    customer: "Afaq Karim",
-    status: "pending",
-    amount: 288,
-  },
-  {
-    id: 102,
-    name: "Apple Watch",
-    order_id: 11232,
-    date: "Jun 29,2022",
-    customer: "Afaq Karim",
-    status: "canceled",
-    amount: 500,
-  },
-  {
-    id: 103,
-    name: "Microsoft Book",
-    order_id: 11232,
-    date: "Jun 29,2022",
-    customer: "Afaq Karim",
-    status: "delivered",
-    amount: 100,
-  },
-  {
-    id: 104,
-    name: "Apple Pen",
-    order_id: 11232,
-    date: "Jun 29,2022",
-    customer: "Afaq Karim",
-    status: "delivered",
-    amount: 60,
-  },
-  {
-    id: 105,
-    name: "Airpods",
-    order_id: 11232,
-    date: "Jun 29,2022",
-    customer: "Afaq Karim",
-    status: "delivered",
-    amount: 80,
-  },
-];
+// const data = [
+//   {
+//       _id: "6676866f5b90da3848b08227",
+//       createdBy: "alaukik@gmail.com",
+//       caseType: "dengue",
+//       createdAt: "2024-06-22T08:08:15.711Z"
+//   },
+//   {
+//       _id: "6675270c78b53b9ce3d91230",
+//       createdBy: "alaukik@gmail.com",
+//       caseType: "kidney stone",
+//       createdAt: "2024-06-21T07:09:00.606Z"
+//   },
+//   {
+//       _id: "667521aab984fcec726be9dc",
+//       createdBy: "alaukiksingh123@gmail.com",
+//       caseType: "Catarct-demo 3",
+//       createdAt: "2024-06-21T06:46:02.693Z"
+//   },
+//   {
+//       _id: "667520b4b984fcec726be9bd",
+//       createdBy: "alaukiksingh123@gmail.com",
+//       caseType: "fibroids",
+//       createdAt: "2024-06-21T06:41:56.095Z"
+//   },
+//   {
+//       _id: "66751fed3dec18c492ba3916",
+//       createdBy: "alaukiksingh123@gmail.com",
+//       caseType: "dengue",
+//       createdAt: "2024-06-21T06:38:37.087Z"
+//   }
+// ];
+
+
+
 
 const AreaTable = () => {
+
+  useEffect(() => {
+    getData()
+  }, [])
+  
+  const [data, setData] = useState()
+  
+  
+  
+  const getData=async()=>{
+  const res= await getApi('get','/api/analytics/getRecentConsents')
+  console.log(res)
+  setData(res?.data?.recentConsents)
+  }
+  
   return (
     <section className="content-area-table">
       <div className="data-table-info">
-        <h4 className="data-table-title">Latest Orders</h4>
+        <h4 className="data-table-title">Latest Consent Form</h4>
       </div>
       <div className="data-table-diagram">
         <table>
           <thead>
             <tr>
-              {TABLE_HEADS?.map((th, index) => (
-                <th key={index}>{th}</th>
+              {TABLE_HEADS.map((head, index) => (
+                <th key={index}>{head}</th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {TABLE_DATA?.map((dataItem) => {
-              return (
-                <tr key={dataItem.id}>
-                  <td>{dataItem.name}</td>
-                  <td>{dataItem.order_id}</td>
-                  <td>{dataItem.date}</td>
-                  <td>{dataItem.customer}</td>
-                  <td>
-                    <div className="dt-status">
-                      <span
-                        className={`dt-status-dot dot-${dataItem.status}`}
-                      ></span>
-                      <span className="dt-status-text">{dataItem.status}</span>
-                    </div>
-                  </td>
-                  <td>${dataItem.amount.toFixed(2)}</td>
-                  <td className="dt-cell-action">
-                    <AreaTableAction />
-                  </td>
-                </tr>
-              );
-            })}
+            {data?.map((dataItem) => (
+              <tr key={dataItem._id}>
+                <td>{dataItem.caseType}</td>
+                <td>{dataItem.createdBy}</td>
+                <td>{new Date(dataItem.createdAt).toLocaleString()}</td>
+                <td>
+                  <AreaTableAction dataItem={dataItem}   />
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

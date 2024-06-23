@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { AreaTop } from "../../components";
 import CaseTypeStats from "../../components/caseTypeStats/CaseTypeStats";
 import ConsentFormBarChart from "../../components/consentFormChart/ConsentFormChart";
 import Patients from "../../components/patients/Patients";
 import { getApi } from "../../helpers/requestHelpers";
 import AgeGroup from "../../components/ageGroup/AgeGroup";
+import { AreaCards, AreaCharts, AreaTable, AreaTop } from "../../components";
 
 export default function Stats() {
 
@@ -72,6 +72,18 @@ useEffect(() => {
 
   return (
     <div className="content-area">
+
+
+
+<div className="content-area">
+      <AreaTop />
+      <AreaCards />
+      <AreaCharts />
+      <AreaTable />
+    </div>
+
+
+
       {/* <AreaTop title="Detailed Stats" /> */}
       <div className="container consentForm p-5">
         <form className="row g-3">
