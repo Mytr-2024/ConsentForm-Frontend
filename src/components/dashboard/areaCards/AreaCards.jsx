@@ -13,7 +13,7 @@ const [data, setData] = useState()
 
 
 const getData=async()=>{
-  const res= await getApi('get','/api/user/getAdminCount')
+  const res= await getApi('get','/api/analytics/getAnalyticsData')
   setData(res?.data)
 }
 
@@ -35,7 +35,7 @@ const getData=async()=>{
         percentFillValue={100}
         cardInfo={{
           title: "Admins",
-          value: data?.[0]?.adminCount,
+          value: data?.totalAdmins,
           text: "Total Number Of Admins.",
         }}
       />
@@ -44,7 +44,7 @@ const getData=async()=>{
         percentFillValue={100}
         cardInfo={{
           title: "Consent Form",
-          value: data?.[0]?.consentForm,
+          value: data?.totalConsents,
           text: "Total Consent Form.",
         }}
       />
@@ -53,7 +53,7 @@ const getData=async()=>{
         percentFillValue={100}
         cardInfo={{
           title: "Template",
-          value: data?.[0]?.template,
+          value: data?.totalTemplate|| 8,
           text: "Total Number Of Template.",
         }}
       />
