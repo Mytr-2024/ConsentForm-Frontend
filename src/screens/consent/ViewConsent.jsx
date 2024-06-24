@@ -6,50 +6,32 @@ import { useParams } from 'react-router-dom'
 import Loader from '../../components/loader/Loader'
 import { AreaTop } from '../../components'
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'; 
-import React, { useRef } from 'react';
-import ReactToPrint from 'react-to-print';
+import  { useRef } from 'react';
 import { format } from "date-fns";
-
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
-
 import QuillEditor from "react-quill";
 
-
-
-
 export default function ViewConsent() {
-
       const [htmlStart, setHtmlStart] = useState()
-      const printRef = useRef();
     const [singleConsentData, setSingleConsentData] = useState()
     const [loader, setLoader] = useState(true)
-
     const {_id}=useParams()
-    console.log(_id)
 
     const getConsentData=async()=>{
       try {
         setLoader(true)
         let res=   await getApi("get",`/api/consent/consentById?consentId=${_id}`)
-        console.log(res?.data?.consent)
         setSingleConsentData(res?.data?.consent)
         handleCaseTypeChange(res?.data?.consent?.caseType)
         setCaseType(res?.data?.consent?.caseType)
         const rest = await getApi("get", `/api/template/questionsByCaseType?caseType=${res?.data?.consent?.caseType}`);
         setAllQuestions(rest?.data?.questions)
-
         const temp = await getApi("get", `/api/template/getTemplateByCaseType?caseType=${res?.data?.consent?.caseType}`);
-        console.log(temp)
         setValue(temp?.data?.deltaForm)
-        
         var cfg = {};
-
         var converter = new QuillDeltaToHtmlConverter(temp?.data?.deltaForm?.ops, cfg);
-
          setHtmlStart(converter.convert()) 
-
-    console.log(htmlStart)
         setLoader(false)
       } catch (error) {
         console.log(error)
@@ -59,21 +41,12 @@ export default function ViewConsent() {
 
     useEffect(() => {
         getConsentData();
-        // handleCaseTypeChange();
     }, [])
 
     const [value, setValue] = useState("");
-
     const [caseType, setCaseType] = useState()
     const [allQuestions, setAllQuestions] = useState()
-
-   
-
-
-
-
-
-const reportemplateRef=useRef(null);
+    const reportemplateRef=useRef(null);
 
 const prindPdf = async () => {
     setLoader(true);
@@ -116,28 +89,13 @@ const prindPdf = async () => {
     }
   };
 
-  
-
-
-
-
 const [viewData, setViewData] = useState()
-
 const handleCaseTypeChange = async (caseType) => {
-   
         const temp = await getApi("get", `/api/template/getTemplateByCaseType?caseType=${caseType}`);
         console.log(temp)
         setValue(temp?.data?.deltaForm)
         setViewData(temp?.data)
     }
-
-
-
-    // useEffect(() => {
-    //     handleCaseTypeChange()
-    // }, [])
-
-
 
   return (
     <>
