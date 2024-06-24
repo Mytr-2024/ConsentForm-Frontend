@@ -17,6 +17,7 @@ import CreateAdmin from "./screens/admin/CreateAdmin";
 import ViewAdmin from "./screens/admin/ViewAdmin";
 import {ValidSuperAdmin} from './middlewares/ValidSuperAdmin'
 import Stats from "./screens/stats/Stats";
+import { IsLoggedIn } from "./middlewares/IsLoggedIn";
 
 function App() {
   
@@ -27,7 +28,11 @@ function App() {
     <>
       <Router>
         <Routes>
-        <Route path="/" element={<Login/>}/>
+        <Route path="/" element={
+          <IsLoggedIn>
+          <Login/>
+          </IsLoggedIn>
+          }/>
           <Route element={<BaseLayout />}>
             <Route path="/x" element={<PageNotFound />} />
           </Route>

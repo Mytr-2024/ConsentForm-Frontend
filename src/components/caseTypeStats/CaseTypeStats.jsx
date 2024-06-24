@@ -71,7 +71,7 @@ const CaseTypeStats = ({ adminEmail, caseTypes }) => {
       <div className="mt-3 w-100 d-flex justify-content-between">
         <label className='me-3' style={{minWidth:"81px"}}>Case Type: </label>
         <select className='w-100' value={selectedCaseType} onChange={(e) => setSelectedCaseType(e.target.value)}>
-          <option value="all">All</option>
+          <option value="">Select Case Type</option>
           {caseTypes?.map((caseType, index) => (
             <option key={index} value={caseType}>{caseType}</option>
           ))}
