@@ -241,7 +241,7 @@ const handleCaseTypeChange = async (caseType) => {
                         Signature
                         </label>
                         <span className="form-label d-flex justify-content-center">
-                        <img style={{maxWidth:"280px",height:"200px"}} src={singleConsentData?.signatureUrl} alt="" />
+                        <img style={{maxWidth:"280px",height:"200px"}} src={singleConsentData?.patientSignatureUrl} alt="" />
                                              </span>
                         
                     </div>
@@ -259,7 +259,7 @@ const handleCaseTypeChange = async (caseType) => {
                         Signature
                         </label>
                         <span className="form-label d-flex justify-content-center">
-                        <img style={{maxWidth:"280px",height:"200px"}} src={singleConsentData?.surgeonUrl} alt="" />
+                        <img style={{maxWidth:"280px",height:"200px"}} src={singleConsentData?.surgeonSignatureUrl} alt="" />
                                              </span>
                         
                     </div>

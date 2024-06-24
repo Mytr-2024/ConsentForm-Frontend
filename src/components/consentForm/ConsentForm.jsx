@@ -268,7 +268,8 @@ const handleCustomOptionChange = async (e, field) => {
         
         const data = {
             ...consentData,
-            signatureUrl: imageUrl,
+            patientSignatureUrl: imageUrl,
+            surgeonSignatureUrl:surgenImageUrl,
             VideoUrl: videoUrlState,
             // VideoUrl: "hello",
             caseType: caseType,
