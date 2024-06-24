@@ -8,25 +8,25 @@ import { getApi } from "../../../helpers/requestHelpers";
 
 const AreaCards = () => {
 
-// const [data, setData] = useState()
+const [data, setData] = useState()
 
 
 
-// const getData=async()=>{
-//   const res= await getApi('get','/api/user/getAdminCount')
-//   setData(res?.data)
-// }
+const getData=async()=>{
+  const res= await getApi('get','/api/user/getAdminCount')
+  setData(res?.data)
+}
 
-//   useEffect(() => {
-//     getData()
-//   }, [])
+  useEffect(() => {
+    getData()
+  }, [])
 
 
-const data=[{
-adminCount:20,
-consentForm:40,
-template:34
-}]
+// const data=[{
+// adminCount:20,
+// consentForm:40,
+// template:34
+// }]
 
   return (
     <section className="content-area-cards">
@@ -35,7 +35,7 @@ template:34
         percentFillValue={100}
         cardInfo={{
           title: "Admins",
-          value: data[0]?.adminCount,
+          value: data?.[0]?.adminCount,
           text: "Total Number Of Admins.",
         }}
       />
@@ -44,7 +44,7 @@ template:34
         percentFillValue={100}
         cardInfo={{
           title: "Consent Form",
-          value: data[0]?.consentForm,
+          value: data?.[0]?.consentForm,
           text: "Total Consent Form.",
         }}
       />
@@ -53,7 +53,7 @@ template:34
         percentFillValue={100}
         cardInfo={{
           title: "Template",
-          value: data[0]?.template,
+          value: data?.[0]?.template,
           text: "Total Number Of Template.",
         }}
       />
