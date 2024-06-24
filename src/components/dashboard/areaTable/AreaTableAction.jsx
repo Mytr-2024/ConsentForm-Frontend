@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { Link } from "react-router-dom";
+import { getApi } from "../../../helpers/requestHelpers";
 
-const AreaTableAction = () => {
+const AreaTableAction = ({ dataItem }) => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+
   const handleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
-
-  const dropdownRef = useRef(null);
 
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -17,42 +18,40 @@ const AreaTableAction = () => {
   };
 
   useEffect(() => {
+    // Add the event listener
     document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup function to remove the event listener
     return () => {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
+
+
+
+
+
   return (
     <>
-      <button
-        type="button"
-        className="action-dropdown-btn"
-        onClick={handleDropdown}
-      >
-        <HiDotsHorizontal size={18} />
+      <div className="d-flex justify-content-center" >
+        <Link to={`/viewConsent/${dataItem?._id}`}>
+          <button className="btn btn-primary mx-2">
+            <i className="fa-solid fa-eye"></i>
+          </button>
+        </Link>
+        <Link to={`/editConsent/${dataItem?._id}`}>
+          <button className="btn btn-info mx-2">
+            <i className="text-white fa-solid fa-pen-to-square"></i>
+          </button>
+        </Link>
         {showDropdown && (
-          <div className="action-dropdown-menu" ref={dropdownRef}>
-            <ul className="dropdown-menu-list">
-              <li className="dropdown-menu-item">
-                <Link to="/view" className="dropdown-menu-link">
-                  View
-                </Link>
-              </li>
-              <li className="dropdown-menu-item">
-                <Link to="/view" className="dropdown-menu-link">
-                  Edit
-                </Link>
-              </li>
-              <li className="dropdown-menu-item">
-                <Link to="/view" className="dropdown-menu-link">
-                  Delete
-                </Link>
-              </li>
-            </ul>
+          <div ref={dropdownRef} className="dropdown-menu">
+            <Link to={`/deleteConsent/${dataItem?._id}`} className="dropdown-item">Delete</Link>
+            <Link to={`/moreActions/${dataItem?._id}`} className="dropdown-item">More</Link>
           </div>
         )}
-      </button>
+      </div>
     </>
   );
 };
