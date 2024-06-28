@@ -8,6 +8,7 @@ import MoonIcon from "../assets/icons/moon.svg";
 import SunIcon from "../assets/icons/sun.svg";
 import { useEffect } from "react";
 import { Sidebar } from "../components";
+import Navbar from "../components/navbar/Navbar";
 
 const BaseLayout = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -20,6 +21,9 @@ const BaseLayout = () => {
     }
   }, [theme]);
   return (
+    <>
+    <Navbar/>
+    
     <main className="page-wrapper">
       {/* left of page */}
       <Sidebar />
@@ -41,6 +45,7 @@ const BaseLayout = () => {
         </button> */}
         
     </main>
+    </>
   );
 };
 

@@ -13,13 +13,13 @@ const AreaTop = ({title}) => {
   return (
     <section className="content-area-top">
       <div className="area-top-l d-flex align-items-center gap-3 ">
-        <button
+        {/* <button
           className="sidebar-open-btn d-block d-md-block d-lg-block d-xl-none"
           type="button"
           onClick={openSidebar}
         >
           <i className="fa-solid fa-bars fs-2"></i>
-        </button>
+        </button> */}
         <h2 className="area-top-title text-capitalize w-100 text-center ">{title}</h2>
       </div>
     </section>
