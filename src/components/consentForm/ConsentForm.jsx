@@ -238,31 +238,25 @@ const handleCustomOptionChange = async (e, field) => {
 
         setLoader(true)
 
-        // if(imageUrl===undefined){
-        //     Toast.fire({
-        //         icon: "error",
-        //         title: "We need Your Signature",
-        //       });
-        //       setLoader(false)
-        //       setLoading(false)
-        //       return
-        // }
-        // if(surgenImageUrl===undefined){
-        //     Toast.fire({
-        //         icon: "error",
-        //         title: "We need Surgeon Signature",
-        //       });
-        //       setLoader(false)
-        //       setLoading(false)
-        //       return
-        // }
+        if(imageUrl===undefined && index===6){
+            setLoader(false)
+            setLoading(false)
+            scrollToAndHighlightButton('capturePatient')
+            return
+        }
+        if(surgenImageUrl===undefined && index===6){
+            setLoader(false)
+            setLoading(false)
+            scrollToAndHighlightButton('captureSurgeon')
+            return
+        }
 
-        // if(videoUrlState==undefined){
-        //     setLoader(false)
-        //     setLoading(false)
-        //     scrollToAndHighlightButton('captureVideo')
-        //     return
-        // }
+        if(videoUrlState==undefined && index===6){
+            setLoader(false)
+            setLoading(false)
+            scrollToAndHighlightButton('captureVideo')
+            return
+        }
         // if(videoUrlState===undefined){
         //     Toast.fire({
         //         icon: "error",
@@ -298,12 +292,16 @@ const handleCustomOptionChange = async (e, field) => {
             ...consentData,
             caseType: caseType || undefined,
             createdBy: JSON.parse(localStorage.getItem('user'))?.user?.email,
-            question: allQuestions.reduce((acc, question, index) => {
+            question: allQuestions?.reduce((acc, question, index) => {
                         acc[question] = inputValues[index];
                         return acc;
                     }, {}) || undefined,
                     customFields:customFields||undefined,
+                    patientSignatureUrl: imageUrl || undefined,
+                        surgeonSignatureUrl:surgenImageUrl || undefined,
+                        VideoUrl: videoUrlState || undefined,
         };
+
     
         try {
             setLoading(true);
@@ -1042,44 +1040,8 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
 
 {/* Signature started */}
 
-{/* <div className="col-md-12">
-<button
-  type='button'
-  className=" d-flex justify-content-center align-items-center btn bg-primary-color text-light p-5 w-100"
-  data-bs-toggle="modal"
-  data-bs-target="#uploadSurgenSignatureModal"
->
-  <i className="fa-solid fa-file-signature me-2"></i>
-  {surgenImageUrl ? 'Signature Uploaded' : 'Upload Surgeon Signature'}
 
-  
-                                {surgenLoader && <div  className="d-flex mx-3 justify-content-end align-items-center">
-                                     <div style={{height:"20px",width:"20px"}} className="spinner-border text-white" role="status">
-
-</div>
-                                 </div>}
-
-                                 
-</button>
-                </div>
-
-                <div className="col-md-6">
-                    <button type='button' 
-                    className=" d-flex justify-content-center align-items-center btn bg-primary-color text-light p-5 w-100  " 
-                    data-bs-toggle="modal"
-                     data-bs-target="#uploadSignatureModal">
-                        <i className="fa-solid fa-file-signature mx-2">
-                        </i>
-                        {imageUrl ? 'Signature Uploaded' : 'Upload Signature'}
-                        {generalLoader && <div  className="d-flex mx-3 justify-content-end align-items-center">
-                                     <div style={{height:"20px",width:"20px"}} className="spinner-border text-white" role="status">
-
-</div>
-                                 </div>}
-                         </button>
-                </div> */}
-
-
+{index===5 &&<>
 <div className="">
             <h2 className='text-center' >Preview Consent Form</h2>
                         </div>
@@ -1088,7 +1050,7 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
                                 <div className="row mt-5 d-flex justify-content-between">
 
                                
-                                <div className="col-md-5 borderC mx-3 d-flex flex-column mb-5 justify-content-center ">
+                                <div className="col-lg-5 borderC mx-3 d-flex flex-column mb-5 justify-content-center ">
                         <label htmlFor="Pname" className="form-label">
                             Patient Name
                         </label>
@@ -1097,7 +1059,7 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
                         </span>
                         
                     </div>
-                    <div className="col-md-5 borderC mx-3 d-flex mb-5 flex-column justify-content-center ">
+                    <div className="col-lg-5 borderC mx-3 d-flex mb-5 flex-column justify-content-center ">
                         <label htmlFor="patientId" className="form-label">
                         Case Type
                         </label>
@@ -1122,7 +1084,27 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
                                  
 </button>
                 </div>
+                <div className="  d-flex justify-content-between flex-row-reverse">
+    <div className="d-flex justify-content-end">
+{index >= 0 && index < 6  && (
+                    <button onClick={handleIncreaseIndex}  type='button' className='position-relative my-5'>
+                        <i style={{ fontSize: "60px", color: "#F44336" }} className="fa-solid fa-circle-arrow-right"></i>
+                    </button>
+            )}
+            </div>
+
+            <div className="d-flex justify-content-between">
+{index > 0 && (
+                    <button type='button' className='position-relative my-5'>
+                        <i onClick={handleDecreaseIndex} style={{ fontSize: "60px", color: "#F44336",transform: "rotate(180deg)"}} className="fa-solid fa-circle-arrow-right"></i>
+                    </button>
+            )}
+            </div>
+</div>
 </div>  
+</>}
+
+
 
 
 
@@ -1390,13 +1372,83 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
 
 
 
+          {index===6  &&      <form className='row g-3 needs-validation'  onSubmit={handleConsentSubmit}>
+    <h4 className='fw-semibold' style={{color:"#771E99"}} >Sign and Submit</h4>
+<div className="row mt-4 py-3" style={{border:"2px solid #C3C8CA", borderRadius:"30px"}}>
+                <div className="col-md-6 my-2">
+<button
+  type='button'
+  id="captureSurgeon"
+  onClick={() => {
+    document.getElementById('captureSurgeon').classList.remove('highlight');
+}}
+  className=" d-flex justify-content-center align-items-center btn bg-primary-color text-light p-5 w-100"
+  data-bs-toggle="modal"
+  data-bs-target="#uploadSurgenSignatureModal"
+>
+  <i className="fa-solid fa-file-signature me-2"></i>
+  {surgenImageUrl ? 'Signature Uploaded' : 'Upload Surgeon Signature'}
 
+  
+                                {surgenLoader && <div  className="d-flex mx-3 justify-content-end align-items-center">
+                                     <div style={{height:"20px",width:"20px"}} className="spinner-border text-white" role="status">
 
+</div>
+                                 </div>}
 
+                                 
+</button>
+                </div>
+
+                <div className="col-md-6 my-2">
+                    <button type='button' 
+                    id="capturePatient"
+                    onClick={() => {
+                        document.getElementById('capturePatient').classList.remove('highlight');
+                    }}
+                    className=" d-flex justify-content-center align-items-center btn bg-primary-color text-light p-5 w-100  " 
+                    data-bs-toggle="modal"
+                     data-bs-target="#uploadSignatureModal">
+                        <i className="fa-solid fa-file-signature mx-2">
+                        </i>
+                        {imageUrl ? 'Signature Uploaded' : 'Upload Signature'}
+                        {generalLoader && <div  className="d-flex mx-3 justify-content-end align-items-center">
+                                     <div style={{height:"20px",width:"20px"}} className="spinner-border text-white" role="status">
+
+</div>
+                                 </div>}
+                         </button>
+                </div>
+
+                <div className="col-md-12 my-2">
+                    <button
+                     onClick={() => {
+                        document.getElementById('captureVideo').classList.remove('highlight');
+                    }}
+                    type="button" id="captureVideo" className="btn bg-primary-color text-light p-5 w-100  " data-bs-toggle="modal" data-bs-target="#uploadVideoModal"><i className="fa-solid fa-video"></i> {videoUrlState?'Captured':'Capture Consent Video'}</button>
+                </div>
+                
+                </div>
+                 <div className="col-12">
+                    <button className="btn btn-success w-100">Submit</button>
+                </div>
+
+                <div className="  d-flex justify-content-between ">
+   
+
+            <div className="d-flex justify-content-between">
+{index ===6  && (
+                    <button type='button' className='position-relative my-5'>
+                        <i onClick={handleDecreaseIndex} style={{ fontSize: "60px", color: "#F44336",transform: "rotate(180deg)"}} className="fa-solid fa-circle-arrow-right"></i>
+                    </button>
+            )}
+            </div>
+</div>
+</form>}
 
                 {/* ----modal--- */}
 
-                {/* <div className="modal fade" id="uploadSignatureModal" tabIndex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+                <div className="modal fade" id="uploadSignatureModal" tabIndex="-1" aria-labelledby="modalLabel" aria-hidden="true">
                     <div className="modal-dialog modal-fullscreen">
                         <div className="modal-content">
                         <div className="modal-header">
@@ -1416,11 +1468,11 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
                             </div>
                         </div>
                     </div>
-                </div> */}
+                </div>
 
 
 {/* Modal of surgen */}
-   {/* <div className="modal fade" id="uploadSurgenSignatureModal" tabIndex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+   <div className="modal fade" id="uploadSurgenSignatureModal" tabIndex="-1" aria-labelledby="modalLabel" aria-hidden="true">
                     <div className="modal-dialog modal-fullscreen">
                         <div className="modal-content">
                         <div className="modal-header">
@@ -1441,14 +1493,9 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
                             </div>
                         </div>
                     </div>
-                </div> */}
+                </div>
 
-
-
-
-
-
-                {/* <div className="modal fade" id="uploadVideoModal" tabIndex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+                <div className="modal fade" id="uploadVideoModal" tabIndex="-1" aria-labelledby="modalLabel" aria-hidden="true">
                     <div className="modal-dialog modal-fullscreen">
                
                         <div className="modal-content">
@@ -1498,9 +1545,7 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
                     </div>
                 </div>
 
-                <div className="col-md-6">
-                    <button type="button" id="captureVideo" className="btn bg-primary-color text-light p-5 w-100  " data-bs-toggle="modal" data-bs-target="#uploadVideoModal"><i className="fa-solid fa-video"></i> {videoUrlState?'Captured':'Capture Consent Video'}</button>
-                </div> */}
+               
 
 
 
