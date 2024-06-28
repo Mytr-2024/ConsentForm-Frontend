@@ -4,7 +4,8 @@ import "./consentForm.css"
 const Dashboard = () => {
   return (
     <div className="content-area">
-      <AreaTop title='Consent Form'/>
+      {/* <AreaTop title='Consent Form'/> */}
+      
       <ConsentForm/>
     </div>
    
