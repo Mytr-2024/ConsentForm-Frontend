@@ -237,26 +237,25 @@ const handleCustomOptionChange = async (e, field) => {
         }
 
         setLoader(true)
-        console.log(imageUrl)
 
-        if(imageUrl===undefined){
-            Toast.fire({
-                icon: "error",
-                title: "We need Your Signature",
-              });
-              setLoader(false)
-              setLoading(false)
-              return
-        }
-        if(surgenImageUrl===undefined){
-            Toast.fire({
-                icon: "error",
-                title: "We need Surgeon Signature",
-              });
-              setLoader(false)
-              setLoading(false)
-              return
-        }
+        // if(imageUrl===undefined){
+        //     Toast.fire({
+        //         icon: "error",
+        //         title: "We need Your Signature",
+        //       });
+        //       setLoader(false)
+        //       setLoading(false)
+        //       return
+        // }
+        // if(surgenImageUrl===undefined){
+        //     Toast.fire({
+        //         icon: "error",
+        //         title: "We need Surgeon Signature",
+        //       });
+        //       setLoader(false)
+        //       setLoading(false)
+        //       return
+        // }
 
         // if(videoUrlState==undefined){
         //     setLoader(false)
@@ -280,33 +279,44 @@ const handleCustomOptionChange = async (e, field) => {
         //     return;
         // }
         
+        // const data = {
+        //     ...consentData,
+        //     patientSignatureUrl: imageUrl,
+        //     surgeonSignatureUrl:surgenImageUrl,
+        //     // VideoUrl: videoUrlState,
+        //     VideoUrl: "hello",
+        //     caseType: caseType,
+        //     createdBy: JSON.parse(localStorage.getItem('user'))?.user?.email,
+        //     question: allQuestions.reduce((acc, question, index) => {
+        //         acc[question] = inputValues[index];
+        //         return acc;
+        //     }, {}),
+        //     customFields:customFields
+        // };
+    
         const data = {
             ...consentData,
-            patientSignatureUrl: imageUrl,
-            surgeonSignatureUrl:surgenImageUrl,
-            // VideoUrl: videoUrlState,
-            VideoUrl: "hello",
-            caseType: caseType,
+            caseType: caseType || undefined,
             createdBy: JSON.parse(localStorage.getItem('user'))?.user?.email,
             question: allQuestions.reduce((acc, question, index) => {
-                acc[question] = inputValues[index];
-                return acc;
-            }, {}),
-            customFields:customFields
+                        acc[question] = inputValues[index];
+                        return acc;
+                    }, {}) || undefined,
+                    customFields:customFields||undefined,
         };
     
-
         try {
             setLoading(true);
             let res = await postApi('post', `api/consent/submitConsent`, data);
-            setLoading(false);
+            setIndex(index+1)
             setLoader(false)
-            navigate('/consentList');
-            console.log(res);
+            setIndex(index+1)
         } catch (error) {
-            console.log(error);
-            setLoading(false);
             setLoader(false)
+            Toast.fire({
+                icon: "error",
+                title: error?.message,
+              });
 
         }
     };
@@ -462,11 +472,7 @@ function scrollToAndHighlightButton(elementId) {
 
     return (
         <>
-          {loader && (
-        <div className="d-flex w-100 justify-content-center align-items-center">
-          <Loader />
-        </div>
-      )}
+         
        <div style={{background:"white"}}  className="steps-container mb-3 d-flex justify-content-center align-items-center ">
             <div className="steps">
 
@@ -475,6 +481,11 @@ function scrollToAndHighlightButton(elementId) {
                 ))}
             </div>
         </div>
+        {loader && (
+        <div className="d-flex w-100 justify-content-center align-items-center">
+          <Loader />
+        </div>
+      )}
        { !loader &&  <div style={{ minHeight: "55vh" }} className="container consentForm p-5">
             <form className='row g-3 needs-validation'  onSubmit={handleConsentSubmit}>
 
@@ -628,14 +639,34 @@ onChange={handleInputChange}
 />
 </div>
 
+<div className="  d-flex justify-content-between flex-row-reverse">
+    <div className="d-flex justify-content-end">
+{index >= 0 && index < 6  && (
+                    <button type='submit' className='position-relative my-5'>
+                        <i style={{ fontSize: "60px", color: "#F44336" }} className="fa-solid fa-circle-arrow-right"></i>
+                    </button>
+            )}
+            </div>
+
+            <div className="d-flex justify-content-between">
+{index > 0 && (
+                    <button type='button' className='position-relative my-5'>
+                        <i onClick={handleDecreaseIndex} style={{ fontSize: "60px", color: "#F44336",transform: "rotate(180deg)"}} className="fa-solid fa-circle-arrow-right"></i>
+                    </button>
+            )}
+            </div>
+</div>
 
 </>}
 
+</form>
 {/* case type started */}
 
 
 {index===1 &&
 <>
+
+<form className='row g-3 needs-validation'  onSubmit={handleConsentSubmit}>
 
                 <div className="col-md-12">
                     <label htmlFor="caseType" className="form-label">
@@ -709,7 +740,26 @@ src={singleConsentData?.videoUrl}
 </div>
 </div>
 }
-</>}
+<div className="  d-flex justify-content-between flex-row-reverse">
+    <div className="d-flex justify-content-end">
+{index >= 0 && index < 6  && (
+                    <button type='submit' className='position-relative my-5'>
+                        <i style={{ fontSize: "60px", color: "#F44336" }} className="fa-solid fa-circle-arrow-right"></i>
+                    </button>
+            )}
+            </div>
+
+            <div className="d-flex justify-content-between">
+{index > 0 && (
+                    <button type='button' className='position-relative my-5'>
+                        <i onClick={handleDecreaseIndex} style={{ fontSize: "60px", color: "#F44336",transform: "rotate(180deg)"}} className="fa-solid fa-circle-arrow-right"></i>
+                    </button>
+            )}
+            </div>
+</div>
+</form>
+</>
+}
 
 
 
@@ -775,6 +825,23 @@ src={singleConsentData?.videoUrl}
  )) }
  
 </div>
+<div className="  d-flex justify-content-between flex-row-reverse">
+    <div className="d-flex justify-content-end">
+{index >= 0 && index < 6  && (
+                    <button onClick={handleIncreaseIndex}  type='button' className='position-relative my-5'>
+                        <i style={{ fontSize: "60px", color: "#F44336" }} className="fa-solid fa-circle-arrow-right"></i>
+                    </button>
+            )}
+            </div>
+
+            <div className="d-flex justify-content-between">
+{index > 0 && (
+                    <button type='button' className='position-relative my-5'>
+                        <i onClick={handleDecreaseIndex} style={{ fontSize: "60px", color: "#F44336",transform: "rotate(180deg)"}} className="fa-solid fa-circle-arrow-right"></i>
+                    </button>
+            )}
+            </div>
+</div>
 </div>}
                 
                
@@ -782,6 +849,7 @@ src={singleConsentData?.videoUrl}
 
 {/* Custom Fields Started */}
  {caseType && !smallLoader1 && index===2 &&
+    <form className='row g-3 needs-validation'  onSubmit={handleConsentSubmit}>
     <div className="">
 
 { singleConsentData?.customFields?.map((custom,index)=>(
@@ -870,7 +938,7 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
 }
 
 
-</div>} 
+</div> 
 
 
 {/* Question started */}
@@ -880,6 +948,7 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
 <h3 className='mt-3'>Questions</h3>
 </div>
 }
+
 
 {allQuestions?.map((que, index) => (
                     <div key={index} className="col-md-12">
@@ -898,12 +967,36 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
                         />
                     </div>
                 ))}
+<div className="  d-flex justify-content-between flex-row-reverse">
+    <div className="d-flex justify-content-end">
+{index >= 0 && index < 6  && (
+                    <button type='submit' className='position-relative my-5'>
+                        <i style={{ fontSize: "60px", color: "#F44336" }} className="fa-solid fa-circle-arrow-right"></i>
+                    </button>
+            )}
+            </div>
+
+            <div className="d-flex justify-content-between">
+{index > 0 && (
+                    <button type='button' className='position-relative my-5'>
+                        <i onClick={handleDecreaseIndex} style={{ fontSize: "60px", color: "#F44336",transform: "rotate(180deg)"}} className="fa-solid fa-circle-arrow-right"></i>
+                    </button>
+            )}
+            </div>
+</div>
 
 </>}
+</form>
+}
+
+
+
 
 {index===3 && <h4 style={{color:"#771E99"}} className='fw-fw-semibold' >SUMMARY</h4>
 }
-{index===3 && <div className='p-4' style={{background:"#E8E9EC",borderRadius:"30px"}} >
+{index===3 &&
+<><div className='p-4' style={{background:"#E8E9EC",borderRadius:"30px"}} >
+
 {caseType &&<div className="col-md-6 mb-3">
 <label htmlFor="disease" className="form-label">
     Disease
@@ -912,6 +1005,7 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
     {caseType}
     </p>
 </div>}
+
 {customFields && <div >
         {customFields?.map((field, index) => (
             <div className="col-md-6" key={index}>
@@ -924,7 +1018,27 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
             </div>
         ))}
     </div>}
-    </div>}
+
+    </div>
+    <div className="  d-flex justify-content-between flex-row-reverse">
+    <div className="d-flex justify-content-end">
+{index >= 0 && index < 6  && (
+                    <button onClick={handleIncreaseIndex}  type='button' className='position-relative my-5'>
+                        <i style={{ fontSize: "60px", color: "#F44336" }} className="fa-solid fa-circle-arrow-right"></i>
+                    </button>
+            )}
+            </div>
+
+            <div className="d-flex justify-content-between">
+{index > 0 && (
+                    <button type='button' className='position-relative my-5'>
+                        <i onClick={handleDecreaseIndex} style={{ fontSize: "60px", color: "#F44336",transform: "rotate(180deg)"}} className="fa-solid fa-circle-arrow-right"></i>
+                    </button>
+            )}
+            </div>
+</div>
+</> 
+    }
 
 {/* Signature started */}
 
@@ -965,7 +1079,51 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
                          </button>
                 </div> */}
 
-             
+
+<div className="">
+            <h2 className='text-center' >Preview Consent Form</h2>
+                        </div>
+                        
+                            <div className="modal-body">
+                                <div className="row mt-5 d-flex justify-content-between">
+
+                               
+                                <div className="col-md-5 borderC mx-3 d-flex flex-column mb-5 justify-content-center ">
+                        <label htmlFor="Pname" className="form-label">
+                            Patient Name
+                        </label>
+                        <span className="form-label">
+                            {consentData?.patientName}
+                        </span>
+                        
+                    </div>
+                    <div className="col-md-5 borderC mx-3 d-flex mb-5 flex-column justify-content-center ">
+                        <label htmlFor="patientId" className="form-label">
+                        Case Type
+                        </label>
+                        <span className="form-label">
+                    {caseType}            </span>
+                        
+                    </div>
+</div>
+                <div className="col-md-12">
+<button
+  type='button'
+  className=" d-flex justify-content-center align-items-center btn bg-primary-color text-light  w-100"
+  data-bs-toggle="modal"
+  data-bs-target="#previewModal"
+>
+  <i className="fa-solid fa-file-signature me-2"></i>
+  Preview Form
+
+  
+                               
+
+                                 
+</button>
+                </div>
+</div>  
+
 
 
  <div className="modal fade" id="previewModal" tabIndex="-1" aria-labelledby="modalLabel" aria-hidden="true">
@@ -1067,14 +1225,14 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
                     </div>
 
                     </div>
-                    <div className="row d-flex justify-content-center">
+                    <div className="row px-3 d-flex justify-content-center">
 
                     
-                    <div className="col-md-11  borderC mx-3 d-flex mb-5 flex-column justify-content-center ">
+                    <div className="col-md-12   borderC mx-5  d-flex mb-5 flex-column justify-content-center ">
                     { singleConsentData?.customFields?.map((custom,index)=>(
     <div key={index} className="col-md-12">
                     <label htmlFor="caseType" className="form-label">
-                       {customFields[index]?.fieldName} -: 
+                       {customFields[index]?.fieldName} - 
                     </label>
                     <span className="form-label">
                     {customFields[index]?.option}
@@ -1172,7 +1330,7 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
 
 
 
-<div className="col-md-10 borderC mx-3  d-flex flex-column mb-5 justify-content-center ">
+{/* <div className="col-md-10 borderC mx-3  d-flex flex-column mb-5 justify-content-center ">
                         <label htmlFor="caseType" className="form-label">
                              Surgen Signature
                         </label>
@@ -1189,8 +1347,6 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
                        
                         
                     </div>
-
-
                     <div className="col-md-10 borderC mx-3  d-flex  py-3 flex-column mb-5 justify-content-center ">
                         <label htmlFor="caseType" className="form-label">
                              Patient Video
@@ -1203,7 +1359,7 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
 
 
 
-</div>
+</div> */}
                     </div>
                     
                 
@@ -1365,7 +1521,7 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
 </button>
                 </div> */}
 
-<div className="d-flex justify-content-between flex-row-reverse">
+{/* <div className="d-flex justify-content-between flex-row-reverse">
     <div className="d-flex justify-content-end">
 {index >= 0 && index < 6  && (
                     <button type='button' className='position-relative my-5'>
@@ -1381,12 +1537,12 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
                     </button>
             )}
             </div>
-</div>
+</div> */}
 
                 {/* <div className="col-12">
                     <button className="btn btn-success w-100">Submit</button>
                 </div> */}
-            </form>
+          
         </div>}
         </>
     )
