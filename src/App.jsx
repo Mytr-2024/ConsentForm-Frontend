@@ -46,7 +46,7 @@ function App() {
             <Route path="/stats/:email" element={<Stats />} />
             <Route path="/viewConsent/:_id" element={<ViewConsent />} />
             <Route path="/editConsent/:_id" element={<EditConsent />} />
-            <Route path="/editAdmin/:_id" element={<EditAdmin />} />
+            <Route path="/editAdmin/:email" element={<EditAdmin />} />
             {/* <Route path="/create-template" element={<CreateTemplate/>} /> */}
             {/* <Route path="/templateList" element={<TemplateList/>} /> */}
             {/* <Route path="/viewTemplate/:_id" element={<ViewTemplate/>} /> */}
