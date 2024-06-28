@@ -5,7 +5,7 @@ import Loader from "../../components/loader/Loader";
 import DataTable from "react-data-table-component";
 import { Toast } from "../../components/alert/Alert";
 import { AreaTop } from "../../components";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function ViewAdmin() {
   const [loader, setLoader] = useState(true);
@@ -77,6 +77,12 @@ navigate(`/stats/${email}`)
       </button>
       <button className="btn btn-warning mx-2" onClick={() => handleViewStats(row?.email)}>
       <i className="fa-regular fa-chart-bar text-white"></i>      </button>
+      <Link to={`/editAdmin/${row?.email}`}>
+        <button className="btn btn-info mx-2">
+          <i className="text-white fa-solid fa-pen-to-square"></i>
+        </button>
+      </Link>
+
     </div>
   );
 

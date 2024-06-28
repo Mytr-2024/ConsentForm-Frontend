@@ -15,6 +15,7 @@ import ViewTemplate from "./screens/Create-template/ViewTemplate";
 import EditTemplate from "./screens/Create-template/EditTemplate";
 import CreateAdmin from "./screens/admin/CreateAdmin";
 import ViewAdmin from "./screens/admin/ViewAdmin";
+import EditAdmin from "./screens/admin/EditAdmin";
 import {ValidSuperAdmin} from './middlewares/ValidSuperAdmin'
 import Stats from "./screens/stats/Stats";
 import { IsLoggedIn } from "./middlewares/IsLoggedIn";
@@ -45,6 +46,7 @@ function App() {
             <Route path="/stats/:email" element={<Stats />} />
             <Route path="/viewConsent/:_id" element={<ViewConsent />} />
             <Route path="/editConsent/:_id" element={<EditConsent />} />
+            <Route path="/editAdmin/:_id" element={<EditAdmin />} />
             {/* <Route path="/create-template" element={<CreateTemplate/>} /> */}
             {/* <Route path="/templateList" element={<TemplateList/>} /> */}
             {/* <Route path="/viewTemplate/:_id" element={<ViewTemplate/>} /> */}

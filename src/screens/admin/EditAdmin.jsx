@@ -5,22 +5,17 @@ import { Toast } from "../../components/alert/Alert";
 import { useNavigate } from 'react-router-dom';
 import { AreaTop } from '../../components';
 
-export default function CreateAdmin() {
+export default function EditAdmin() {
   const [adminEmail, setAdminEmail] = useState('');
-  const [adminName, setAdminName] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
 
   const [loading, setLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState("")
-
-
   const navigate=useNavigate();
   const handleSubmit = async(e) => {
     e.preventDefault();
     setLoading(true)
     const data={
-    name:adminName,
     email:adminEmail,
     password:adminPassword,
     isSuperAdmin:isSuperAdmin,
@@ -66,26 +61,9 @@ export default function CreateAdmin() {
 
    {!loading && 
     <div className="content-area">
-      <AreaTop title='Create New Admin'/>
+      <AreaTop title='Edit Admin'/>
     <div style={{ height: "100%" }} className="container consentForm p-5">
       <form className="row" onSubmit={handleSubmit}>
-      <div className="col-md-3 my-2">
-          <label htmlFor="adminName" className="form-label">
-            Name
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="adminName"
-            name="adminName"
-            placeholder="Enter Admin Name"
-            required
-            value={adminName}
-            onChange={(e) => {
-              setAdminName(e.target.value);
-            }}
-          />
-        </div>
         <div className="col-md-3 my-2">
           <label htmlFor="adminEmail" className="form-label">
             Email Id
@@ -137,7 +115,7 @@ export default function CreateAdmin() {
             />
           </div>
         </div>
-        <div className="col-md-12 my-2">
+        <div className="col-md-3 my-2">
           <button type="submit" style={{ height: "100%" }} className="w-100 btn btn-success">
             Create
           </button>
