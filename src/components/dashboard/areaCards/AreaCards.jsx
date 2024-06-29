@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import AreaCard from "./AreaCard";
 import "./AreaCards.scss";
 import { getApi } from "../../../helpers/requestHelpers";
-
+import admins from '../../../assets/icons/profile.png'
+import patients from '../../../assets/icons/hospitalisation.png'
+import efficency from '../../../assets/icons/statistics.png'
 
 
 
@@ -38,6 +40,7 @@ const getData=async()=>{
           value: data?.totalAdmins,
           text: "Total Number Of Admins.",
         }}
+        cardImage={admins}
       />
       <AreaCard
         colors={["#e4e8ef", "#4ce13f"]}
@@ -47,15 +50,19 @@ const getData=async()=>{
           value: data?.totalConsents,
           text: "Total Consent Form.",
         }}
+        cardImage={patients}
+
       />
       <AreaCard
         colors={["#e4e8ef", "#f29a2e"]}
         percentFillValue={100}
         cardInfo={{
-          title: "Template",
+          title: "Effiecency",
           value: data?.totalTemplate|| 8,
           text: "Total Number Of Template.",
         }}
+        cardImage={efficency}
+
       />
     </section>
   );

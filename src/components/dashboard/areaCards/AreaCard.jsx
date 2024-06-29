@@ -6,7 +6,7 @@ import {
   Tooltip,
 } from "recharts";
 
-const AreaCard = ({ colors, percentFillValue, cardInfo }) => {
+const AreaCard = ({ colors, percentFillValue, cardInfo,cardImage}) => {
   const filledValue = (percentFillValue / 100) * 360; // 360 degress for a full circle
   const remainedValue = 360 - filledValue;
 
@@ -20,35 +20,15 @@ const AreaCard = ({ colors, percentFillValue, cardInfo }) => {
   };
 
   return (
-    <div className="area-card">
+    <div style={{border:"2px solid #7C46BE"}}  className="area-card d-flex">
       <div className="area-card-info">
         <h5 className="info-title">{cardInfo.title}</h5>
         <div className="info-value">{cardInfo.value}</div>
         <p className="info-text">{cardInfo.text}</p>
+
       </div>
       <div className="area-card-chart">
-        <PieChart width={100} height={100}>
-          <Pie
-            data={data}
-            cx={50}
-            cy={45}
-            innerRadius={20}
-            fill="#e4e8ef"
-            paddingAngle={0}
-            dataKey="value"
-            startAngle={-270}
-            endAngle={150}
-            stroke="none"
-          >
-            {data.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={colors[index % colors.length]}
-              />
-            ))}
-          </Pie>
-          <Tooltip formatter={renderTooltipContent} />
-        </PieChart>
+      <img style={{height:"90px"}} src={cardImage} alt=""/>
       </div>
     </div>
   );
@@ -59,5 +39,4 @@ export default AreaCard;
 AreaCard.propTypes = {
   colors: PropTypes.array.isRequired,
   percentFillValue: PropTypes.number.isRequired,
-  cardInfo: PropTypes.object.isRequired,
 };

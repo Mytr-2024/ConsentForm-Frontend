@@ -143,12 +143,19 @@ const Sidebar = () => {
                 <span className="menu-link-text">Settings</span>
               </NavLink>
             </li> */}
-            <li className="menu-item" onClick={handleLogout}>
+            {/* <li className="menu-item" onClick={handleLogout}>
               <NavLink to="/" className="menu-link text-decoration-none">
                 <span className="menu-link-icon">
                   <MdOutlineLogout size={20} />
                 </span>
                 <span className="menu-link-text">Logout</span>
+              </NavLink>
+            </li> */}
+            <li className="menu-item" onClick={handleLogout}>
+              <NavLink to="/" className="menu-link text-decoration-none">
+                <span className="menu-link-icon">
+                <i className="fa-solid fa-headset"></i>                </span>
+                <span className="menu-link-text">Help and Support</span>
               </NavLink>
             </li>
           </ul>
