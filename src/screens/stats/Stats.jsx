@@ -118,6 +118,27 @@ useEffect(() => {
 
   const getChartData=async(dur)=>{
     setDuration(dur)
+    const today = new Date();
+    if(dur==="Week"){
+      const startDate = addDays(today, 0);
+      const endDate = addDays(startDate, -6);
+      const formattedDateRange = `${format(startDate, 'dd')} - ${format(endDate, 'dd MMM, yyyy')}`;
+      setDateRange(formattedDateRange);
+    }
+    else if(dur==="Month"){
+      const startDate = addDays(today, 0);
+      const endDate = addDays(startDate, -29);
+      const formattedDateRange = `${format(startDate, 'dd')} - ${format(endDate, 'dd MMM, yyyy')}`;
+      setDateRange(formattedDateRange);
+    }
+    else if(dur==="Year"){
+      const startDate = addDays(today, 0);
+      const endDate = addDays(startDate, -364);
+      const formattedDateRange = `${format(startDate, 'dd')} - ${format(endDate, 'dd MMM, yyyy')}`;
+      setDateRange(formattedDateRange);
+    }
+   
+
    const res=await getApi('get',`/api/${duration}|| Week`)
    setChartData(res?.data)
   }
@@ -202,7 +223,13 @@ useEffect(() => {
 
       {/* <AreaTop title="Detailed Stats" /> */}
       <div className="container consentForm p-5">
-        <form className="row g-3">
+
+
+<h1 className="text-center" >Stastistics Of Particular Admin </h1>
+
+        <form className="row g-3 mt-3">
+
+
           <ConsentFormBarChart 
             adminEmail="Admin1" 
           />
