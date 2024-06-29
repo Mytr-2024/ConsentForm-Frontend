@@ -188,3 +188,8 @@ input:focus , select:focus{
 .outlet_outer > div:first-child {
   width: 100%;
 }
+
+
+.swal2-container{
+  z-index: 99999999 !important;
+}
