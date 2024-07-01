@@ -20,6 +20,7 @@
     color: #ff6600; /* Change the color to indicate active step */
     border-radius: 50%;
     border: 5px solid #ff6600;
+    animation: pulse 1s infinite;
 }
 .steps {
     display: flex;

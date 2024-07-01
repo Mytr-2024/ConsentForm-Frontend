@@ -15,7 +15,7 @@ const [data, setData] = useState()
 
 
 const getData=async()=>{
-  const res= await getApi('get','/api/analytics/getAnalyticsData')
+  const res= await getApi('get','api/analytics/getConsentStatusCounts')
   setData(res?.data)
 }
 
@@ -36,9 +36,9 @@ const getData=async()=>{
         colors={["#e4e8ef", "#475be8"]}
         percentFillValue={100}
         cardInfo={{
-          title: "Admins",
-          value: data?.totalAdmins,
-          text: "Total Number Of Admins.",
+          title: "Total Consent Count ",
+          value: data?.inProgressCount+data?.submittedCount,
+          text: "Total Number Of Consent.",
         }}
         cardImage={admins}
       />
@@ -46,9 +46,9 @@ const getData=async()=>{
         colors={["#e4e8ef", "#4ce13f"]}
         percentFillValue={100}
         cardInfo={{
-          title: "Consent Form",
-          value: data?.totalConsents,
-          text: "Total Consent Form.",
+          title: "Total Patients",
+          value: data?.submittedCount,
+          text: "Total Patients .",
         }}
         cardImage={patients}
 
@@ -58,7 +58,7 @@ const getData=async()=>{
         percentFillValue={100}
         cardInfo={{
           title: "Effiecency",
-          value: data?.totalTemplate|| 8,
+          value: ((data?.inProgressCount + data?.submittedCount) / data?.submittedCount).toFixed(3),
           text: "Total Number Of Template.",
         }}
         cardImage={efficency}
