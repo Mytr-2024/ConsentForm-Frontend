@@ -77,37 +77,37 @@ useEffect(() => {
 
   const data = [
     {
-      "name": "Page A",
+      "name": "25/07/23",
       "uv": 4000,
       "amt": 2400
     },
     {
-      "name": "Page B",
+      "name": "26/07/23",
       "uv": 3000,
       "amt": 2210
     },
     {
-      "name": "Page C",
+      "name": "27/07/23",
       "uv": 2000,
       "amt": 2290
     },
     {
-      "name": "Page D",
+      "name": "28/07/23",
       "uv": 2780,
       "amt": 2000
     },
     {
-      "name": "Page E",
+      "name": "29/07/23",
       "uv": 1890,
       "amt": 2181
     },
     {
-      "name": "Page F",
+      "name": "30/07/23",
       "uv": 2390,
       "amt": 2500
     },
     {
-      "name": "Page G",
+      "name": "31/07/23",
       "uv": 3490,
       "amt": 2100
     }
@@ -225,7 +225,7 @@ useEffect(() => {
       <div className="container consentForm p-5">
 
 
-<h1 className="text-center" >Stastistics Of Particular Admin </h1>
+<h1 className="text-center fw-bold " ><span style={{color:"#7C46BE"}} >Statistics</span> Of Particular Admin </h1>
 
         <form className="row g-3 mt-3">
 

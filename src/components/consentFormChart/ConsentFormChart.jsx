@@ -6,7 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { getApi } from '../../helpers/requestHelpers';
 import { useParams } from 'react-router-dom';
-
+import './ConsentFormChart.css'
 Chart.register(...registerables);
 
 const ConsentFormBarChart = ({ adminEmail }) => {
@@ -72,14 +72,14 @@ const ConsentFormBarChart = ({ adminEmail }) => {
 
   return (
     <div>
-      <h2 className='mb-2 pb-2'>Created Consent Form Stats</h2>
+      <h2 className='mb-2 pb-2'>Created Form's</h2>
       <div className='d-flex justify-content-between'>
         <div>
-          <label className='me-3'>Start Date: </label>
+          <label className='me-3 startEnd '>Start Date: </label>
           <DatePicker selected={adminStartDate} onChange={date => changeConsentData(date, true)} />
         </div>
         <div>
-          <label className='me-3'>End Date: </label>
+          <label className='me-3 startEnd'>End Date: </label>
           <DatePicker selected={adminEndDate} onChange={date => changeConsentData(date, false)} />
         </div>
       </div>

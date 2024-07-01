@@ -19,6 +19,7 @@ import EditAdmin from "./screens/admin/EditAdmin";
 import {ValidSuperAdmin} from './middlewares/ValidSuperAdmin'
 import Stats from "./screens/stats/Stats";
 import { IsLoggedIn } from "./middlewares/IsLoggedIn";
+import ContinueConsent from "./components/contineConsent/ContinueConsent";
 
 function App() {
   
@@ -47,6 +48,7 @@ function App() {
             <Route path="/viewConsent/:_id" element={<ViewConsent />} />
             <Route path="/editConsent/:_id" element={<EditConsent />} />
             <Route path="/editAdmin/:email" element={<EditAdmin />} />
+            <Route path="/continueConsent/:id" element={<ContinueConsent />} />
             {/* <Route path="/create-template" element={<CreateTemplate/>} /> */}
             {/* <Route path="/templateList" element={<TemplateList/>} /> */}
             {/* <Route path="/viewTemplate/:_id" element={<ViewTemplate/>} /> */}

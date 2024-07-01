@@ -54,11 +54,11 @@ const Patients = () => {
       <h2 className='mb-2 pb-2'>Patient Gender Distribution</h2>
       <div className='d-flex justify-content-between'>
         <div className="">
-          <label className='me-3'>Start Date: </label>
+          <label className='me-3 startEnd'>Start Date: </label>
           <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
         </div>
         <div className="">
-          <label className='me-3'>End Date: </label>
+          <label className='me-3 startEnd'>End Date: </label>
           <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
         </div>
       </div>
