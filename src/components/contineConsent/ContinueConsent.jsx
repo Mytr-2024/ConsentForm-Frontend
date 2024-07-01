@@ -69,7 +69,7 @@ setLoader(true)
 
             // Handling questions and answers
             const fetchedQuestions = res.data.consent.question;
-            // setInputValues(Object.values(fetchedQuestions));
+            setInputValues(Object.values(fetchedQuestions?fetchedQuestions:""));
      
     
 
