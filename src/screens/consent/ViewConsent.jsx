@@ -25,15 +25,16 @@ export default function ViewConsent() {
         setSingleConsentData(res?.data?.consent)
         handleCaseTypeChange(res?.data?.consent?.caseType)
         setCaseType(res?.data?.consent?.caseType)
-        const rest = await getApi("get", `/api/template/questionsByCaseType?caseType=${res?.data?.consent?.caseType}`);
-        setAllQuestions(rest?.data?.questions)
-        const temp = await getApi("get", `/api/template/getTemplateByCaseType?caseType=${res?.data?.consent?.caseType}`);
-        setValue(temp?.data?.deltaForm)
-        var cfg = {};
-        var converter = new QuillDeltaToHtmlConverter(temp?.data?.deltaForm?.ops, cfg);
-         setHtmlStart(converter.convert()) 
+        // const rest = await getApi("get", `/api/template/questionsByCaseType?caseType=${res?.data?.consent?.caseType}`);
+        // setAllQuestions(rest?.data?.questions)
+        // // const temp = await getApi("get", `/api/template/getTemplateByCaseType?caseType=${res?.data?.consent?.caseType}`);
+        // setValue(temp?.data?.deltaForm)
+        // var cfg = {};
+        // var converter = new QuillDeltaToHtmlConverter(temp?.data?.deltaForm?.ops, cfg);
+        //  setHtmlStart(converter.convert()) 
         setLoader(false)
       } catch (error) {
+
         console.log(error)
         setLoader(false)
       }
@@ -91,10 +92,10 @@ const prindPdf = async () => {
 
 const [viewData, setViewData] = useState()
 const handleCaseTypeChange = async (caseType) => {
-        const temp = await getApi("get", `/api/template/getTemplateByCaseType?caseType=${caseType}`);
-        console.log(temp)
-        setValue(temp?.data?.deltaForm)
-        setViewData(temp?.data)
+        // const temp = await getApi("get", `/api/template/getTemplateByCaseType?caseType=${caseType}`);
+        // console.log(temp)
+        // setValue(temp?.data?.deltaForm)
+        // setViewData(temp?.data)
     }
 
   return (
@@ -220,7 +221,7 @@ const handleCaseTypeChange = async (caseType) => {
                         
                     </div> */}
 
-                    <div className="col-md-5 borderC mx-3 d-flex mb-5 flex-column justify-content-center ">
+                  {singleConsentData?.VideoUrl &&  <div className="col-md-5 borderC mx-3 d-flex mb-5 flex-column justify-content-center ">
                         <label htmlFor="video" className="form-label">
                         Video
                         </label>
@@ -229,23 +230,23 @@ const handleCaseTypeChange = async (caseType) => {
 
                             </video>
 
-                            {/* <iframe height="fit-content" style={{height:"50vh",width:"30vw"}} src={singleOptionData[index]?.videoUrl}  >
-
-                            </iframe> */}
-
                                                 </span>
                         
-                    </div>
-                    <div className="col-md-5 borderC mx-3 d-flex mb-5 flex-column justify-content-center ">
+                    </div>}
+
+
+                 {singleConsentData?.patientSignatureUrl &&   <div className="col-md-5 borderC mx-3 d-flex mb-5 flex-column justify-content-center ">
                         <label htmlFor="signature" className="form-label">
                         Signature
                         </label>
                         <span className="form-label d-flex justify-content-center">
-                        <img style={{maxWidth:"280px",height:"200px"}} src={singleConsentData?.patientSignatureUrl} alt="" />
+                        <img style={{maxWidth:"280px",height:"200px"}} src={singleConsentData?.patientSignatureUrl} alt="Image Missing" />
                                              </span>
                         
-                    </div>
-                    <div className="col-md-10 borderC mx-3  d-flex flex-column mb-5 justify-content-center ">
+                    </div>}
+
+
+                   {singleConsentData?.caseType && <div className="col-md-10 borderC mx-3  d-flex flex-column mb-5 justify-content-center ">
                         <label htmlFor="caseType" className="form-label">
                             Case Type
                         </label>
@@ -253,8 +254,9 @@ const handleCaseTypeChange = async (caseType) => {
                         {singleConsentData?.caseType}
                         </span>
                         
-                    </div>
-                    <div className="col-md-10 borderC mx-3 d-flex mb-5 flex-column justify-content-center ">
+                    </div>}
+
+                  {singleConsentData?.surgeonSignatureUrl &&  <div className="col-md-10 borderC mx-3 d-flex mb-5 flex-column justify-content-center ">
                         <label htmlFor="signature" className="form-label">
                         Signature
                         </label>
@@ -262,10 +264,10 @@ const handleCaseTypeChange = async (caseType) => {
                         <img style={{maxWidth:"280px",height:"200px"}} src={singleConsentData?.surgeonSignatureUrl} alt="" />
                                              </span>
                         
-                    </div>
+                    </div>}
 
 
- <div className="col-md-10">
+{value &&  <div className="col-md-10">
                     <div className="col-md-11 my-4">
   <div className="row">
 
@@ -277,13 +279,13 @@ const handleCaseTypeChange = async (caseType) => {
 <QuillEditor
             theme="snow"
             value={value}
-            readOnly={true} // Set readOnly to true to disable editing
+            readOnly={true}
             modules={{
-                toolbar: false, // Hide the toolbar
+                toolbar: false, 
               }}
           />
 <div className="">
-{viewData?.imageUrl.map((image,index)=>(
+{viewData?.imageUrl?.map((image,index)=>(
 
 
 <img style={{height:"200px", width:"250px"}} alt='' key={index} src={image}/>
@@ -299,35 +301,20 @@ const handleCaseTypeChange = async (caseType) => {
                         </label>
 
                         <div className="video-container">
-                        {/* <iframe height="fit-content" style={{height:"50vh",width:"30vw"}} src={singleConsentData?.videoUrl}  ></iframe> */}
-                        {/* <iframe
-  width="380"
-  height="220"
-  src={singleConsentData?.videoUrl}
-  frameborder="0"
-  allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen>
-</iframe> */}
-{/* <iframe width="380" height="225"
-  src={singleConsentData?.videoUrl}
-  title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> */}
-
+                      
 <iframe width="380" height="225"
 src={viewData?.videoUrl}
   title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
-      {/* <video controls > 
-        <source src={singleConsentData?.videoUrl} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video> */}
+      
     </div>
 </div>
 
 </div>
 </div>
 
-<div className="col-md-12 my-4">
+{viewData?.faqs && <div className="col-md-12 my-4">
 <div className="accordion" id="accordionExample">
 
 
@@ -357,7 +344,7 @@ src={viewData?.videoUrl}
               }}
           />
 <div className="d-flex justify-content-start">
-{faq?.imageUrl.map((image,index)=>(
+{faq?.imageUrl?.map((image,index)=>(
 
 
 <img  className='object-fit-contain my-2' style={{height:"200px", width:"50vw"}} alt='' key={index} src={image}/>
@@ -400,8 +387,8 @@ src={viewData?.videoUrl}
  )) }
  
 </div>
-</div>
-                </div>
+</div>}
+                </div>}
 
 
 
@@ -413,7 +400,7 @@ src={viewData?.videoUrl}
   </div>
 )}
 
-<div className="col-md-10">
+{viewData?.customFields && <div className="col-md-10">
 
 
 {viewData?.customFields?.map((custom, index) => (
@@ -477,31 +464,39 @@ src={viewData?.videoUrl}
     ))}
   </div>
 ))}
-     </div>  
+     </div>  }
+
+{ singleConsentData?.question && <>
 
 <div  className="col-md-10 w-100    px-2 px-sm-3 px-md-5 px-lg-5 mt-3">
 <h3>Question's</h3>
 </div>       
 
 <div className='w-100' >
-            {Object.entries(singleConsentData?.question)?.map(([key, value], index) => (
-                <div key={index} className="col-md-10 w-100 px-2 px-sm-3 px-md-5 px-lg-5 mt-3">
-                    <label htmlFor={`ques-${index}`} className="form-label w-100">
-                        <b>Question {index + 1} </b> {key}
-                    </label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id={`ques-${index}`}
-                        name='questions'
-                        value={value}
-                        required
-                        readOnly
-                    />
-                </div>
-            ))}
-        </div>
+{singleConsentData?.question ? (
+  Object.entries(singleConsentData.question).map(([key, value], index) => (
+    <div key={index} className="col-md-10 w-100 px-2 px-sm-3 px-md-5 px-lg-5 mt-3">
+      <label htmlFor={`ques-${index}`} className="form-label w-100">
+        <b>Question {index + 1} </b> {key}
+      </label>
+      <input
+        type="text"
+        className="form-control"
+        id={`ques-${index}`}
+        name='questions'
+        value={value}
+        required
+        readOnly
+      />
+    </div>
+  ))
+) : (
+  <p>No questions available</p>
+)}
 
+        </div>
+        </>
+       }
 
 
 

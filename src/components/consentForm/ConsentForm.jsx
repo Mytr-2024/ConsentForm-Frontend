@@ -251,12 +251,12 @@ const handleCustomOptionChange = async (e, field) => {
             return
         }
 
-        if(videoUrlState==undefined && index===6){
-            setLoader(false)
-            setLoading(false)
-            scrollToAndHighlightButton('captureVideo')
-            return
-        }
+        // if(videoUrlState==undefined && index===6){
+        //     setLoader(false)
+        //     setLoading(false)
+        //     scrollToAndHighlightButton('captureVideo')
+        //     return
+        // }
         // if(videoUrlState===undefined){
         //     Toast.fire({
         //         icon: "error",
