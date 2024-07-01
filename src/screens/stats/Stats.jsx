@@ -12,40 +12,6 @@ import { format, addDays } from 'date-fns';
 export default function Stats() {
 
 
-  const datar = [
-    { date: '2024-06-01', admin: 'Admin1', createdForms: 5, gender: 'male' },
-    { date: '2024-07-02', admin: 'Admin1', createdForms: 7, gender: 'female' },
-    { date: '2024-06-02', admin: 'Admin2', createdForms: 3, gender: 'male' },
-    { date: '2024-06-03', admin: 'Admin2', createdForms: 6, gender: 'other' },
-    { date: '2024-08-02', admin: 'Admin1', createdForms: 9, gender: 'female' },
-    { date: '2024-06-04', admin: 'Admin1', createdForms: 70, gender: 'male' },
-    { date: '2025-01-07', admin: 'Admin1', createdForms: 22, gender: 'male' },
-    { date: '2025-01-08', admin: 'Admin1', createdForms: 22, gender: 'female' },
-    { date: '2025-01-09', admin: 'Admin1', createdForms: 22, gender: 'female' },
-    { date: '2025-01-10', admin: 'Admin1', createdForms: 22, gender: 'other' },
-    { date: '2025-02-05', admin: 'Admin1', createdForms: 22, gender: 'male' },
-    { date: '2025-02-05', admin: 'Admin1', createdForms: 22, gender: 'male' },
-    { date: '2025-02-05', admin: 'Admin1', createdForms: 22, gender: 'male' },
-    { date: '2025-02-05', admin: 'Admin1', createdForms: 22, gender: 'male' },
-    { date: '2025-02-05', admin: 'Admin1', createdForms: 22, gender: 'male' },
-    { date: '2025-02-05', admin: 'Admin1', createdForms: 22, gender: 'male' },
-   { date: '2025-02-05', admin: 'Admin1', createdForms: 22, gender: 'male' },
-  ];
-
-  const ageData = [
-    {date: '2024-06-01', age: '1-17', ageType: 'child', caseType: 'type1', cases: 10 },
-    {date: '2024-06-01', age: '18-40', ageType: 'adult', caseType: 'type1', cases: 1 },
-    {date: '2024-06-01', age: '41-60', ageType: 'middleAge', caseType: 'type1', cases: 22 },
-    {date: '2024-06-01', age: '61-100', ageType: 'oldAge', caseType: 'type1', cases: 10 },
-    {date: '2024-07-01', age: '1-17', ageType: 'child', caseType: 'type1', cases: 10 },
-    {date: '2024-07-01', age: '18-40', ageType: 'adult', caseType: 'type1', cases: 1 },
-    {date: '2024-07-01', age: '41-60', ageType: 'middleAge', caseType: 'type1', cases: 22 },
-    {date: '2024-07-01', age: '61-100', ageType: 'oldAge', caseType: 'type1', cases: 10 },
- 
-  ];
-
-
-
 
   const [allCaseType, setAllCaseType] = useState()
 
@@ -63,55 +29,48 @@ useEffect(() => {
 
 }, []);
 
-  const data2 = [
-    { date: '2024-06-01', admin: 'Admin1', caseType: 'type1', cases: 10 },
-    { date: '2024-06-02', admin: 'Admin1', caseType: 'type1', cases: 1 },
-    { date: '2024-06-03', admin: 'Admin1', caseType: 'type1', cases: 22 },
-    { date: '2024-07-02', admin: 'Admin1', caseType: 'type1', cases: 10 },
-    { date: '2024-08-02', admin: 'Admin1', caseType: 'type1', cases: 2 },
-    { date: '2025-01-07', admin: 'Admin1', caseType: 'type1', cases: 11 },
-  ];
+
 
   const [duration, setDuration] = useState("Week")
 
 
-  const data = [
-    {
-      "name": "25/07/23",
-      "uv": 4000,
-      "amt": 2400
-    },
-    {
-      "name": "26/07/23",
-      "uv": 3000,
-      "amt": 2210
-    },
-    {
-      "name": "27/07/23",
-      "uv": 2000,
-      "amt": 2290
-    },
-    {
-      "name": "28/07/23",
-      "uv": 2780,
-      "amt": 2000
-    },
-    {
-      "name": "29/07/23",
-      "uv": 1890,
-      "amt": 2181
-    },
-    {
-      "name": "30/07/23",
-      "uv": 2390,
-      "amt": 2500
-    },
-    {
-      "name": "31/07/23",
-      "uv": 3490,
-      "amt": 2100
-    }
-  ]
+  // const data = [
+  //   {
+  //     "name": "25/07/23",
+  //     "uv": 4000,
+  //     "amt": 2400
+  //   },
+  //   {
+  //     "name": "26/07/23",
+  //     "uv": 3000,
+  //     "amt": 2210
+  //   },
+  //   {
+  //     "name": "27/07/23",
+  //     "uv": 2000,
+  //     "amt": 2290
+  //   },
+  //   {
+  //     "name": "28/07/23",
+  //     "uv": 2780,
+  //     "amt": 2000
+  //   },
+  //   {
+  //     "name": "29/07/23",
+  //     "uv": 1890,
+  //     "amt": 2181
+  //   },
+  //   {
+  //     "name": "30/07/23",
+  //     "uv": 2390,
+  //     "amt": 2500
+  //   },
+  //   {
+  //     "name": "31/07/23",
+  //     "uv": 3490,
+  //     "amt": 2100
+  //   }
+  // ]
   
 
   const [chartData, setChartData] = useState()
@@ -119,19 +78,19 @@ useEffect(() => {
   const getChartData=async(dur)=>{
     setDuration(dur)
     const today = new Date();
-    if(dur==="Week"){
+    if(dur==="week"){
       const startDate = addDays(today, 0);
       const endDate = addDays(startDate, -6);
       const formattedDateRange = `${format(startDate, 'dd')} - ${format(endDate, 'dd MMM, yyyy')}`;
       setDateRange(formattedDateRange);
     }
-    else if(dur==="Month"){
+    else if(dur==="month"){
       const startDate = addDays(today, 0);
       const endDate = addDays(startDate, -29);
       const formattedDateRange = `${format(startDate, 'dd')} - ${format(endDate, 'dd MMM, yyyy')}`;
       setDateRange(formattedDateRange);
     }
-    else if(dur==="Year"){
+    else if(dur==="year"){
       const startDate = addDays(today, 0);
       const endDate = addDays(startDate, -364);
       const formattedDateRange = `${format(startDate, 'dd')} - ${format(endDate, 'dd MMM, yyyy')}`;
@@ -139,8 +98,9 @@ useEffect(() => {
     }
    
 
-   const res=await getApi('get',`/api/${duration}|| Week`)
-   setChartData(res?.data)
+   const res=await getApi('get',`/api/analytics/getConsentFormAnalytics?period=${dur || 'week'}`)
+   console.log(res?.data?.data)
+   setChartData(res?.data?.data)
   }
 
 
@@ -171,9 +131,9 @@ useEffect(() => {
     Activity This {duration?duration:"Week"}
   </button>
   <ul className="dropdown-menu">
-    <li><Link className="dropdown-item" onClick={(e)=>{getChartData('Month')}} >This Month</Link></li>
-    <li><Link className="dropdown-item" onClick={(e)=>{getChartData('Year')}} >This Year</Link></li>
-    <li><Link className="dropdown-item" onClick={(e)=>{getChartData('Week')}} >This Week</Link></li>
+    <li><Link className="dropdown-item" onClick={(e)=>{getChartData('month')}} >This Month</Link></li>
+    <li><Link className="dropdown-item" onClick={(e)=>{getChartData('year')}} >This Year</Link></li>
+    <li><Link className="dropdown-item" onClick={(e)=>{getChartData('week')}} >This Week</Link></li>
   </ul>
 </div>
       </div>
@@ -192,26 +152,20 @@ useEffect(() => {
 </div>
 
 
-      <AreaChart className="mb-5" width={1100} height={250} data={data}
-  margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
-    
-  <defs>
-    <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
-      <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
-    </linearGradient>
-    <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
-      <stop offset="95%" stopColor="#82ca9d" stopOpacity={0}/>
-    </linearGradient>
-  </defs>
-  <XAxis dataKey="name" />
-  <YAxis />
-  <CartesianGrid strokeDasharray="3 3" />
-  <Tooltip />
-  <Area type="monotone" dataKey="uv" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
-  <Area type="monotone" dataKey="pv" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
-</AreaChart>
+<AreaChart className="mb-5" width={1100} height={250} data={chartData}
+            margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+            <defs>
+                <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+                </linearGradient>
+            </defs>
+            <XAxis dataKey="date" />
+            <YAxis />
+            <CartesianGrid strokeDasharray="3 3" />
+            <Tooltip />
+            <Area type="monotone" dataKey="count" stroke="#8884d8" fillOpacity={1} fill="url(#colorCount)" />
+        </AreaChart>
 
 
 

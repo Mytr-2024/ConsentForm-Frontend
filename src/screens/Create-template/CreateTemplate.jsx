@@ -604,7 +604,7 @@ if(tempOption.length<=0){
 
     {!loader && <div className="content-area">
       
-      <AreaTop title='Template Form'/>
+      <h2 className="text-center mt-3 mb-3 fw-bold"><span style={{color:"#7C46BE"}}> Template</span> Form's</h2>
     <div className="container consentForm p-5">
       <form  className='row g-3' onSubmit={submitHandler}>
 
