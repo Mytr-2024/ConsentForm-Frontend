@@ -7,19 +7,23 @@ import QuillEditor from "react-quill";
 import Loader from '../loader/Loader';
 import { Toast } from "../../components/alert/Alert";
 import Step from '../step/Step';
-import patientRegistrationIcon from '../../assets/icons/patientRegistrationIcon.png';
+import patientRegistrationIcon from '../../assets/icons/registration.png';
+import disease from '../../assets/icons/disease.png';
+import faq from '../../assets/icons/faq.png';
+import preview from '../../assets/icons/preview.png';
+import submit from '../../assets/icons/submit.png';
+import summary from '../../assets/icons/summary.png';
+import treatement from '../../assets/icons/treatement.png';
 
 const ConsentForm = () => {
-
-
     const steps = [
         { icon: patientRegistrationIcon, label: 'Registration' },
-        { icon: patientRegistrationIcon, label: 'Diseases' },
-        { icon: patientRegistrationIcon, label: 'Treatment' },
-        { icon: patientRegistrationIcon, label: 'Summary' },
-        { icon: patientRegistrationIcon, label: 'FAQ' },
-        { icon: patientRegistrationIcon, label: 'Preview Form' },
-        { icon: patientRegistrationIcon, label: 'Submit Consent' }
+        { icon: disease, label: 'Diseases' },
+        { icon: treatement, label: 'Treatment' },
+        { icon: summary, label: 'Summary' },
+        { icon: faq, label: 'FAQ' },
+        { icon: preview, label: 'Preview Form' },
+        { icon: submit, label: 'Submit Consent' }
     ];
 
 
