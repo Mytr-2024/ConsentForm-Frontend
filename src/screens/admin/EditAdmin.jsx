@@ -10,22 +10,25 @@ export default function EditAdmin() {
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [adminName, setAdminName] = useState('');
 
-  const [loading, setLoading] = useState(false)
   const navigate=useNavigate();
   const {email}=useParams()
 
 
 const setAdminData=async()=>{
+  setLoading(true)
   let res=   await postApi("get",`/api/user/getAdminByEmail/${email}`)
 setAdminName(res?.data?.admin?.name)
 setAdminEmail(res?.data?.admin?.email)
 setIsSuperAdmin(res?.data?.admin?.isSuperAdmin)
+setLoading(false)
+
 }
 
   useEffect(() => {
     setAdminData()
   }, [])
 
+  const [loading, setLoading] = useState(true)
 
 
   const handleSubmit = async(e) => {
@@ -35,7 +38,7 @@ setIsSuperAdmin(res?.data?.admin?.isSuperAdmin)
     email:email,
     name:adminName,
     isSuperAdmin:isSuperAdmin,
-    // updatedBy:JSON.parse(localStorage.getItem('user'))?.user?.email
+    updatedBy:JSON.parse(localStorage.getItem('user'))?.user?.email
     }
 
     try {
@@ -43,6 +46,8 @@ setIsSuperAdmin(res?.data?.admin?.isSuperAdmin)
 
    
     if(res?.data?.status===true){
+      setLoading(false)
+
       Toast.fire({
         icon: "success",
         title: "Admin Updated"
