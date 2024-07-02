@@ -87,15 +87,32 @@ const ConsentFormBarChart = ({ adminEmail }) => {
   {!loading &&  <div>
       <h2 className='mb-2 pb-2'>Created Form's</h2>
       <div className='d-flex justify-content-between'>
-        <div>
-          <label className='me-3 startEnd '>Start Date: </label>
-          <DatePicker selected={adminStartDate} onChange={date => changeConsentData(date, true)} />
-        </div>
-        <div>
-          <label className='me-3 startEnd'>End Date: </label>
-          <DatePicker selected={adminEndDate} onChange={date => changeConsentData(date, false)} />
-        </div>
+      <div>
+        <label className='me-3 startEnd'>Start Date: </label>
+        <DatePicker
+          selected={adminStartDate}
+          onChange={date => changeConsentData(date, true)}
+          maxDate={today}
+          selectsStart
+          startDate={adminStartDate}
+          endDate={adminEndDate}
+          placeholderText="Select a start date"
+        />
       </div>
+      <div>
+        <label className='me-3 startEnd'>End Date: </label>
+        <DatePicker
+          selected={adminEndDate}
+          onChange={date => changeConsentData(date, false)}
+          minDate={adminStartDate || today}
+          maxDate={today}
+          selectsEnd
+          startDate={adminStartDate}
+          endDate={adminEndDate}
+          placeholderText="Select an end date"
+        />
+      </div>
+    </div>
       <Bar data={chartData} />
     </div>}
     </>

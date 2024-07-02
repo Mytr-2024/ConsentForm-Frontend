@@ -63,6 +63,16 @@ const AgeGroup = () => {
   const ageChartData = generateAgeChartData(ageData);
   const [loading, setLoading] = useState(true)
 
+  const handleStartDateChange = (date) => {
+    setStartDate(date);
+    if (endDate && date > endDate) {
+      setEndDate(null); // Reset end date if start date is after end date
+    }
+  };
+
+  const handleEndDateChange = (date) => {
+    setEndDate(date);
+  };
   return (
     <>
      {loading && (
@@ -73,15 +83,32 @@ const AgeGroup = () => {
      {!loading && <div>
       <h2 className='mb-2 pb-2'>Cases by Age Group</h2>
       <div className='d-flex justify-content-between'>
-        <div className="">
-          <label className='me-3'>Start Date: </label>
-          <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
-        </div>
-        <div className="">
-          <label className='me-3'>End Date: </label>
-          <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
-        </div>
+      <div className="">
+        <label className='me-3'>Start Date: </label>
+        <DatePicker
+          selected={startDate}
+          onChange={handleStartDateChange}
+          maxDate={today}
+          selectsStart
+          startDate={startDate}
+          endDate={endDate}
+          placeholderText="Select a start date"
+        />
       </div>
+      <div className="">
+        <label className='me-3'>End Date: </label>
+        <DatePicker
+          selected={endDate}
+          onChange={handleEndDateChange}
+          minDate={startDate}
+          maxDate={today}
+          selectsEnd
+          startDate={startDate}
+          endDate={endDate}
+          placeholderText="Select an end date"
+        />
+      </div>
+    </div>
 
       <div style={{ width: '100%', height: '100%', margin: '' }}>
         <Bar data={ageChartData} options={{

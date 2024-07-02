@@ -74,15 +74,37 @@ const CaseTypeStats = ({ adminEmail, caseTypes }) => {
    {!loading && <div>
       <h2 className='mb-2 pb-2'>Case Type Distribution</h2>
       <div className='d-flex justify-content-between'>
-        <div className="">
-          <label className='me-3 startEnd'>Start Date: </label>
-          <DatePicker selected={caseStartDate} onChange={(date) => setCaseStartDate(date)} />
-        </div>
-        <div className="">
-          <label className='me-3 startEnd'>End Date: </label>
-          <DatePicker selected={caseEndDate} onChange={(date) => setCaseEndDate(date)} />
-        </div>
+      <div>
+        <label className='me-3 startEnd'>Start Date: </label>
+        <DatePicker
+          selected={caseStartDate}
+          onChange={(date) => {
+            setCaseStartDate(date);
+            if (caseEndDate && date > caseEndDate) {
+              setCaseEndDate(null); // Reset end date if start date is after end date
+            }
+          }}
+          maxDate={today}
+          selectsStart
+          startDate={caseStartDate}
+          endDate={caseEndDate}
+          placeholderText="Select a start date"
+        />
       </div>
+      <div>
+        <label className='me-3 startEnd'>End Date: </label>
+        <DatePicker
+          selected={caseEndDate}
+          onChange={(date) => setCaseEndDate(date)}
+          minDate={caseStartDate}
+          maxDate={today}
+          selectsEnd
+          startDate={caseStartDate}
+          endDate={caseEndDate}
+          placeholderText="Select an end date"
+        />
+      </div>
+    </div>
       <div className="mt-3 w-100 d-flex justify-content-between">
         <label className='me-3 startEnd' style={{minWidth:"81px"}}>Case Type: </label>
         <select className='w-100 py-1' value={selectedCaseType} onChange={(e) => setSelectedCaseType(e.target.value)}>
