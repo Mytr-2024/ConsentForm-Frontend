@@ -310,6 +310,9 @@ const handleCustomOptionChange = async (e, field) => {
         try {
             setLoading(true);
             let res = await postApi('post', `api/consent/submitConsent`, data);
+            if(index===6){
+                navigate('/consentList')
+            }
             setIndex(index+1)
             setLoader(false)
             setIndex(index+1)

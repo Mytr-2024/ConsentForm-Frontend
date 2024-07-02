@@ -78,8 +78,7 @@ const Sidebar = () => {
           {authUserData && <li className="menu-item" >
               <NavLink to={`/stats/${JSON.parse(localStorage.getItem('user'))?.user?.email}`} className="menu-link text-decoration-none">
                 <span className="menu-link-icon">
-                <i className="fa-solid fa-user-tie"></i>
-                </span>
+                <i className="fa-solid fa-chart-simple"></i>                </span>
                 <span className="menu-link-text">Dashboard</span>
               </NavLink>
             </li>}
@@ -136,8 +135,7 @@ const Sidebar = () => {
             {authUserData && <li className="menu-item" >
               <NavLink to="/issues" className="menu-link text-decoration-none">
                 <span className="menu-link-icon">
-                <i className="fa-solid fa-user-tie"></i>
-                </span>
+                <i className="fa-solid fa-circle-exclamation"></i>                </span>
                 <span className="menu-link-text">Issues</span>
               </NavLink>
             </li>}
