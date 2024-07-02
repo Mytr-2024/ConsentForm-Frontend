@@ -58,7 +58,7 @@ const Sidebar = () => {
 
   return (
     <>
-    <CreateIssue/>
+    {/* <CreateIssue/> */}
     <nav
       className={`sidebar ${isSidebarOpen ? "sidebar-show" : ""}`}
       ref={navbarRef}
@@ -155,7 +155,7 @@ const Sidebar = () => {
               </NavLink>
             </li> */}
             <li className="menu-item"  data-bs-toggle="modal" data-bs-target="#exampleModal">
-              <NavLink to="/" className="menu-link text-decoration-none">
+              <NavLink to="/createIssue" className="menu-link text-decoration-none">
                 <span className="menu-link-icon">
                 <i className="fa-solid fa-headset"></i>                </span>
                 <span className="menu-link-text">Help and Support</span>
