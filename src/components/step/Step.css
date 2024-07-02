@@ -1,0 +1,70 @@
+/* src/components/Step.css */
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    color: #000;
+}
+
+.step img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 5px;
+}
+
+.step.active  {
+    color: #ff6600; /* Change the color to indicate active step */
+}
+.step.active  img {
+    color: #ff6600; /* Change the color to indicate active step */
+    border-radius: 50%;
+    border: 5px solid #ff6600;
+    animation: pulse 1s infinite;
+}
+.steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+
+/* Step.css */
+.steps-container {
+    position: relative;
+}
+
+
+
+.step {
+    position: relative;
+    text-align: center;
+    flex: 1;
+}
+
+.step-content {
+    position: relative;
+    z-index: 1;
+}
+
+.step::after {
+    content: '';
+    position: absolute;
+    top: 40%;
+    left: 60%;
+    width: 100%;
+    height: 6px;
+    background-color: #ff6600;
+    z-index: 0;
+    transform: translateY(-50%);
+}
+
+.step:last-child::after {
+    display: none;
+}
+
+
+
+
+

@@ -63,3 +63,12 @@
     opacity: 0.9;
   }
 }
+
+
+.area-card{
+  transition: all 0.2s;
+}
+
+.area-card:hover{
+  scale: 1.04;
+}

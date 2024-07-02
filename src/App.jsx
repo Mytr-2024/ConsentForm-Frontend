@@ -15,9 +15,15 @@ import ViewTemplate from "./screens/Create-template/ViewTemplate";
 import EditTemplate from "./screens/Create-template/EditTemplate";
 import CreateAdmin from "./screens/admin/CreateAdmin";
 import ViewAdmin from "./screens/admin/ViewAdmin";
+import EditAdmin from "./screens/admin/EditAdmin";
 import {ValidSuperAdmin} from './middlewares/ValidSuperAdmin'
 import Stats from "./screens/stats/Stats";
 import { IsLoggedIn } from "./middlewares/IsLoggedIn";
+import ContinueConsent from "./components/contineConsent/ContinueConsent";
+import CreateIssue from "./components/issue/CreateIssue";
+import IssueList from "./components/issue/IssueList";
+import ViewIssue from "./components/issue/ViewIssue";
+import EditIssue from "./components/issue/EditIssue";
 
 function App() {
   
@@ -34,7 +40,7 @@ function App() {
           </IsLoggedIn>
           }/>
           <Route element={<BaseLayout />}>
-            <Route path="/x" element={<PageNotFound />} />
+            <Route path="/*" element={<PageNotFound />} />
           </Route>
 
           <Route element={<PrivateComponent/>}> 
@@ -45,6 +51,9 @@ function App() {
             <Route path="/stats/:email" element={<Stats />} />
             <Route path="/viewConsent/:_id" element={<ViewConsent />} />
             <Route path="/editConsent/:_id" element={<EditConsent />} />
+            <Route path="/editAdmin/:email" element={<EditAdmin />} />
+            <Route path="/continueConsent/:id" element={<ContinueConsent />} />
+            <Route path="/createIssue" element={<CreateIssue />} />
             {/* <Route path="/create-template" element={<CreateTemplate/>} /> */}
             {/* <Route path="/templateList" element={<TemplateList/>} /> */}
             {/* <Route path="/viewTemplate/:_id" element={<ViewTemplate/>} /> */}
@@ -69,9 +78,9 @@ function App() {
                 <ValidSuperAdmin>
                   {<TemplateList/>}
                 </ValidSuperAdmin>}
-              
               exact={true}
             />
+          
           <Route
               path={'/viewTemplate/:_id'}
               element={
@@ -104,6 +113,34 @@ function App() {
               element={
                 <ValidSuperAdmin>
                   {<ViewAdmin/>}
+                </ValidSuperAdmin>}
+              
+              exact={true}
+            />
+
+<Route
+              path={'/issues'}
+              element={
+                <ValidSuperAdmin>
+                  {<IssueList/>}
+                </ValidSuperAdmin>}
+              
+              exact={true}
+            />
+<Route
+              path={`/viewIssue/:id`}
+              element={
+                <ValidSuperAdmin>
+                  {<ViewIssue/>}
+                </ValidSuperAdmin>}
+              
+              exact={true}
+            />
+<Route
+              path={`/editIssue/:id`}
+              element={
+                <ValidSuperAdmin>
+                  {<EditIssue/>}
                 </ValidSuperAdmin>}
               
               exact={true}

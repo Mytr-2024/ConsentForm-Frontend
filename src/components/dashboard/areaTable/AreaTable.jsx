@@ -65,7 +65,7 @@ const AreaTable = () => {
   return (
     <section className="content-area-table">
       <div className="data-table-info">
-        <h4 className="data-table-title">Latest Consent Form</h4>
+        <h4 className="data-table-title">Recent Consent Form's</h4>
       </div>
       <div className="data-table-diagram">
         <table>
@@ -78,7 +78,7 @@ const AreaTable = () => {
           </thead>
           <tbody>
             {data?.map((dataItem) => (
-              <tr key={dataItem._id}>
+              <tr className="hoverScale" key={dataItem._id}>
                 <td>{dataItem.caseType}</td>
                 <td>{dataItem.createdBy}</td>
                 <td>{new Date(dataItem.createdAt).toLocaleString()}</td>

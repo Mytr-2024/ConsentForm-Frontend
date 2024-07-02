@@ -6,7 +6,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { getApi } from '../../helpers/requestHelpers';
 import { useParams } from 'react-router-dom';
-
+import './ConsentFormChart.css'
+import Loader from '../loader/Loader';
 Chart.register(...registerables);
 
 const ConsentFormBarChart = ({ adminEmail }) => {
@@ -19,14 +20,19 @@ const ConsentFormBarChart = ({ adminEmail }) => {
   const [adminStartDate, setAdminStartDate] = useState(new Date(formattedToday));
   const [adminEndDate, setAdminEndDate] = useState(new Date(formattedToday));
   const [adminConsentStats, setAdminConsentStats] = useState([]);
+  const [loading, setLoading] = useState(true)
 
   const fetchConsentData = async () => {
     try {
+      setLoading(true)
       const startDateFormatted = moment(adminStartDate).format('YYYY-MM-DD');
       const endDateFormatted = moment(adminEndDate).format('YYYY-MM-DD');
       const res = await getApi('get', `api/analytics/admin?startDate=${startDateFormatted}&endDate=${endDateFormatted}&admin=${email}`);
       setAdminConsentStats(res?.data || []);
+      setLoading(false)
+
     } catch (error) {
+      setLoading(false)
       console.error('Failed to fetch data:', error);
     }
   };
@@ -71,20 +77,28 @@ const ConsentFormBarChart = ({ adminEmail }) => {
   };
 
   return (
-    <div>
-      <h2 className='mb-2 pb-2'>Created Consent Form Stats</h2>
+    <>
+   
+     {loading && (
+      <div style={{minHeight:"55vh"}} className="d-flex w-100 justify-content-center align-items-center">
+        <Loader />
+      </div>
+    )}
+  {!loading &&  <div>
+      <h2 className='mb-2 pb-2'>Created Form's</h2>
       <div className='d-flex justify-content-between'>
         <div>
-          <label className='me-3'>Start Date: </label>
+          <label className='me-3 startEnd '>Start Date: </label>
           <DatePicker selected={adminStartDate} onChange={date => changeConsentData(date, true)} />
         </div>
         <div>
-          <label className='me-3'>End Date: </label>
+          <label className='me-3 startEnd'>End Date: </label>
           <DatePicker selected={adminEndDate} onChange={date => changeConsentData(date, false)} />
         </div>
       </div>
       <Bar data={chartData} />
-    </div>
+    </div>}
+    </>
   );
 };
 

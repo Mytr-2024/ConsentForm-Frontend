@@ -1,40 +1,56 @@
-import React, { useState } from 'react';
-import { postApi } from '../../helpers/requestHelpers';
+import React, { useEffect, useState } from 'react';
+import { getApi, patchApi, postApi } from '../../helpers/requestHelpers';
 import Loader from '../../components/loader/Loader';
 import { Toast } from "../../components/alert/Alert";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { AreaTop } from '../../components';
 
-export default function CreateAdmin() {
+export default function EditAdmin() {
   const [adminEmail, setAdminEmail] = useState('');
-  const [adminName, setAdminName] = useState('');
-  const [adminPassword, setAdminPassword] = useState('');
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
-
-  const [loading, setLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState("")
-
+  const [adminName, setAdminName] = useState('');
 
   const navigate=useNavigate();
+  const {email}=useParams()
+
+
+const setAdminData=async()=>{
+  setLoading(true)
+  let res=   await postApi("get",`/api/user/getAdminByEmail/${email}`)
+setAdminName(res?.data?.admin?.name)
+setAdminEmail(res?.data?.admin?.email)
+setIsSuperAdmin(res?.data?.admin?.isSuperAdmin)
+setLoading(false)
+
+}
+
+  useEffect(() => {
+    setAdminData()
+  }, [])
+
+  const [loading, setLoading] = useState(true)
+
+
   const handleSubmit = async(e) => {
     e.preventDefault();
     setLoading(true)
     const data={
+    email:email,
     name:adminName,
-    email:adminEmail,
-    password:adminPassword,
     isSuperAdmin:isSuperAdmin,
-    loggedInUserId:JSON.parse(localStorage.getItem('user'))?.user?.email,
+    updatedBy:JSON.parse(localStorage.getItem('user'))?.user?.email
     }
 
     try {
-    let res= await postApi("post","api/user/register",data)
+    let res= await postApi("post","/api/user/updateAdminProfile",data)
 
    
     if(res?.data?.status===true){
+      setLoading(false)
+
       Toast.fire({
         icon: "success",
-        title: "Admin Created"
+        title: "Admin Updated"
     });
     navigate('/viewAdmin')
     }
@@ -66,7 +82,7 @@ export default function CreateAdmin() {
 
    {!loading && 
     <div className="content-area">
-      <AreaTop title='Create New Admin'/>
+      <AreaTop title='Edit Admin'/>
     <div style={{ height: "100%" }} className="container consentForm p-5">
       <form className="row" onSubmit={handleSubmit}>
       <div className="col-md-3 my-2">
@@ -86,7 +102,7 @@ export default function CreateAdmin() {
             }}
           />
         </div>
-        <div className="col-md-3 my-2">
+        <div className="col-md-4 my-2">
           <label htmlFor="adminEmail" className="form-label">
             Email Id
           </label>
@@ -97,13 +113,14 @@ export default function CreateAdmin() {
             name="adminEmail"
             placeholder="Enter Admin Email"
             required
+            disabled
             value={adminEmail}
             onChange={(e) => {
               setAdminEmail(e.target.value);
             }}
           />
         </div>
-        <div className="col-md-3 my-2">
+        {/* <div className="col-md-3 my-2">
           <label htmlFor="adminPassword" className="form-label">
             Password
           </label>
@@ -119,8 +136,8 @@ export default function CreateAdmin() {
               setAdminPassword(e.target.value);
             }}
           />
-        </div>
-        <div className="col-md-3 my-2">
+        </div> */}
+        <div className="col-md-4 my-2">
           <label htmlFor="isSuperAdmin" className="form-label">
             Is SuperAdmin
           </label>
@@ -139,7 +156,7 @@ export default function CreateAdmin() {
         </div>
         <div className="col-md-12 my-2">
           <button type="submit" style={{ height: "100%" }} className="w-100 btn btn-success">
-            Create
+            Save
           </button>
         </div>
       </form>

@@ -6,10 +6,13 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './patients.css';
 import { getApi } from '../../helpers/requestHelpers';
+import Loader from '../loader/Loader';
 
 Chart.register(...registerables);
 
 const Patients = () => {
+  const [loading, setLoading] = useState(true)
+
   const today = new Date();
   const formattedToday = today.toISOString().split('T')[0];
 
@@ -19,12 +22,16 @@ const Patients = () => {
 
   const fetchGenderData = async (startDate, endDate) => {
     try {
+      setLoading(true)
       const startDateFormatted = moment(startDate).format('YYYY-MM-DD');
       const endDateFormatted = moment(endDate).format('YYYY-MM-DD');
       const response = await getApi('get', `api/analytics/gender?startDate=${startDateFormatted}&endDate=${endDateFormatted}`);
       setGenderStats(response?.data);
+      setLoading(false)
+
     } catch (error) {
       console.error('Failed to fetch gender data:', error);
+      setLoading(false)
     }
   };
 
@@ -33,6 +40,7 @@ const Patients = () => {
   }, [startDate, endDate]);
 
   const generateChartData = (genderStats) => {
+
     const maleCount = genderStats?.find(entry => entry.gender === 'male')?.totalForms || 0;
     const femaleCount = genderStats?.find(entry => entry.gender === 'female')?.totalForms || 0;
     const otherCount = genderStats?.find(entry => entry.gender === 'others')?.totalForms || 0;
@@ -50,15 +58,21 @@ const Patients = () => {
   const chartData = generateChartData(genderStats);
 
   return (
-    <div>
+    <>
+     {loading && (
+      <div style={{minHeight:"40vh"}} className="d-flex w-100 justify-content-center align-items-center">
+        <Loader />
+      </div>
+    )}
+   {!loading && <div>
       <h2 className='mb-2 pb-2'>Patient Gender Distribution</h2>
       <div className='d-flex justify-content-between'>
         <div className="">
-          <label className='me-3'>Start Date: </label>
+          <label className='me-3 startEnd'>Start Date: </label>
           <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
         </div>
         <div className="">
-          <label className='me-3'>End Date: </label>
+          <label className='me-3 startEnd'>End Date: </label>
           <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
         </div>
       </div>
@@ -67,7 +81,8 @@ const Patients = () => {
           <Pie data={chartData} />
         </div>
       </div>
-    </div>
+    </div>}
+    </>
   );
 };
 

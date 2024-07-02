@@ -1,0 +1,21 @@
+.react-datepicker-ignore-onclickoutside{
+    padding:5px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 15px;
+    background: #7C46BE !important;
+    color: white !important;
+}
+
+.react-datepicker__input-container input{
+    padding:5px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 15px;
+    background: #7C46BE !important;
+    color: white !important;
+    border-radius: 10px;
+}
+
+.startEnd{
+    font-weight: 500;
+    
+}

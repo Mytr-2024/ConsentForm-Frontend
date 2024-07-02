@@ -19,6 +19,7 @@ import {
 import { NavLink, useNavigate } from "react-router-dom";
 import "./Sidebar.scss";
 import { SidebarContext } from "../../context/SidebarContext";
+import CreateIssue from "../issue/CreateIssue";
 
 const Sidebar = () => {
 
@@ -56,6 +57,8 @@ const Sidebar = () => {
 
 
   return (
+    <>
+    {/* <CreateIssue/> */}
     <nav
       className={`sidebar ${isSidebarOpen ? "sidebar-show" : ""}`}
       ref={navbarRef}
@@ -130,8 +133,19 @@ const Sidebar = () => {
                 <span className="menu-link-text">View Admin List</span>
               </NavLink>
             </li>}
+            {authUserData && <li className="menu-item" >
+              <NavLink to="/issues" className="menu-link text-decoration-none">
+                <span className="menu-link-icon">
+                <i className="fa-solid fa-user-tie"></i>
+                </span>
+                <span className="menu-link-text">Issues</span>
+              </NavLink>
+            </li>}
           </ul>
         </div>
+
+      
+
 
         <div className="sidebar-menu sidebar-menu2">
           <ul className="menu-list p-0">
@@ -143,18 +157,26 @@ const Sidebar = () => {
                 <span className="menu-link-text">Settings</span>
               </NavLink>
             </li> */}
-            <li className="menu-item" onClick={handleLogout}>
+            {/* <li className="menu-item" onClick={handleLogout}>
               <NavLink to="/" className="menu-link text-decoration-none">
                 <span className="menu-link-icon">
                   <MdOutlineLogout size={20} />
                 </span>
                 <span className="menu-link-text">Logout</span>
               </NavLink>
+            </li> */}
+            <li className="menu-item"  data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <NavLink to="/createIssue" className="menu-link text-decoration-none">
+                <span className="menu-link-icon">
+                <i className="fa-solid fa-headset"></i>                </span>
+                <span className="menu-link-text">Help and Support</span>
+              </NavLink>
             </li>
           </ul>
         </div>
       </div>
     </nav>
+    </>
   );
 };
 

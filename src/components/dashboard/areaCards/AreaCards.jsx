@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import AreaCard from "./AreaCard";
 import "./AreaCards.scss";
 import { getApi } from "../../../helpers/requestHelpers";
-
+import admins from '../../../assets/icons/profile.png'
+import patients from '../../../assets/icons/hospitalisation.png'
+import efficency from '../../../assets/icons/statistics.png'
+import Loader from "../../loader/Loader";
 
 
 
@@ -13,8 +16,9 @@ const [data, setData] = useState()
 
 
 const getData=async()=>{
-  const res= await getApi('get','/api/analytics/getAnalyticsData')
+  const res= await getApi('get','api/analytics/getConsentStatusCounts')
   setData(res?.data)
+
 }
 
   useEffect(() => {
@@ -28,36 +32,46 @@ const getData=async()=>{
 // template:34
 // }]
 
+
   return (
-    <section className="content-area-cards">
+    <>
+   
+     <section className="content-area-cards">
       <AreaCard
         colors={["#e4e8ef", "#475be8"]}
         percentFillValue={100}
         cardInfo={{
-          title: "Admins",
-          value: data?.totalAdmins,
-          text: "Total Number Of Admins.",
+          title: "Total Consent Count ",
+          value: data?.inProgressCount+data?.submittedCount || "Loading..",
+          text: "Total Number Of Consent.",
         }}
+        cardImage={admins}
       />
       <AreaCard
         colors={["#e4e8ef", "#4ce13f"]}
         percentFillValue={100}
         cardInfo={{
-          title: "Consent Form",
-          value: data?.totalConsents,
-          text: "Total Consent Form.",
+          title: "Total Patients",
+          value: data?.submittedCount|| "Loading..",
+          text: "Total Patients .",
         }}
+        cardImage={patients}
+
       />
       <AreaCard
         colors={["#e4e8ef", "#f29a2e"]}
         percentFillValue={100}
         cardInfo={{
-          title: "Template",
-          value: data?.totalTemplate|| 8,
+          title: "Effiecency",
+          value: ((data?.inProgressCount + data?.submittedCount) / data?.submittedCount).toFixed(3)|| "Loading..",
           text: "Total Number Of Template.",
         }}
+        cardImage={efficency}
+
       />
     </section>
+    </>
+   
   );
 };
 

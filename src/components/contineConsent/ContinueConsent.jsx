@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import SignatureCanvas from 'react-signature-canvas';
 import { getApi, postApi, uploadImage } from '../../helpers/requestHelpers'
 import { useRecordWebcam } from 'react-record-webcam'
 import QuillEditor from "react-quill";
 import Loader from '../loader/Loader';
-import { Toast } from "../../components/alert/Alert";
+import { Toast } from "../alert/Alert";
 import Step from '../step/Step';
 import patientRegistrationIcon from '../../assets/icons/registration.png';
 import disease from '../../assets/icons/disease.png';
@@ -15,7 +15,9 @@ import submit from '../../assets/icons/submit.png';
 import summary from '../../assets/icons/summary.png';
 import treatement from '../../assets/icons/treatement.png';
 
-const ConsentForm = () => {
+const ContinueConsent = () => {
+
+
     const steps = [
         { icon: patientRegistrationIcon, label: 'Registration' },
         { icon: disease, label: 'Diseases' },
@@ -25,6 +27,7 @@ const ConsentForm = () => {
         { icon: preview, label: 'Preview Form' },
         { icon: submit, label: 'Submit Consent' }
     ];
+
 
 
     const OPTIONS = { options: { fileName: 'custom-name', fileType: 'webm', height: 1080, width: 1920 } }
@@ -49,12 +52,70 @@ const ConsentForm = () => {
     // const [imageUrl, ] = useState()
     const [VideoUrl, setVideoUrl] = useState()
     const [showPreview , setShowPreview] = useState();
+    const {id}=useParams()
+
+
 
     const getAllcaseType = async () => {
+setLoader(true)
+      
+        
         let allCase = await getApi("get", "/api/template/getAllCaseType")
-
         setAllCaseType(allCase?.data?.caseType)
 
+
+      
+
+        let res=   await getApi("get",`/api/consent/consentById?consentId=${id}`)
+        setConsentData(res?.data?.consent)
+        setCaseType(res?.data?.consent?.caseType)
+        setCustomFields(res?.data?.consent?.customFields)
+
+
+
+
+            // Handling questions and answers
+            const fetchedQuestions = res.data.consent.question;
+            setInputValues(Object.values(fetchedQuestions?fetchedQuestions:""));
+     
+    
+
+
+       
+        const temp = await getApi("get", `/api/template/getTemplateByCaseType?caseType=${res?.data?.consent?.caseType}`);
+        setSingleConsentData(temp?.data)
+        console.log(temp?.data)
+        setValue(temp?.data?.deltaForm)
+
+
+
+        const resQ = await getApi("get", `/api/template/questionsByCaseType?caseType=${res?.data?.consent?.caseType}`);
+        setAllQuestions(resQ?.data?.questions)
+
+        // const nic = await getApi("get", `/api/template/getOptions?caseType=${encodeURIComponent(caseType)}&fieldName=${encodeURIComponent(field)}&optionName=${encodeURIComponent(optionValue)}`);
+        // console.log(nic);
+    
+        // if (nic?.data) {
+        //     setSingleOptionData(prevOptions => {
+        //         const index = prevOptions.findIndex(option => option.fieldName === field);
+        //         if (index !== -1) {
+        //             return prevOptions.map((opt, idx) => idx === index ? {...opt, ...temp.data} : opt);
+        //         } else {
+        //             return [...prevOptions, {...nic.data, fieldName: field}];
+        //         }
+        //     });
+        // }
+
+
+        setIndex(1)
+        if(res?.data?.consent?.caseType){
+            setIndex(2)
+        } 
+        if(res?.data?.consent?.customFields?.length>0){
+            setIndex(6)
+        } 
+        setLoader(false)
+      
     }
 
 
@@ -165,11 +226,25 @@ const ConsentForm = () => {
         console.log(temp)
         setValue(temp?.data?.deltaForm)
         setSingleConsentData(temp?.data)
-        console.log(temp?.data?.videoUrl)
         setsmallLoader1(false)
         // setSingleConsentData(temp?.data?.template)
     }
 
+
+
+
+    useEffect(() => {
+        const fetchConsentData = async () => {
+            const res = await getApi("get", `/api/consent/consentById?consentId=${id}`);
+            if (res?.data) {
+                setConsentData(res.data.consent);
+                setCustomFields(res.data.consent.customFields || []);
+            }
+        };
+        fetchConsentData();
+    }, [id])
+
+    
 // Working here
 const [customFields, setCustomFields] = useState([])
 const handleCustomOptionChange = async (e, field) => {
@@ -216,11 +291,13 @@ const handleCustomOptionChange = async (e, field) => {
 
 
 
+
     const handleAnswerChange = async (e, index) => {
         const { value } = e.target;
         const newInputValues = [...inputValues];
         newInputValues[index] = value;
         setInputValues(newInputValues);
+        
 
     };
 
@@ -307,6 +384,7 @@ const handleCustomOptionChange = async (e, field) => {
         };
 
     
+
         try {
             setLoading(true);
             let res = await postApi('post', `api/consent/submitConsent`, data);
@@ -473,7 +551,8 @@ function scrollToAndHighlightButton(elementId) {
   }
 
     return (
-        <>
+
+        <div className="content-area">
          
        <div style={{background:"white"}}  className="steps-container mb-3 d-flex justify-content-center align-items-center ">
             <div className="steps">
@@ -854,25 +933,27 @@ src={singleConsentData?.videoUrl}
     <form className='row g-3 needs-validation'  onSubmit={handleConsentSubmit}>
     <div className="">
 
-{ singleConsentData?.customFields?.map((custom,index)=>(
+{singleConsentData?.customFields?.map((custom,index)=>(
     <div key={index} className="col-md-12">
                     <label htmlFor="caseType" id='selectedField'  className="form-label">
                        {custom?.fieldName}
                     </label>
                     <select
-                        className="form-control"
-                        id="optionF"
-                        required
-                        name='caseType'
-                        value={customFields[index]?.option?customFields[index]?.option:customOption}
-                        onChange={(e) => handleCustomOptionChange(e, custom?.fieldName)}
-                        >
-                        <option value="">Select {custom?.fieldName}</option> 
-                        {custom?.options?.map((option, index) => (
-                            <option key={index} value={option?.name}>{option?.name?.charAt(0).toUpperCase() + option?.name?.slice(1)}</option>
-                        ))}
-                    </select>
-
+  className="form-control"
+  id="option"
+  required
+  name="caseType"
+  // This should directly refer to the `option` field in each customField
+  value={customFields[index]?.option || ''}
+  onChange={(e) => handleCustomOptionChange(e, custom?.fieldName)}
+>
+  <option value="">Select {custom?.fieldName}</option>
+  {custom?.options?.map((option, idx) => (
+    <option key={idx} value={option?.name}>
+      {option?.name?.charAt(0).toUpperCase() + option?.name?.slice(1)}
+    </option>
+  ))}
+</select>
 
                 {customOption &&    <div className="col-md-12">
                     <div className="col-md-11 my-4">
@@ -1217,17 +1298,16 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
                     <div className="col-md-12   borderC mx-5  d-flex mb-5 flex-column justify-content-center ">
                     { singleConsentData?.customFields?.map((custom,index)=>(
     <div key={index} className="col-md-12">
+      
                     <label htmlFor="caseType" className="form-label">
                        {customFields[index]?.fieldName} - 
                     </label>
-                    
                     <span className="form-label">
                     {customFields[index]?.option}
 
                          </span>
 
-                         {customFields[index]?.option &&   
-                          <div className="col-md-12">
+                         {customFields[index]?.option &&    <div className="col-md-12">
                     <div className="col-md-11 my-4">
   <div className="row">
 
@@ -1595,8 +1675,8 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
                 </div> */}
           
         </div>}
-        </>
+        </div>
     )
 }
 
-export default ConsentForm
+export default ContinueConsent
