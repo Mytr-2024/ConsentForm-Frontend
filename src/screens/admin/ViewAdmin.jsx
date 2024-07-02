@@ -143,7 +143,7 @@ navigate(`/stats/${email}`)
   return (
     <>
       {loader && (
-        <div className="d-flex w-100 justify-content-center align-items-center">
+        <div style={{minHeight:"100vh"}} className="d-flex w-100 justify-content-center align-items-center">
           <Loader />
         </div>
       )}

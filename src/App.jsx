@@ -78,7 +78,6 @@ function App() {
                 <ValidSuperAdmin>
                   {<TemplateList/>}
                 </ValidSuperAdmin>}
-              
               exact={true}
             />
           

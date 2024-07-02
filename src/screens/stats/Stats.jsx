@@ -132,7 +132,7 @@ useEffect(() => {
 <div className="content-area">
       <AreaTop />
       <div className="d-flex justify-content-between">
-        <h3 className="" >Welcome back <b>NAGIREDDY!</b></h3>
+        <h3 className="" >Welcome back <b>{JSON.parse(localStorage.getItem('user'))?.user?.name || "Admin"}!</b></h3>
         <div className="dropdown">
   <button style={{background:"#7C46BE", color:"white"}} className="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
     Activity This {duration?duration:"Week"}
