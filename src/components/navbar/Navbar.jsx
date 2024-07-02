@@ -35,7 +35,7 @@ const handleLogout=()=>{
 }
 
   return (
-    <nav style={{zIndex:"99999", background:"white"}} className="navbar p-0 navbar-expand-lg position-sticky top-0 ">
+    <nav style={{zIndex:"1000", background:"white"}} className="navbar p-0 navbar-expand-lg position-sticky top-0 ">
   <div className="container-fluid position-relative">
   <div className="d-flex align-items-center">
   <img src={mytrLogo} alt="" />

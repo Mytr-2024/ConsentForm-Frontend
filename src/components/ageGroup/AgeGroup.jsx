@@ -5,6 +5,7 @@ import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { getApi } from '../../helpers/requestHelpers';
+import Loader from '../loader/Loader';
 
 Chart.register(...registerables);
 
@@ -17,13 +18,17 @@ const AgeGroup = () => {
   const [ageData, setAgeData] = useState([]);
 
   const fetchAgeData = async () => {
+    setLoading(true)
     try {
       const startDateFormatted = moment(startDate).format('YYYY-MM-DD');
       const endDateFormatted = moment(endDate).format('YYYY-MM-DD');
       const res = await getApi('get', `api/analytics/age?startDate=${startDateFormatted}&endDate=${endDateFormatted}`);
       setAgeData(res?.data || []);
+      setLoading(false)
     } catch (error) {
       console.error('Failed to fetch data:', error);
+      setLoading(false)
+
     }
   };
 
@@ -56,9 +61,16 @@ const AgeGroup = () => {
   };
 
   const ageChartData = generateAgeChartData(ageData);
+  const [loading, setLoading] = useState(true)
 
   return (
-    <div>
+    <>
+     {loading && (
+      <div style={{minHeight:"40vh"}} className="d-flex w-100 justify-content-center align-items-center">
+        <Loader />
+      </div>
+    )}
+     {!loading && <div>
       <h2 className='mb-2 pb-2'>Cases by Age Group</h2>
       <div className='d-flex justify-content-between'>
         <div className="">
@@ -90,7 +102,9 @@ const AgeGroup = () => {
           }
         }} />
       </div>
-    </div>
+    </div>}
+    </>
+   
   );
 };
 

@@ -8,6 +8,7 @@ import { AreaCards, AreaCharts, AreaTable, AreaTop } from "../../components";
 import { Link } from "react-router-dom";
 import { Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts";
 import { format, addDays } from 'date-fns';
+import Loader from "../../components/loader/Loader";
 
 export default function Stats() {
 
@@ -76,6 +77,7 @@ useEffect(() => {
   const [chartData, setChartData] = useState()
 
   const getChartData=async(dur)=>{
+    setLoading(true)
     setDuration(dur)
     const today = new Date();
     if(dur==="week"){
@@ -101,6 +103,7 @@ useEffect(() => {
    const res=await getApi('get',`/api/analytics/getConsentFormAnalytics?period=${dur || 'week'}`)
    console.log(res?.data?.data)
    setChartData(res?.data?.data)
+   setLoading(false)
   }
 
 
@@ -114,14 +117,18 @@ useEffect(() => {
     getChartData()
   }, [])
 
+  const [loading, setLoading] = useState(true)
+
 
   const [dateRange, setDateRange] = useState()
 
   return (
-    <div className="content-area">
+    <>
+   
+     <div className="content-area">
 
 
-
+   
 <div className="content-area">
       <AreaTop />
       <div className="d-flex justify-content-between">
@@ -138,7 +145,13 @@ useEffect(() => {
 </div>
       </div>
       <AreaCards />
-
+      {loading && (
+      <div style={{minHeight:"40vh"}} className="d-flex w-100 justify-content-center align-items-center">
+        <Loader />
+      </div>
+    )}
+{!loading &&
+<>
       <div className="d-flex mt-5">
   <h5>PATIENTS STATISTICS</h5>
 </div>
@@ -168,7 +181,7 @@ useEffect(() => {
         </AreaChart>
 
 
-
+        </>}
       {/* <AreaCharts /> */}
       <AreaTable />
     </div>
@@ -209,5 +222,6 @@ useEffect(() => {
 
       </div>
     </div>
+    </>
   );
 }

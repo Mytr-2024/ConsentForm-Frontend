@@ -5,6 +5,7 @@ import { getApi } from "../../../helpers/requestHelpers";
 import admins from '../../../assets/icons/profile.png'
 import patients from '../../../assets/icons/hospitalisation.png'
 import efficency from '../../../assets/icons/statistics.png'
+import Loader from "../../loader/Loader";
 
 
 
@@ -17,6 +18,7 @@ const [data, setData] = useState()
 const getData=async()=>{
   const res= await getApi('get','api/analytics/getConsentStatusCounts')
   setData(res?.data)
+
 }
 
   useEffect(() => {
@@ -30,14 +32,17 @@ const getData=async()=>{
 // template:34
 // }]
 
+
   return (
-    <section className="content-area-cards">
+    <>
+   
+     <section className="content-area-cards">
       <AreaCard
         colors={["#e4e8ef", "#475be8"]}
         percentFillValue={100}
         cardInfo={{
           title: "Total Consent Count ",
-          value: data?.inProgressCount+data?.submittedCount,
+          value: data?.inProgressCount+data?.submittedCount || "Loading..",
           text: "Total Number Of Consent.",
         }}
         cardImage={admins}
@@ -47,7 +52,7 @@ const getData=async()=>{
         percentFillValue={100}
         cardInfo={{
           title: "Total Patients",
-          value: data?.submittedCount,
+          value: data?.submittedCount|| "Loading..",
           text: "Total Patients .",
         }}
         cardImage={patients}
@@ -58,13 +63,15 @@ const getData=async()=>{
         percentFillValue={100}
         cardInfo={{
           title: "Effiecency",
-          value: ((data?.inProgressCount + data?.submittedCount) / data?.submittedCount).toFixed(3),
+          value: ((data?.inProgressCount + data?.submittedCount) / data?.submittedCount).toFixed(3)|| "Loading..",
           text: "Total Number Of Template.",
         }}
         cardImage={efficency}
 
       />
     </section>
+    </>
+   
   );
 };
 

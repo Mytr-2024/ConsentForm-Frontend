@@ -24,7 +24,7 @@ export default function CreateAdmin() {
     email:adminEmail,
     password:adminPassword,
     isSuperAdmin:isSuperAdmin,
-    loggedInUserId:JSON.parse(localStorage.getItem('user'))?.user?._id
+    loggedInUserId:JSON.parse(localStorage.getItem('user'))?.user?.email,
     }
 
     try {

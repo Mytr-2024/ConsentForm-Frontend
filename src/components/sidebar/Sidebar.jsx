@@ -19,6 +19,7 @@ import {
 import { NavLink, useNavigate } from "react-router-dom";
 import "./Sidebar.scss";
 import { SidebarContext } from "../../context/SidebarContext";
+import CreateIssue from "../issue/CreateIssue";
 
 const Sidebar = () => {
 
@@ -56,6 +57,8 @@ const Sidebar = () => {
 
 
   return (
+    <>
+    <CreateIssue/>
     <nav
       className={`sidebar ${isSidebarOpen ? "sidebar-show" : ""}`}
       ref={navbarRef}
@@ -151,7 +154,7 @@ const Sidebar = () => {
                 <span className="menu-link-text">Logout</span>
               </NavLink>
             </li> */}
-            <li className="menu-item" onClick={handleLogout}>
+            <li className="menu-item"  data-bs-toggle="modal" data-bs-target="#exampleModal">
               <NavLink to="/" className="menu-link text-decoration-none">
                 <span className="menu-link-icon">
                 <i className="fa-solid fa-headset"></i>                </span>
@@ -162,6 +165,7 @@ const Sidebar = () => {
         </div>
       </div>
     </nav>
+    </>
   );
 };
 

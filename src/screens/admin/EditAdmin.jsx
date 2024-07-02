@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getApi, postApi } from '../../helpers/requestHelpers';
+import { getApi, patchApi, postApi } from '../../helpers/requestHelpers';
 import Loader from '../../components/loader/Loader';
 import { Toast } from "../../components/alert/Alert";
 import { useNavigate, useParams } from 'react-router-dom';
@@ -7,7 +7,6 @@ import { AreaTop } from '../../components';
 
 export default function EditAdmin() {
   const [adminEmail, setAdminEmail] = useState('');
-  const [adminPassword, setAdminPassword] = useState('');
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [adminName, setAdminName] = useState('');
 
@@ -16,15 +15,15 @@ export default function EditAdmin() {
   const {email}=useParams()
 
 
-const setAllAdminData=async()=>{
-  let res=   await getApi("get",`api/admin/?email=${email}`)
-setAdminName(res?.data?.name)
-setAdminEmail(res?.data?.email)
-setIsSuperAdmin(res?.data?.isSuperAdmin)
+const setAdminData=async()=>{
+  let res=   await postApi("get",`/api/user/getAdminByEmail/${email}`)
+setAdminName(res?.data?.admin?.name)
+setAdminEmail(res?.data?.admin?.email)
+setIsSuperAdmin(res?.data?.admin?.isSuperAdmin)
 }
 
   useEffect(() => {
-    setAllAdminData()
+    setAdminData()
   }, [])
 
 
@@ -33,14 +32,14 @@ setIsSuperAdmin(res?.data?.isSuperAdmin)
     e.preventDefault();
     setLoading(true)
     const data={
-    email:adminEmail,
-    // password:adminPassword,
+    email:email,
+    name:adminName,
     isSuperAdmin:isSuperAdmin,
-    loggedInUserId:JSON.parse(localStorage.getItem('user'))?.user?._id
+    // updatedBy:JSON.parse(localStorage.getItem('user'))?.user?.email
     }
 
     try {
-    let res= await postApi("post","api/user/edit",data)
+    let res= await patchApi("patch","/api/user/updateAdminProfile",data)
 
    
     if(res?.data?.status===true){
@@ -109,6 +108,7 @@ setIsSuperAdmin(res?.data?.isSuperAdmin)
             name="adminEmail"
             placeholder="Enter Admin Email"
             required
+            disabled
             value={adminEmail}
             onChange={(e) => {
               setAdminEmail(e.target.value);
@@ -151,7 +151,7 @@ setIsSuperAdmin(res?.data?.isSuperAdmin)
         </div>
         <div className="col-md-12 my-2">
           <button type="submit" style={{ height: "100%" }} className="w-100 btn btn-success">
-            Create
+            Save
           </button>
         </div>
       </form>
