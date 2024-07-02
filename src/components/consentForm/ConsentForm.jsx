@@ -323,6 +323,7 @@ const handleCustomOptionChange = async (e, field) => {
                     icon: "error",
                     title: res?.data?.message,
                   });
+                  return
             }
             
         } catch (error) {
