@@ -180,13 +180,13 @@ export default function IssueList() {
   return (
     <>
       {loader && (
-        <div className="d-flex w-100 justify-content-center align-items-center">
+        <div style={{minHeight:"100vh"}} className="d-flex w-100 justify-content-center align-items-center">
           <Loader />
         </div>
       )}
       {!loader && (
-        <div className="content-area">
-          <AreaTop title='Issue List'/>
+        <div className="content-area mt-2">
+          <h1 className="fw-bold text-center" > <span style={{color:"#7C46BE"}} > Issue</span> List'</h1>
           <div style={{ minHeight: "90vh" }} className="container consentForm p-5">
             <div className="d-flex align-items-center mb-3 pb-3 justify-content-end">
               <div className="search-container">
