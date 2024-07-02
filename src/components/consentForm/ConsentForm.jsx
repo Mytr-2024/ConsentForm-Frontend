@@ -476,7 +476,7 @@ function scrollToAndHighlightButton(elementId) {
         <>
          
        <div style={{background:"white"}}  className="steps-container mb-3 d-flex justify-content-center align-items-center ">
-            <div className="steps">
+            <div className="steps w-100 overflow-auto">
 
                 {steps.map((step, idx) => (
                     <Step key={idx} icon={step.icon} label={step.label} isActive={idx === index} />
