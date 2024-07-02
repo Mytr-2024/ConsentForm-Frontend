@@ -42,7 +42,7 @@ setLoading(false)
     }
 
     try {
-    let res= await patchApi("patch","/api/user/updateAdminProfile",data)
+    let res= await postApi("post","/api/user/updateAdminProfile",data)
 
    
     if(res?.data?.status===true){
