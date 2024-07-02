@@ -42,7 +42,7 @@ const getData=async()=>{
         percentFillValue={100}
         cardInfo={{
           title: "Total Consent Count ",
-          value: data?.inProgressCount+data?.submittedCount || "Loading..",
+          value: data?.submittedCount || "Loading..",
           text: "Total Number Of Consent.",
         }}
         cardImage={admins}
@@ -52,7 +52,7 @@ const getData=async()=>{
         percentFillValue={100}
         cardInfo={{
           title: "Total Patients",
-          value: data?.submittedCount|| "Loading..",
+          value: data?.inProgressCount+data?.submittedCount|| "Loading..",
           text: "Total Patients .",
         }}
         cardImage={patients}
