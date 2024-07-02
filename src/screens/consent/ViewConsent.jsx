@@ -237,7 +237,7 @@ const handleCaseTypeChange = async (caseType) => {
 
                  {singleConsentData?.patientSignatureUrl &&   <div className="col-md-5 borderC mx-3 d-flex mb-5 flex-column justify-content-center ">
                         <label htmlFor="signature" className="form-label">
-                        Signature
+                     Consultant  Signature
                         </label>
                         <span className="form-label d-flex justify-content-center">
                         <img style={{maxWidth:"280px",height:"200px"}} src={singleConsentData?.patientSignatureUrl} alt="Image Missing" />
@@ -258,7 +258,7 @@ const handleCaseTypeChange = async (caseType) => {
 
                   {singleConsentData?.surgeonSignatureUrl &&  <div className="col-md-10 borderC mx-3 d-flex mb-5 flex-column justify-content-center ">
                         <label htmlFor="signature" className="form-label">
-                        Signature
+                      Surgeon Signature
                         </label>
                         <span className="form-label d-flex justify-content-center">
                         <img style={{maxWidth:"280px",height:"200px"}} src={singleConsentData?.surgeonSignatureUrl} alt="" />

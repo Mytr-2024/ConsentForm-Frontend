@@ -310,12 +310,22 @@ const handleCustomOptionChange = async (e, field) => {
         try {
             setLoading(true);
             let res = await postApi('post', `api/consent/submitConsent`, data);
-            if(index===6){
+            console.log(res?.data)
+            if(res?.data?.status==true && index===6){
                 navigate('/consentList')
             }
-            setIndex(index+1)
-            setLoader(false)
-            setIndex(index+1)
+            if(res?.data?.status==true){
+                setIndex(index+1)
+                setLoader(false)
+                setIndex(index+1)
+            }else{
+                Toast.fire({
+                    icon: "error",
+                    title: res?.data?.message,
+                  });
+                  return
+            }
+            
         } catch (error) {
             setLoader(false)
             Toast.fire({
