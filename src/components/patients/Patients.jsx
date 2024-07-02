@@ -66,16 +66,34 @@ const Patients = () => {
     )}
    {!loading && <div>
       <h2 className='mb-2 pb-2'>Patient Gender Distribution</h2>
+     
       <div className='d-flex justify-content-between'>
-        <div className="">
-          <label className='me-3 startEnd'>Start Date: </label>
-          <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
-        </div>
-        <div className="">
-          <label className='me-3 startEnd'>End Date: </label>
-          <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
-        </div>
+      <div>
+        <label className='me-3 startEnd'>Start Date: </label>
+        <DatePicker
+          selected={startDate}
+          onChange={(date) => setStartDate(date)}
+                    maxDate={today}
+          selectsStart
+          startDate={startDate}
+          endDate={endDate}
+          placeholderText="Select a start date"
+        />
       </div>
+      <div>
+        <label className='me-3 startEnd'>End Date: </label>
+        <DatePicker
+          selected={endDate}
+          onChange={(date) => setEndDate(date)}
+                    minDate={startDate}
+          maxDate={today}
+          selectsEnd
+          startDate={startDate}
+          endDate={endDate}
+          placeholderText="Select an end date"
+        />
+      </div>
+    </div>
       <div className="d-flex mt-3 justify-content-between align-items-center">
         <div style={{ width: '300px', height: '300px', margin: '0 auto' }}>
           <Pie data={chartData} />

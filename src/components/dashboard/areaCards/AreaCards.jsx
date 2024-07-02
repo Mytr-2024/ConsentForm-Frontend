@@ -63,7 +63,7 @@ const getData=async()=>{
         percentFillValue={100}
         cardInfo={{
           title: "Effiecency",
-          value: ((data?.inProgressCount + data?.submittedCount) / data?.submittedCount).toFixed(3)|| "Loading..",
+          value: (((data?.inProgressCount + data?.submittedCount) / data?.submittedCount)*10).toFixed(3)+"%"|| "Loading..",
           text: "Total Number Of Template.",
         }}
         cardImage={efficency}

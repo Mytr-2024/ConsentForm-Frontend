@@ -310,6 +310,9 @@ const handleCustomOptionChange = async (e, field) => {
         try {
             setLoading(true);
             let res = await postApi('post', `api/consent/submitConsent`, data);
+            if(index===6){
+                navigate('/consentList')
+            }
             setIndex(index+1)
             setLoader(false)
             setIndex(index+1)
@@ -476,7 +479,7 @@ function scrollToAndHighlightButton(elementId) {
         <>
          
        <div style={{background:"white"}}  className="steps-container mb-3 d-flex justify-content-center align-items-center ">
-            <div className="steps">
+            <div className="steps w-100 overflow-auto">
 
                 {steps.map((step, idx) => (
                     <Step key={idx} icon={step.icon} label={step.label} isActive={idx === index} />
