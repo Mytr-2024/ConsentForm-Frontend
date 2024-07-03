@@ -19,7 +19,7 @@ export default function ConsentList() {
       let res = await getApi('get', 'api/consent/getAllConsent');
       const consentData = res?.data?.consentData || [];
       setOriginalData(consentData);
-      setFilteredData(consentData);
+      filterConsentData(consentData, type, searchTerm);
     } catch (error) {
       console.error('Failed to fetch consent list:', error);
     }
@@ -45,8 +45,9 @@ export default function ConsentList() {
       try {
         let res = await deleteApi('delete', `api/consent/consentById?consentId=${_id}`);
         if (res?.data?.status === true) {
-          setFilteredData((prevData) => prevData.filter((item) => item._id !== _id));
-          setOriginalData((prevData) => prevData.filter((item) => item._id !== _id));
+          const updatedOriginalData = originalData.filter((item) => item._id !== _id);
+          setOriginalData(updatedOriginalData);
+          filterConsentData(updatedOriginalData, type, searchTerm);
         }
       } catch (error) {
         console.error('Failed to delete consent:', error);
@@ -106,18 +107,37 @@ export default function ConsentList() {
     },
   ];
 
-  useEffect(() => {
-    const lowercasedFilter = searchTerm.toLowerCase();
-    const filtered = originalData.filter((item) => {
-      return Object.keys(item).some((key) =>
-        item[key]?.toString().toLowerCase().includes(lowercasedFilter)
-      );
-    });
-    setFilteredData(filtered);
-  }, [searchTerm, originalData]);
-
   const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
+    const term = e.target.value;
+    setSearchTerm(term);
+    filterConsentData(originalData, type, term);
+  };
+
+  const filterConsentData = (data, filterType, search) => {
+    let updatedData = data;
+    if (filterType === 'completed') {
+      updatedData = data.filter(item => item.surgeonSignatureUrl);
+    } else if (filterType === 'uncompleted') {
+      updatedData = data.filter(item => !item.surgeonSignatureUrl);
+    }
+    if (search) {
+      const lowercasedFilter = search.toLowerCase();
+      updatedData = updatedData.filter((item) => {
+        return Object.keys(item).some((key) =>
+          item[key]?.toString().toLowerCase().includes(lowercasedFilter)
+        );
+      });
+    }
+    setFilteredData(updatedData);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+  };
+
+  const handleFilterChange = (filterType) => {
+    setType(filterType);
+    filterConsentData(originalData, filterType, searchTerm);
   };
 
   const modifiedData = filteredData.map((row, index) => ({
@@ -127,22 +147,6 @@ export default function ConsentList() {
     sno: index + 1,
     actions: generateActionButtons(row),
   }));
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-  };
-
-  const getConsentNewData = (tp) => {
-    setType(tp);
-    // Here you can filter the originalData based on the type
-    let updatedData = originalData;
-    if (tp === 'completed') {
-      updatedData = originalData.filter(item => item.surgeonSignatureUrl);
-    } else if (tp === 'uncompleted') {
-      updatedData = originalData.filter(item => !item.surgeonSignatureUrl);
-    }
-    setFilteredData(updatedData);
-  };
 
   return (
     <>
@@ -157,14 +161,14 @@ export default function ConsentList() {
             <div className="d-flex align-items-center mb-3 pb-3 justify-content-end">
               <div className="search-container">
                 <form onSubmit={handleSearchSubmit} className="d-flex flex-row-reverse" role="search">
-                  <div style={{background:"#7C46BE"}} className="dropdown">
-                    <button style={{color:"white", borderRadius:"4px"}} className="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <div className="dropdown">
+                    <button className="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                       {type === 'all' ? 'All Consent Form' : type.charAt(0).toUpperCase() + type.slice(1)}
                     </button>
                     <ul className="dropdown-menu">
-                      <li><Link className="dropdown-item" onClick={() => getConsentNewData('all')}>All Consent Form</Link></li>
-                      <li><Link className="dropdown-item" onClick={() => getConsentNewData('completed')}>Completed</Link></li>
-                      <li><Link className="dropdown-item" onClick={() => getConsentNewData('uncompleted')}>Uncompleted</Link></li>
+                      <li><Link className="dropdown-item" onClick={() => handleFilterChange('all')}>All Consent Form</Link></li>
+                      <li><Link className="dropdown-item" onClick={() => handleFilterChange('completed')}>Completed</Link></li>
+                      <li><Link className="dropdown-item" onClick={() => handleFilterChange('uncompleted')}>Uncompleted</Link></li>
                     </ul>
                   </div>
                   <input
