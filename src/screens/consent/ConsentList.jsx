@@ -161,8 +161,8 @@ export default function ConsentList() {
             <div className="d-flex align-items-center mb-3 pb-3 justify-content-end">
               <div className="search-container">
                 <form onSubmit={handleSearchSubmit} className="d-flex flex-row-reverse" role="search">
-                  <div className="dropdown">
-                    <button className="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <div  style={{background:"#7C46BE"}} className="dropdown">
+                    <button style={{color:"white", borderRadius:"4px"}} className="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                       {type === 'all' ? 'All Consent Form' : type.charAt(0).toUpperCase() + type.slice(1)}
                     </button>
                     <ul className="dropdown-menu">
