@@ -6,18 +6,23 @@ import Swal from 'sweetalert2';
 import Loader from '../../components/loader/Loader';
 import { AreaTop } from '../../components';
 
-
 export default function ConsentList() {
   const [loader, setLoader] = useState(true);
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [originalData, setOriginalData] = useState([]);
+  const [type, setType] = useState('all');
 
   const getAllConsentList = async () => {
     setLoader(true);
-    let res = await getApi('get', 'api/consent/getAllConsent');
-    setOriginalData(res?.data?.consentData || []);
-    setFilteredData(res?.data?.consentData || []);
+    try {
+      let res = await getApi('get', 'api/consent/getAllConsent');
+      const consentData = res?.data?.consentData || [];
+      setOriginalData(consentData);
+      setFilteredData(consentData);
+    } catch (error) {
+      console.error('Failed to fetch consent list:', error);
+    }
     setLoader(false);
   };
 
@@ -26,27 +31,27 @@ export default function ConsentList() {
   }, []);
 
   const handleDeleteConsent = async (_id) => {
-    await Swal.fire({
-      title: 'Are you sure want to delete?',
+    const result = await Swal.fire({
+      title: 'Are you sure you want to delete?',
       text: "You won't be able to revert this!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!',
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          let res = await deleteApi('delete', `api/consent/consentById?consentId=${_id}`);
-          if (res?.data?.status === true) {
-            setFilteredData((prevData) => prevData.filter((item) => item._id !== _id));
-            setOriginalData((prevData) => prevData.filter((item) => item._id !== _id));
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      }
     });
+
+    if (result.isConfirmed) {
+      try {
+        let res = await deleteApi('delete', `api/consent/consentById?consentId=${_id}`);
+        if (res?.data?.status === true) {
+          setFilteredData((prevData) => prevData.filter((item) => item._id !== _id));
+          setOriginalData((prevData) => prevData.filter((item) => item._id !== _id));
+        }
+      } catch (error) {
+        console.error('Failed to delete consent:', error);
+      }
+    }
   };
 
   const generateActionButtons = (row) => (
@@ -123,11 +128,22 @@ export default function ConsentList() {
     actions: generateActionButtons(row),
   }));
 
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+  };
 
-  const handleSearchSubmit=(e)=>{
-e.preventDefault()
-return
-  }
+  const getConsentNewData = (tp) => {
+    setType(tp);
+    // Here you can filter the originalData based on the type
+    let updatedData = originalData;
+    if (tp === 'completed') {
+      updatedData = originalData.filter(item => item.surgeonSignatureUrl);
+    } else if (tp === 'uncompleted') {
+      updatedData = originalData.filter(item => !item.surgeonSignatureUrl);
+    }
+    setFilteredData(updatedData);
+  };
+
   return (
     <>
       {loader && (
@@ -136,26 +152,34 @@ return
         </div>
       )}
       {!loader && (
-        <div className="content-area">
-      <AreaTop title='Consent Form List'/>
-        <div style={{ minHeight: '90vh' }} className="container consentForm p-5">
-          <div className="d-flex align-items-center mb-3 pb-3 justify-content-end">
-            <div className="search-container">
-              <form onSubmit={handleSearchSubmit}  className="d-flex flex-row-reverse" role="search">
-                <input
-                  className="form-control me-2"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                />
-              </form>
+        <div className="content-area mt-3">
+          <div style={{ minHeight: '90vh' }} className="container consentForm p-5">
+            <div className="d-flex align-items-center mb-3 pb-3 justify-content-end">
+              <div className="search-container">
+                <form onSubmit={handleSearchSubmit} className="d-flex flex-row-reverse" role="search">
+                  <div style={{background:"#7C46BE"}} className="dropdown">
+                    <button style={{color:"white", borderRadius:"4px"}} className="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      {type === 'all' ? 'All Consent Form' : type.charAt(0).toUpperCase() + type.slice(1)}
+                    </button>
+                    <ul className="dropdown-menu">
+                      <li><Link className="dropdown-item" onClick={() => getConsentNewData('all')}>All Consent Form</Link></li>
+                      <li><Link className="dropdown-item" onClick={() => getConsentNewData('completed')}>Completed</Link></li>
+                      <li><Link className="dropdown-item" onClick={() => getConsentNewData('uncompleted')}>Uncompleted</Link></li>
+                    </ul>
+                  </div>
+                  <input
+                    className="form-control me-2"
+                    type="search"
+                    placeholder="Search"
+                    aria-label="Search"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                  />
+                </form>
+              </div>
             </div>
+            <DataTable columns={columns} data={modifiedData} pagination responsive />
           </div>
-
-          <DataTable columns={columns} data={modifiedData} pagination responsive />
-        </div>
         </div>
       )}
     </>
