@@ -5,6 +5,7 @@ import { deleteApi, getApi } from '../../helpers/requestHelpers';
 import Swal from 'sweetalert2';
 import Loader from '../../components/loader/Loader';
 import { AreaTop } from '../../components';
+import moment from 'moment';
 
 export default function ConsentList() {
   const [loader, setLoader] = useState(true);
@@ -90,10 +91,15 @@ export default function ConsentList() {
       sortable: true,
     },
     {
-      name: 'Mobile Number',
-      selector: (row) => row.mobileNo,
+      name: 'Created At',
+      selector: (row) => moment(row.createdAt).format('MMM DD, YYYY h:mm A'),
       sortable: true,
     },
+    // {
+    //   name: 'Mobile Number',
+    //   selector: (row) => row.mobileNo,
+    //   sortable: true,
+    // },
     {
       name: 'Created By',
       selector: (row) => row.createdBy,

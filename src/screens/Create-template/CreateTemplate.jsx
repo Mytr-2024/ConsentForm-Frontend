@@ -604,7 +604,7 @@ if(tempOption.length<=0){
 
     {!loader && <div className="content-area">
       
-      <h2 className="text-center mt-3 mb-3 fw-bold"><span style={{color:"#7C46BE"}}> Template</span> Form's</h2>
+      <h2 className="text-center mt-3 mb-3 fw-bold"><span style={{color:"#7C46BE"}}> Template</span> Forms</h2>
     <div className="container consentForm p-5">
       <form  className='row g-3' onSubmit={submitHandler}>
 
@@ -613,12 +613,12 @@ if(tempOption.length<=0){
                     <div className="modal-dialog modal-fullscreen">
                         <div className="modal-content">
                         <div className="modal-header d-flex justify-content-center">
-                          <h2 className="text-center" >Edit FAQ'S</h2>
+                          <h2 className="text-center" >Edit FAQ</h2>
                         </div>
 
                             <div className="modal-body">
                             <div className="col-md-12" id="faq">
-    <label htmlFor="faqTitle" className="form-label">FAQ's Title</label>
+    <label htmlFor="faqTitle" className="form-label">FAQ Title</label>
     <input
       type="text"
       className="form-control"
@@ -631,7 +631,7 @@ if(tempOption.length<=0){
     />
   </div>
   <div className="col-md-12 my-3" id="faqDescription">
-    <label htmlFor="faqDescription" className="form-label">FAQ's Description</label>
+    <label htmlFor="faqDescription" className="form-label">FAQ Description</label>
     <QuillEditor
       ref={editFaqQuill}
       theme="snow"
@@ -700,7 +700,7 @@ if(tempOption.length<=0){
   <div className="modal-dialog modal-fullscreen">
     <div className="modal-content">
       <div className="modal-header d-flex justify-content-center">
-        <h2 className="text-center">Edit Custom Field's</h2>
+        <h2 className="text-center">Edit Custom Fields</h2>
       </div>
 
       <div className="modal-body">
@@ -965,9 +965,9 @@ if(tempOption.length<=0){
 
 
 <div>
-  <h2 className="text-center">Create FAQ'S</h2>
+  <h2 className="text-center">Create FAQ</h2>
   <div className="col-md-12" id="faq">
-    <label htmlFor="faqTitle" className="form-label">FAQ's Title</label>
+    <label htmlFor="faqTitle" className="form-label">FAQ Title</label>
     <input
       type="text"
       className="form-control"
@@ -980,7 +980,7 @@ if(tempOption.length<=0){
     />
   </div>
   <div className="col-md-12 my-3" id="faqDescription">
-    <label htmlFor="faqDescription" className="form-label">FAQ's Description</label>
+    <label htmlFor="faqDescription" className="form-label">FAQ Description</label>
     <QuillEditor
       ref={faqQuill}
       theme="snow"
@@ -1082,7 +1082,7 @@ if(tempOption.length<=0){
 
 
     <div>
-  <h2 className="text-center">Create Custom Field's</h2>
+  <h2 className="text-center">Create Custom Fields</h2>
   <div className="col-md-12" id="faq">
     <label htmlFor="faqTitle" className="form-label">Enter Field Name</label>
     <input
