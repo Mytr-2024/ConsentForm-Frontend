@@ -5,6 +5,7 @@ import { deleteApi, getApi } from '../../helpers/requestHelpers';
 import Swal from 'sweetalert2';
 import Loader from '../../components/loader/Loader';
 import { AreaTop } from '../../components';
+import moment from 'moment';
 
 export default function ConsentList() {
   const [loader, setLoader] = useState(true);
@@ -90,10 +91,15 @@ export default function ConsentList() {
       sortable: true,
     },
     {
-      name: 'Mobile Number',
-      selector: (row) => row.mobileNo,
+      name: 'Created At',
+      selector: (row) => moment(row.createdAt).format('MMM DD, YYYY h:mm A'),
       sortable: true,
     },
+    // {
+    //   name: 'Mobile Number',
+    //   selector: (row) => row.mobileNo,
+    //   sortable: true,
+    // },
     {
       name: 'Created By',
       selector: (row) => row.createdBy,
@@ -117,7 +123,7 @@ export default function ConsentList() {
     let updatedData = data;
     if (filterType === 'completed') {
       updatedData = data.filter(item => item.surgeonSignatureUrl);
-    } else if (filterType === 'uncompleted') {
+    } else if (filterType === 'InProgress') {
       updatedData = data.filter(item => !item.surgeonSignatureUrl);
     }
     if (search) {
@@ -168,7 +174,7 @@ export default function ConsentList() {
                     <ul className="dropdown-menu">
                       <li><Link className="dropdown-item" onClick={() => handleFilterChange('all')}>All Consent Form</Link></li>
                       <li><Link className="dropdown-item" onClick={() => handleFilterChange('completed')}>Completed</Link></li>
-                      <li><Link className="dropdown-item" onClick={() => handleFilterChange('uncompleted')}>Uncompleted</Link></li>
+                      <li><Link className="dropdown-item" onClick={() => handleFilterChange('InProgress')}>In Progress</Link></li>
                     </ul>
                   </div>
                   <input

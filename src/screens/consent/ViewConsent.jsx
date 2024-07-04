@@ -503,7 +503,7 @@ src={viewData?.videoUrl}
 </div>
 <div className="col-md-10 w-100  my-3  px-2 px-sm-3 px-md-5 px-lg-5 ">
     
-{!singleConsentData?.surgeonSignatureUrl &&    <Link to={`/continueConsent/${_id}`} className='btn btn-warning text-white fw-semibold w-100 mt-3' type="button" >Continue This Form</Link>
+{!singleConsentData?.surgeonSignatureUrl &&    <Link to={`/continueConsent/${_id}`} className='btn btn-warning text-white fw-semibold w-100 mt-3' type="button" >Complete This Form</Link>
 }    <button className='btn btn-primary w-100 mt-3' type="button" onClick={prindPdf} >Print</button>
     </div>
 </div>

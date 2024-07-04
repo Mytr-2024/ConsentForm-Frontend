@@ -6,7 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { getApi } from '../../helpers/requestHelpers';
 import { useParams } from 'react-router-dom';
-import './ConsentFormChart.css'
+import './ConsentFormChart.css';
 import Loader from '../loader/Loader';
 Chart.register(...registerables);
 
@@ -20,19 +20,19 @@ const ConsentFormBarChart = ({ adminEmail }) => {
   const [adminStartDate, setAdminStartDate] = useState(new Date(formattedToday));
   const [adminEndDate, setAdminEndDate] = useState(new Date(formattedToday));
   const [adminConsentStats, setAdminConsentStats] = useState([]);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   const fetchConsentData = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       const startDateFormatted = moment(adminStartDate).format('YYYY-MM-DD');
       const endDateFormatted = moment(adminEndDate).format('YYYY-MM-DD');
       const res = await getApi('get', `api/analytics/admin?startDate=${startDateFormatted}&endDate=${endDateFormatted}&admin=${email}`);
-      setAdminConsentStats(res?.data || []);
-      setLoading(false)
-
+      const sortedData = (res?.data || []).sort((a, b) => moment(a.date.date) - moment(b.date.date));
+      setAdminConsentStats(sortedData);
+      setLoading(false);
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
       console.error('Failed to fetch data:', error);
     }
   };
@@ -78,43 +78,44 @@ const ConsentFormBarChart = ({ adminEmail }) => {
 
   return (
     <>
-   
-     {loading && (
-      <div style={{minHeight:"55vh"}} className="d-flex w-100 justify-content-center align-items-center">
-        <Loader />
-      </div>
-    )}
-  {!loading &&  <div>
-      <h2 className='mb-2 pb-2'>Created Form's</h2>
-      <div className='d-flex justify-content-between'>
-      <div>
-        <label className='me-3 startEnd'>Start Date: </label>
-        <DatePicker
-          selected={adminStartDate}
-          onChange={date => changeConsentData(date, true)}
-          maxDate={today}
-          selectsStart
-          startDate={adminStartDate}
-          endDate={adminEndDate}
-          placeholderText="Select a start date"
-        />
-      </div>
-      <div>
-        <label className='me-3 startEnd'>End Date: </label>
-        <DatePicker
-          selected={adminEndDate}
-          onChange={date => changeConsentData(date, false)}
-          minDate={adminStartDate || today}
-          maxDate={today}
-          selectsEnd
-          startDate={adminStartDate}
-          endDate={adminEndDate}
-          placeholderText="Select an end date"
-        />
-      </div>
-    </div>
-      <Bar data={chartData} />
-    </div>}
+      {loading && (
+        <div style={{ minHeight: "55vh" }} className="d-flex w-100 justify-content-center align-items-center">
+          <Loader />
+        </div>
+      )}
+      {!loading && (
+        <div>
+          <h2 className='mb-2 pb-2'>Created Forms</h2>
+          <div className='d-flex justify-content-between'>
+            <div>
+              <label className='me-3 startEnd'>Start Date: </label>
+              <DatePicker
+                selected={adminStartDate}
+                onChange={date => changeConsentData(date, true)}
+                maxDate={today}
+                selectsStart
+                startDate={adminStartDate}
+                endDate={adminEndDate}
+                placeholderText="Select a start date"
+              />
+            </div>
+            <div>
+              <label className='me-3 startEnd'>End Date: </label>
+              <DatePicker
+                selected={adminEndDate}
+                onChange={date => changeConsentData(date, false)}
+                minDate={adminStartDate || today}
+                maxDate={today}
+                selectsEnd
+                startDate={adminStartDate}
+                endDate={adminEndDate}
+                placeholderText="Select an end date"
+              />
+            </div>
+          </div>
+          <Bar data={chartData} />
+        </div>
+      )}
     </>
   );
 };

@@ -240,7 +240,11 @@ setLoader(true)
                 setConsentData(res.data.consent);
                 setCustomFields(res.data.consent.customFields || []);
             }
+            if( res?.data?.consent?.patientSignatureUrl){
+                navigate('/consentList')
+            }
         };
+       
         fetchConsentData();
     }, [id])
 
@@ -388,9 +392,24 @@ const handleCustomOptionChange = async (e, field) => {
         try {
             setLoading(true);
             let res = await postApi('post', `api/consent/submitConsent`, data);
-            setIndex(index+1)
-            setLoader(false)
-            setIndex(index+1)
+            if(res?.data?.consent?.patientSignatureUrl){
+                navigate('/consentList')
+            }
+             if(res?.data?.status==true){
+                setIndex(index+1)
+                setLoader(false)
+                setIndex(index+1)
+                setLoading(false);
+            }else{
+                setLoading(false);
+                setLoader(false)
+
+                Toast.fire({
+                    icon: "error",
+                    title: res?.message||"Something Went's Wrong, Retry",
+                  });
+                  return
+            }
         } catch (error) {
             setLoader(false)
             Toast.fire({
@@ -446,8 +465,8 @@ setElapsedTime(0)
 
 // Function to start recording
 const startRecoding = async () => {
+    setVideoLoader(true)
     setElapsedTime(0);
-    setLoading(true);
     if (recordingState?.id) {
         await stopRecording(recordingState.id);
         await closeCamera(recordingState.id);
@@ -455,9 +474,11 @@ const startRecoding = async () => {
 
     const recording = await createRecording();
     setRecordingState(recording);
+
     await openCamera(recording?.id);
+    setVideoLoader(false)
+
     await startRecording(recording?.id);
-    setLoading(false);
 };
 
 const stopRecoding = async () => {
@@ -473,7 +494,8 @@ const stopRecoding = async () => {
 
 
     const saveRecoding = async () => {
-        setLoading(true);
+        setVideoLoader(true)
+
         const element = document.getElementById('captureVideo');
         element.classList.remove('highlight')
         const formData = new FormData();
@@ -485,7 +507,7 @@ const stopRecoding = async () => {
             console.log(res)
             if (res?.data?.status === true) {
                 setVideoUrlState(res?.data?.videoUrl)
-                setLoading(false);
+                setVideoLoader(false)
                 document.getElementById('closeSaveVideo').click();
                 Toast.fire({
                     icon: "success",
@@ -494,7 +516,7 @@ const stopRecoding = async () => {
             }
             else {
                 console.log(errorMessage)
-                setLoading(false);
+                setVideoLoader(false)
                 Toast.fire({
                     icon: "error",
                     title: "Time Out",
@@ -502,7 +524,7 @@ const stopRecoding = async () => {
             }
         } catch (error) {
             console.log(error)
-            setLoading(false);
+            setVideoLoader(false)
         }
     }
 
@@ -528,6 +550,7 @@ useEffect(() => {
     return () => clearInterval(timerRef.current);
 }, [recordingState]);
 
+const [videoLoader, setVideoLoader] = useState(false)
 
 function scrollToAndHighlightButton(elementId) {
     const element = document.getElementById(elementId);
@@ -1589,7 +1612,7 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
                     <h3 className='text-center' >Tap start recording button to start recording</h3>
                             <button id='closeSaveVideo' type="button" className="btn-close ms-auto p-2 " data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                            {loading &&
+                            {videoLoader &&
                                 <div className="d-flex w-100 justify-content-center my-2 align-items-center">
                                     <Loader />
                                 </div>
