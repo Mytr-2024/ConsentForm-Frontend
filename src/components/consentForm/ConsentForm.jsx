@@ -54,7 +54,7 @@ const ConsentForm = () => {
         let allCase = await getApi("get", "/api/template/getAllCaseType")
 
         setAllCaseType(allCase?.data?.caseType)
-
+      
     }
 
 
@@ -311,23 +311,29 @@ const handleCustomOptionChange = async (e, field) => {
             setLoading(true);
             let res = await postApi('post', `api/consent/submitConsent`, data);
             console.log(res?.data)
-            if(res?.data?.status==true && index===6){
+            if(res?.data?.consent?.patientSignatureUrl){
                 navigate('/consentList')
             }
+           
             if(res?.data?.status==true){
                 setIndex(index+1)
                 setLoader(false)
-                setIndex(index+1)
+                // setIndex(index+1)
+                setLoading(false);
             }else{
+                setLoading(false);
+                setLoader(false)
+
                 Toast.fire({
                     icon: "error",
-                    title: res?.data?.message,
+                    title: res?.data?.message||"Something Went's Wrong, Retry",
                   });
                   return
             }
             
         } catch (error) {
             setLoader(false)
+            setLoading(false);
             Toast.fire({
                 icon: "error",
                 title: error?.message,
@@ -381,7 +387,7 @@ setElapsedTime(0)
 
 // Function to start recording
 const startRecoding = async () => {
-    setElapsedTime(0);
+   
     setLoading(true);
     if (recordingState?.id) {
         await stopRecording(recordingState.id);
@@ -392,6 +398,7 @@ const startRecoding = async () => {
     setRecordingState(recording);
     await openCamera(recording?.id);
     await startRecording(recording?.id);
+    setElapsedTime(0);
     setLoading(false);
 };
 

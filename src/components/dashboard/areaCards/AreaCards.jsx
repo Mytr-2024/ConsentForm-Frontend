@@ -62,9 +62,9 @@ const getData=async()=>{
         colors={["#e4e8ef", "#f29a2e"]}
         percentFillValue={100}
         cardInfo={{
-          title: "Effiecency",
-          value: (((data?.inProgressCount + data?.submittedCount) / data?.submittedCount)*10).toFixed(3)+"%"|| "Loading..",
-          text: "Total Number Of Template.",
+          title: "Efficiency",
+          value: (( data?.submittedCount/(data?.inProgressCount + data?.submittedCount))*100).toFixed(3)+"%"|| "Loading..",
+          text: "Total Efficiency.",
         }}
         cardImage={efficency}
 

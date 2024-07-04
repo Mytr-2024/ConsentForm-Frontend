@@ -240,7 +240,11 @@ setLoader(true)
                 setConsentData(res.data.consent);
                 setCustomFields(res.data.consent.customFields || []);
             }
+            if( res?.data?.consent?.patientSignatureUrl){
+                navigate('/consentList')
+            }
         };
+       
         fetchConsentData();
     }, [id])
 
@@ -388,9 +392,24 @@ const handleCustomOptionChange = async (e, field) => {
         try {
             setLoading(true);
             let res = await postApi('post', `api/consent/submitConsent`, data);
-            setIndex(index+1)
-            setLoader(false)
-            setIndex(index+1)
+            if(res?.data?.consent?.patientSignatureUrl){
+                navigate('/consentList')
+            }
+             if(res?.data?.status==true){
+                setIndex(index+1)
+                setLoader(false)
+                setIndex(index+1)
+                setLoading(false);
+            }else{
+                setLoading(false);
+                setLoader(false)
+
+                Toast.fire({
+                    icon: "error",
+                    title: res?.message||"Something Went's Wrong, Retry",
+                  });
+                  return
+            }
         } catch (error) {
             setLoader(false)
             Toast.fire({

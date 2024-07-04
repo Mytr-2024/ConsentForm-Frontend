@@ -117,7 +117,7 @@ export default function ConsentList() {
     let updatedData = data;
     if (filterType === 'completed') {
       updatedData = data.filter(item => item.surgeonSignatureUrl);
-    } else if (filterType === 'uncompleted') {
+    } else if (filterType === 'InProgress') {
       updatedData = data.filter(item => !item.surgeonSignatureUrl);
     }
     if (search) {
@@ -168,7 +168,7 @@ export default function ConsentList() {
                     <ul className="dropdown-menu">
                       <li><Link className="dropdown-item" onClick={() => handleFilterChange('all')}>All Consent Form</Link></li>
                       <li><Link className="dropdown-item" onClick={() => handleFilterChange('completed')}>Completed</Link></li>
-                      <li><Link className="dropdown-item" onClick={() => handleFilterChange('uncompleted')}>Uncompleted</Link></li>
+                      <li><Link className="dropdown-item" onClick={() => handleFilterChange('InProgress')}>In Progress</Link></li>
                     </ul>
                   </div>
                   <input
