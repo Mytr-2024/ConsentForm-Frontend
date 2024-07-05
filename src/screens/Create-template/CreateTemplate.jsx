@@ -33,8 +33,16 @@ Quill.register("modules/resize", QuillResizeImage);
 function scrollToAndHighlightButton(elementId) {
   const element = document.getElementById(elementId);
   if (element) {
+      // Get the bounding rectangle of the element
+      const elementRect = element.getBoundingClientRect();
+      // Calculate the current scroll position of the document
+      const scrollOffset = window.pageYOffset || document.documentElement.scrollTop;
+      // Set a desired offset from the top of the viewport, e.g., 100 pixels
+      const topOffset = 100;
+      // Calculate the absolute top position of the element and adjust by the desired offset
+      const absoluteElementTop = elementRect.top + scrollOffset - topOffset;
       // Scroll to the element
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.scrollTo({ top: absoluteElementTop-200, behavior: 'smooth' });
 
       // Add a class to highlight the button
       element.classList.add('highlight');
@@ -47,9 +55,9 @@ function scrollToAndHighlightButton(elementId) {
   const submitHandler = async(event) => {
     event.preventDefault(); 
 
-    if(deltaContent.length<=0){
-scrollToAndHighlightButton("caseTypeEditor")
-    }
+//     if(deltaContent?.length<=0){
+// scrollToAndHighlightButton("caseTypeEditor")
+//     }
 
 
 
@@ -61,6 +69,12 @@ scrollToAndHighlightButton("caseTypeEditor")
       scrollToAndHighlightButton('faq_btn');
       return
     }
+    if(customFields?.length<=0){
+      scrollToAndHighlightButton('custom_button');
+      return
+    }
+
+
 
     setLoader(true)
    
@@ -171,6 +185,7 @@ try {
 
 
   const handleAddQuestion = () => {
+    document.getElementById('question_add').classList.remove('highlight')
     if (questionInput.trim()) {  
       setQuestions([...questions, questionInput]);
       setQuestionInput("");  
@@ -215,6 +230,13 @@ try {
     const updatedImages = images.filter((_, i) => i !== index);
     setImages(updatedImages);
    };
+
+const handleDeleteEditImage = (index) => {
+  const updatedOptions = [...allOptions];
+  updatedOptions.splice(index, 1);
+  setAllOptions(updatedOptions);
+};
+
   const handleDeleteOptionsImage = (index) => {
     const updatedImages = tempOptionImage.filter((_, i) => i !== index);
     setTempOptionImage(updatedImages);
@@ -270,6 +292,7 @@ try {
   };
   
   const addFaq = () => {
+    document.getElementById('faq_btn').classList.remove('highlight')
 
     if(faqTitle?.length<=0 || faqDescription?.length<=0){
       return
@@ -371,7 +394,12 @@ const handleSubmitEdit = () => {
 };
 
 
+
+
 const handleSubmitCustomEdit = () => {
+
+
+
   // Ensure the indices are within the valid range
   if (customEditIndex >= 0 && customEditIndex < customFields.length &&
       optionIndex >= 0 && optionIndex < customFields[customEditIndex].options.length) {
@@ -414,6 +442,10 @@ const handleSubmitCustomEdit = () => {
 
 
 
+
+
+
+
   function truncateHtml(html, maxLength) {
     const strippedString = html.replace(/(<([^>]+)>)/gi, ""); // Strips HTML tags
     if (strippedString.length > maxLength) {
@@ -436,12 +468,14 @@ const handleSubmitCustomEdit = () => {
 
  const addThisOption = (e) => {
 e.preventDefault()
-  
+document.getElementById('custom_button').classList.remove('highlight')
+
 
 // if(tempOption?.length<=0){
 //   scrollToAndHighlightButton('customOptions')
 //   return
 // }
+
 
 
 if(key.length<=0){
@@ -764,7 +798,8 @@ if(tempOption.length<=0){
                 ))}
               </td>
               <td className="d-flex  justify-content-between" >
-              <i onClick={()=>{handleDeleteImage(index)}} role="button" className="fa-solid bg-danger text-white p-1 fa-xmark  "></i>
+              <i onClick={()=>{handleDeleteEditImage(index)}} role="button" className="fa-solid bg-danger text-white p-1 fa-xmark  "></i>
+              
               <i  onClick={()=>{handleEditOption(index)}}   role="button "  className="fa-solid bg-primary p-1 text-white fa-pen-to-square"></i>
                 {/* <button className="btn btn-primary" onClick={() => onEdit(index)}>Edit</button>
                 <button className="btn btn-danger" onClick={() => onDelete(index)}>Delete</button> */}
@@ -1091,7 +1126,7 @@ if(tempOption.length<=0){
       id="key"
       placeholder="Enter Field Name"
       name='key'
-      required={true}
+      required={customFields?.length>=1?false:true}
       value={key}
       onChange={(e) => setkey(e.target.value)}
     />
@@ -1110,7 +1145,7 @@ if(tempOption.length<=0){
       id="customOptions"
       placeholder="Enter Options"
       name='key'
-      required={true}
+      required={customFields?.length>=1?false:true}
       value={tempOption}
       onChange={(e) => setTempOption(e.target.value)}
     />
@@ -1132,6 +1167,7 @@ if(tempOption.length<=0){
       formats={formats}
       modules={modules}
       onChange={setTempOptionDescription}
+      required={customFields?.length>=1?false:true}
     />
   </div>
   <div className="col-md-12">
@@ -1168,7 +1204,7 @@ if(tempOption.length<=0){
   ))}
 </div>
 <div className="col-md-12 my-3">
-<button id="faq_btn" type="button" className="btn btn-success w-100 my-3" onClick={addThisOption}>Add This Options</button>
+<button id="custom_button" type="button" className="btn btn-success w-100 my-3" onClick={addThisOption}>Add This Options</button>
 </div>
   </div>
  

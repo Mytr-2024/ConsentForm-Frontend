@@ -144,7 +144,7 @@ useEffect(() => {
    const handleConsentSubmit=async(e)=>{
 e.preventDefault();
 
-
+setLoader(true)
 
 if(consentData?.mobileNo?.length!=10){
     setMobileRedBorder(true);
@@ -183,11 +183,15 @@ const data = {
 
 try {
 
-    let res=await patchApi('patch',`api/consent/consentById?consentId=${_id}`,data)
+    let res=await patchApi('post',`api/consent/consentById?consentId=${_id}`,data)
 console.log(res)
 navigate('/consentList')
+setLoader(false)
+
 } catch (error) {
     console.log(error)
+    setLoader(false)
+
 }
 
    }   
