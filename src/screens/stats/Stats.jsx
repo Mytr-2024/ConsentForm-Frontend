@@ -216,7 +216,6 @@ useEffect(() => {
       </form>
 <form className="row mt-5 g-3">
         <AgeGroup 
-          // ageData={ageData}
         />
       </form>
 

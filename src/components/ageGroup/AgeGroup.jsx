@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
-import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { getApi } from '../../helpers/requestHelpers';
@@ -11,30 +10,34 @@ Chart.register(...registerables);
 
 const AgeGroup = () => {
   const today = new Date();
-  const formattedToday = today.toISOString().split('T')[0];
 
-  const [startDate, setStartDate] = useState(new Date(formattedToday));
-  const [endDate, setEndDate] = useState(new Date(formattedToday));
+  const [startDate, setStartDate] = useState(today);
+  const [endDate, setEndDate] = useState(today);
   const [ageData, setAgeData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const fetchAgeData = async () => {
-    setLoading(true)
+  const fetchAgeData = useCallback(async () => {
     try {
-      const startDateFormatted = moment(startDate).format('YYYY-MM-DD');
-      const endDateFormatted = moment(endDate).format('YYYY-MM-DD');
+      setLoading(true)
+      const startDateFormatted = startDate.toISOString().split('T')[0];
+      const endDateFormatted = endDate.toISOString().split('T')[0];
       const res = await getApi('get', `api/analytics/age?startDate=${startDateFormatted}&endDate=${endDateFormatted}`);
-      setAgeData(res?.data || []);
-      setLoading(false)
-    } catch (error) {
-      console.error('Failed to fetch data:', error);
+      setAgeData(res?.data?.data || []);
       setLoading(false)
 
+    } catch (error) {
+      setLoading(false)
+
+      console.error('Failed to fetch data:', error);
+    } finally {
+      setLoading(false)
+      setLoading(false);
     }
-  };
+  }, [startDate, endDate]);
 
   useEffect(() => {
     fetchAgeData();
-  }, [startDate, endDate]);
+  }, [fetchAgeData]);
 
   const generateAgeChartData = (ageData) => {
     let aggregatedData = {};
@@ -61,77 +64,76 @@ const AgeGroup = () => {
   };
 
   const ageChartData = generateAgeChartData(ageData);
-  const [loading, setLoading] = useState(true)
 
   const handleStartDateChange = (date) => {
     setStartDate(date);
     if (endDate && date > endDate) {
-      setEndDate(null); // Reset end date if start date is after end date
+      setEndDate(date); // Adjust end date to match start date if it's later
     }
   };
 
   const handleEndDateChange = (date) => {
     setEndDate(date);
   };
+
   return (
     <>
-     {loading && (
-      <div style={{minHeight:"40vh"}} className="d-flex w-100 justify-content-center align-items-center">
-        <Loader />
-      </div>
-    )}
-     {!loading && <div>
-      <h2 className='mb-2 pb-2'>Cases by Age Group</h2>
-      <div className='d-flex justify-content-between'>
-      <div className="">
-        <label className='me-3'>Start Date: </label>
-        <DatePicker
-          selected={startDate}
-          onChange={handleStartDateChange}
-          maxDate={today}
-          selectsStart
-          startDate={startDate}
-          endDate={endDate}
-          placeholderText="Select a start date"
-        />
-      </div>
-      <div className="">
-        <label className='me-3'>End Date: </label>
-        <DatePicker
-          selected={endDate}
-          onChange={handleEndDateChange}
-          minDate={startDate}
-          maxDate={today}
-          selectsEnd
-          startDate={startDate}
-          endDate={endDate}
-          placeholderText="Select an end date"
-        />
-      </div>
-    </div>
+      {loading && (
+        <div style={{ minHeight: "40vh" }} className="d-flex w-100 justify-content-center align-items-center">
+          <Loader />
+        </div>
+      )}
+      {!loading && <div>
+        <h2 className='mb-2 pb-2'>Cases by Age Group</h2>
+        <div className='d-flex justify-content-between'>
+          <div className="">
+            <label className='me-3'>Start Date: </label>
+            <DatePicker
+              selected={startDate}
+              onChange={handleStartDateChange}
+              maxDate={today}
+              selectsStart
+              startDate={startDate}
+              endDate={endDate}
+              placeholderText="Select a start date"
+            />
+          </div>
+          <div className="">
+            <label className='me-3'>End Date: </label>
+            <DatePicker
+              selected={endDate}
+              onChange={handleEndDateChange}
+              minDate={startDate}
+              maxDate={today}
+              selectsEnd
+              startDate={startDate}
+              endDate={endDate}
+              placeholderText="Select an end date"
+            />
+          </div>
+        </div>
 
-      <div style={{ width: '100%', height: '100%', margin: '' }}>
-        <Bar data={ageChartData} options={{
-          responsive: true,
-          scales: {
-            x: {
-              title: {
-                display: true,
-                text: 'Age Groups'
-              }
-            },
-            y: {
-              title: {
-                display: true,
-                text: 'Number of Cases'
+        <div style={{ width: '100%', height: '100%', margin: '' }}>
+          <Bar data={ageChartData} options={{
+            responsive: true,
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Age Groups'
+                }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Number of Cases'
+                }
               }
             }
-          }
-        }} />
-      </div>
-    </div>}
+          }} />
+        </div>
+      </div>}
     </>
-   
   );
 };
 
