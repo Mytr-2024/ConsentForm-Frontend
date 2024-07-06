@@ -38,7 +38,7 @@ const handleLogout=()=>{
     <nav style={{zIndex:"1000", background:"white"}} className="navbar p-0 navbar-expand-lg position-sticky top-0 ">
   <div className="container-fluid position-relative">
   <div className="d-flex align-items-center">
-  <img src={mytrLogo} alt="" />
+  <img  style={{width:"140px"}}  src={mytrLogo} alt="" />
   <button
           className="sidebar-open-btn d-block d-md-block d-lg-block d-xl-none"
           type="button"
