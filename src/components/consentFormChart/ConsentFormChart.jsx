@@ -12,6 +12,7 @@ Chart.register(...registerables);
 
 const ConsentFormBarChart = ({ adminEmail }) => {
   const { email } = useParams();
+
   const [filteredData, setFilteredData] = useState([]);
   const today = new Date();
   const formattedToday = today.toISOString().split('T')[0];
@@ -48,7 +49,7 @@ const ConsentFormBarChart = ({ adminEmail }) => {
   }, [adminConsentStats, adminStartDate, adminEndDate]);
 
   const generateChartData = (filteredData) => {
-    const labels = filteredData.map((_, index) => index + 1); // Generates labels as 1, 2, 3...
+    const labels = filteredData.map(entry => moment(entry.date.date).format('MMM DD, YYYY'));
     const dataPoints = filteredData.map(entry => entry.createdForms);
 
     return {
@@ -56,27 +57,9 @@ const ConsentFormBarChart = ({ adminEmail }) => {
       datasets: [{
         label: `Created Forms by ${email}`,
         data: dataPoints,
-        backgroundColor: generateRandomColor(),
+        backgroundColor: generateRandomColor(), // Function to generate random colors
       }]
     };
-  };
-
-  const options = {
-    scales: {
-      x: {
-        type: 'linear',
-        ticks: {
-          stepSize: 1,
-          beginAtZero: true
-        }
-      },
-      y: {
-        ticks: {
-          stepSize: 1,
-          beginAtZero: false  // Change to true if zeros need to be included
-        }
-      }
-    }
   };
 
   const generateRandomColor = () => {
@@ -92,6 +75,8 @@ const ConsentFormBarChart = ({ adminEmail }) => {
       setAdminEndDate(date);
     }
   };
+
+  
 
   return (
     <>
@@ -130,7 +115,7 @@ const ConsentFormBarChart = ({ adminEmail }) => {
               />
             </div>
           </div>
-          <Bar data={chartData} options={options} />
+          <Bar data={chartData} />
         </div>
       )}
     </>
