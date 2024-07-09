@@ -376,6 +376,7 @@ const handleCustomOptionChange = async (e, field) => {
         const data = {
             ...consentData,
             caseType: caseType || undefined,
+            isContinue:true,
             createdBy: JSON.parse(localStorage.getItem('user'))?.user?.email,
             question: allQuestions?.reduce((acc, question, index) => {
                         acc[question] = inputValues[index];
