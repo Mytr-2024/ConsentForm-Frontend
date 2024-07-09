@@ -58,6 +58,17 @@ const CaseTypeStats = ({ adminEmail, caseTypes }) => {
     };
   };
 
+  const options = {
+    scales: {
+      y: {
+        beginAtZero: false,
+        ticks: {
+          stepSize: 1
+        }
+      }
+    }
+  };
+
   const chartData = generateChartData(caseTypeStats);
 
   return (
@@ -112,7 +123,7 @@ const CaseTypeStats = ({ adminEmail, caseTypes }) => {
             </select>
           </div>
           <div style={{ width: '100%', height: '100%', margin: '' }} className='caseTypeCanvas'>
-            <Bar data={chartData} />
+            <Bar data={chartData} options={options} />
           </div>
         </div>
       )}

@@ -76,6 +76,8 @@ const ConsentFormBarChart = ({ adminEmail }) => {
     }
   };
 
+  
+
   return (
     <>
       {loading && (

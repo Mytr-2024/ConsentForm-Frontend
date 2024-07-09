@@ -306,7 +306,7 @@ const handleCustomOptionChange = async (e, field) => {
                         VideoUrl: videoUrlState || undefined,
         };
 
-    
+      
         try {
             setLoading(true);
             let res = await postApi('post', `api/consent/submitConsent`, data);
@@ -323,10 +323,10 @@ const handleCustomOptionChange = async (e, field) => {
             }else{
                 setLoading(false);
                 setLoader(false)
-
+console.log(res)
                 Toast.fire({
                     icon: "error",
-                    title: res?.data?.message||"Something Went's Wrong, Retry",
+                    title: res?.response?.data?.message||"Something Went's Wrong, Retry",
                   });
                   return
             }
