@@ -76,7 +76,22 @@ const ConsentFormBarChart = ({ adminEmail }) => {
     }
   };
 
-  
+  const options = {
+    responsive: true,
+    scales: {
+      x: {
+       
+      },
+      y: {
+       
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1,
+          precision: 0
+        }
+      }
+    }
+  };
 
   return (
     <>
@@ -115,7 +130,7 @@ const ConsentFormBarChart = ({ adminEmail }) => {
               />
             </div>
           </div>
-          <Bar data={chartData} />
+          <Bar data={chartData} options={options} />
         </div>
       )}
     </>

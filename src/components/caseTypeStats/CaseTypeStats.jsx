@@ -61,7 +61,7 @@ const CaseTypeStats = ({ adminEmail, caseTypes }) => {
   const options = {
     scales: {
       y: {
-        beginAtZero: false,
+        beginAtZero: true,
         ticks: {
           stepSize: 1
         }
