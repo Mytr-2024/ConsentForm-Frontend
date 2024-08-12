@@ -502,6 +502,45 @@ const handleCustomImageSelect = async (event) => {
 };
 
 
+// const handleSubmitCustomEdit = () => {
+//   if (customEditIndex !== null) {
+//     // Make a deep copy of customFields to mutate
+//     const updatedCustomFields = [...customFields];
+//     const fieldOptions = [...updatedCustomFields[customEditIndex].options];
+
+//     // Prepare the new or updated option object
+//     const newOption = {
+//       name: customOptionName,
+//       description: tempOptionDescription,
+//       videoUrl: customOptionVideo,
+//       imageUrl: tempOptionImage,
+//     };
+
+//     // Check if optionIndex is defined, if not, add the new option to the end of the list
+//     if (typeof optionIndex !== 'undefined' && optionIndex !== null) {
+//       // Update the specific option
+//       fieldOptions[optionIndex] = newOption;
+//     } else {
+//       // Add new option to the end of the options list
+//       fieldOptions.push(newOption);
+//     }
+
+//     // Update the options in the field
+//     updatedCustomFields[customEditIndex] = {
+//       ...updatedCustomFields[customEditIndex],
+//       options: fieldOptions,
+//     };
+
+//     // Update the customFields state
+//     setCustomFields(updatedCustomFields);
+//     console.log(updatedCustomFields);
+
+//   } else {
+//     console.error('Invalid index for editing custom field option');
+//   }
+// };
+
+
 const handleSubmitCustomEdit = () => {
   if (customEditIndex !== null) {
     // Make a deep copy of customFields to mutate
@@ -525,9 +564,10 @@ const handleSubmitCustomEdit = () => {
       fieldOptions.push(newOption);
     }
 
-    // Update the options in the field
+    // Update the custom field name and options in the field
     updatedCustomFields[customEditIndex] = {
       ...updatedCustomFields[customEditIndex],
+      fieldName: customEditTitle,
       options: fieldOptions,
     };
 
@@ -535,11 +575,16 @@ const handleSubmitCustomEdit = () => {
     setCustomFields(updatedCustomFields);
     console.log(updatedCustomFields);
 
+    // Optionally reset editing state
+    setCustomOptionName('');
+    setCustomOptionVideo('');
+    setTempOptionImage([]);
+    setCustomEditIndex(null);
+    setOptionIndex(null);
   } else {
     console.error('Invalid index for editing custom field option');
   }
 };
-
 
 
 
