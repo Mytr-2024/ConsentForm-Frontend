@@ -395,11 +395,7 @@ const handleSubmitEdit = () => {
 
 
 
-
 const handleSubmitCustomEdit = () => {
-
-
-
   // Ensure the indices are within the valid range
   if (customEditIndex >= 0 && customEditIndex < customFields.length &&
       optionIndex >= 0 && optionIndex < customFields[customEditIndex].options.length) {
@@ -415,12 +411,13 @@ const handleSubmitCustomEdit = () => {
       name: customOptionName,
       videoUrl: customOptionVideo,
       imageUrl: tempOptionImage,
-      description:tempOptionDescriptionEdit
+      description: tempOptionDescriptionEdit
     };
 
-    // Replace the options array in the specific custom field
+    // Replace the options array in the specific custom field and update the field name
     newCustomFields[customEditIndex] = {
       ...newCustomFields[customEditIndex],
+      fieldName: customEditTitle,  // Update the field name
       options: newOptions
     };
 
@@ -439,6 +436,52 @@ const handleSubmitCustomEdit = () => {
     console.error('Invalid custom field or option index');
   }
 };
+
+
+
+// const handleSubmitCustomEdit = () => {
+
+
+
+//   // Ensure the indices are within the valid range
+//   if (customEditIndex >= 0 && customEditIndex < customFields.length &&
+//       optionIndex >= 0 && optionIndex < customFields[customEditIndex].options.length) {
+//     // Create a new copy of the customFields array
+//     const newCustomFields = [...customFields];
+
+//     // Create a new copy of the specific option array
+//     const newOptions = [...newCustomFields[customEditIndex].options];
+
+//     // Update the specific option with new values
+//     newOptions[optionIndex] = {
+//       ...newOptions[optionIndex],
+//       name: customOptionName,
+//       videoUrl: customOptionVideo,
+//       imageUrl: tempOptionImage,
+//       description:tempOptionDescriptionEdit
+//     };
+
+//     // Replace the options array in the specific custom field
+//     newCustomFields[customEditIndex] = {
+//       ...newCustomFields[customEditIndex],
+//       options: newOptions
+//     };
+
+//     // Update the state with the new custom fields array
+//     setCustomFields(newCustomFields);
+
+//     // Optionally reset editing state
+//     setCustomOptionName('');
+//     setCustomOptionVideo('');
+//     setTempOptionImage([]);
+//     setTempOptionDescriptionEdit('');
+//     // Reset the editing indices if needed
+//     setCustomEditIndex(null);
+//     setOptionIndex(null);
+//   } else {
+//     console.error('Invalid custom field or option index');
+//   }
+// };
 
 
 

@@ -86,7 +86,7 @@ export default function ViewTemplate() {
 {singleConsentData?.imageUrl.map((image,index)=>(
 
 
-<img style={{height:"200px", width:"250px"}} alt='' key={index} src={image}/>
+<img style={{maxHeight:"400px", maxWidth:"400px"}}  className='object-fit-contain' alt='' key={index} src={image}/>
 
 
 ))}
@@ -152,7 +152,7 @@ export default function ViewTemplate() {
 {faq?.imageUrl.map((image,index)=>(
 
 
-<img  className='object-fit-contain my-2' style={{height:"200px", width:"50vw"}} alt='' key={index} src={image}/>
+<img  style={{maxHeight:"400px", maxWidth:"400px"}}  className='object-fit-contain' alt='' key={index} src={image}/>
 
 
 ))}
@@ -169,7 +169,7 @@ export default function ViewTemplate() {
       <iframe
   width="380"
   height="220"
-  src="https://www.youtube.com/embed/c4cbLSek-ns?si=ibuJMSKg5Qfb1829"
+  src={faq?.videoUrl}
     frameborder="0"
   allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
   allowfullscreen>
@@ -235,7 +235,7 @@ export default function ViewTemplate() {
 {option?.imageUrl.map((image,index)=>(
 
 
-<img style={{height:"200px", width:"250px"}} alt='' key={index} src={image}/>
+<img style={{maxHeight:"400px", maxWidth:"400px"}}  className='object-fit-contain' alt='' key={index} src={image}/>
 
 
 ))}
