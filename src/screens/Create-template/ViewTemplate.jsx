@@ -169,7 +169,7 @@ export default function ViewTemplate() {
       <iframe
   width="380"
   height="220"
-  src={singleConsentData?.videoUrl}
+  src={faq?.videoUrl}
     frameborder="0"
   allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
   allowfullscreen>
