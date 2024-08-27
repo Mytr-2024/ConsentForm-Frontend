@@ -154,6 +154,7 @@ const ConsentForm = () => {
 
     const [value, setValue] = useState("");
     const quill = useRef();
+    const [summarytext, setSummarytext] = useState("");
 
     const handleCaseTypeChange = async (e) => {
     setsmallLoader1(true)
@@ -166,6 +167,9 @@ const ConsentForm = () => {
         setValue(temp?.data?.deltaForm)
         setSingleConsentData(temp?.data)
         console.log(temp?.data?.videoUrl)
+        setSummarytext(temp?.data?.summary)
+        console.log(temp?.data?.summary)
+
         setsmallLoader1(false)
         // setSingleConsentData(temp?.data?.template)
     }
@@ -1041,7 +1045,20 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
                 </p>
             </div>
         ))}
-    </div>}
+       <div className="">
+        <h2 className='text-center' >Summary Description</h2>
+       <QuillEditor
+            theme="snow"
+            value={summarytext}
+            readOnly={true} // Set readOnly to true to disable editing
+            modules={{
+                toolbar: false, // Hide the toolbar
+              }}
+          />
+       </div>
+    </div>
+    
+    }
 
     </div>
     <div className="  d-flex justify-content-between flex-row-reverse">
