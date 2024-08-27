@@ -15,6 +15,7 @@ import { format } from "date-fns";
 export default function ViewTemplate() {
 
     const [value, setValue] = useState("");
+    const [summary, setSummary] = useState("");
     const quill = useRef();
 
     const [singleConsentData, setSingleConsentData] = useState()
@@ -29,6 +30,7 @@ export default function ViewTemplate() {
         let res=   await getApi("get",`api/template/templateId/?templateId=${_id}`)
        setValue(res?.data?.template?.deltaForm)
         setSingleConsentData(res?.data?.template)
+        setSummary(res?.data?.summary)
         setLoader(false)
       } catch (error) {
         console.log(error)
@@ -269,7 +271,16 @@ export default function ViewTemplate() {
 
 
 
-
+<div className="col-md-7 height_of_quill">
+<QuillEditor
+            theme="snow"
+            value={summary}
+            readOnly={true} // Set readOnly to true to disable editing
+            modules={{
+                toolbar: false, // Hide the toolbar
+              }}
+          />
+          </div>
 
 
 
