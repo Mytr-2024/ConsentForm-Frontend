@@ -17,6 +17,7 @@ const [caseType, setCaseType] = useState("")
 const [templateData, setTemplateData] = useState()
 const [questions, setQuestions] = useState([]);
 const [questionInput, setQuestionInput] = useState("");
+const [summary, setSummary] = useState("");
 
 const getTemplateById=async()=>{
     let res=   await getApi("get",`api/template/templateId/?templateId=${_id}`)
@@ -24,6 +25,7 @@ const getTemplateById=async()=>{
     setTemplateData(res?.data?.template)
     setCaseType(res?.data?.template?.caseType)
     setValue(res?.data?.template?.deltaForm)
+    setSummary(res?.data?.template?.summary)
     setQuestions(res?.data?.template?.questions)
     setFaqs(res?.data?.template?.faqs)
 setCustomFields(res?.data?.template?.customFields)
@@ -78,7 +80,8 @@ function scrollToAndHighlightButton(elementId) {
       imageUrl:images,
       faqs:faqs,
       customFields:customFields,
-      updatedBy:JSON.parse(localStorage.getItem('user'))?.user?.email
+      updatedBy:JSON.parse(localStorage.getItem('user'))?.user?.email,
+      summary:summary
 
       // Faq Section
 
@@ -1201,7 +1204,19 @@ const handleSubmitCustomEdit = () => {
 
 
 
-
+<div className="col-md-12" id="summary">
+          <label htmlFor="editor_content mb-2" className="form-label">
+            Summary
+          </label>
+          <QuillEditor
+            ref={quill}
+            theme="snow"
+            value={summary}
+            formats={formats}
+            modules={modules}
+            onChange={setSummary}
+          />
+        </div>
 
 
 

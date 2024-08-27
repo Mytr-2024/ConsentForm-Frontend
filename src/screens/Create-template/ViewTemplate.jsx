@@ -30,7 +30,7 @@ export default function ViewTemplate() {
         let res=   await getApi("get",`api/template/templateId/?templateId=${_id}`)
        setValue(res?.data?.template?.deltaForm)
         setSingleConsentData(res?.data?.template)
-        setSummary(res?.data?.summary)
+        setSummary(res?.data?.template?.summary)
         setLoader(false)
       } catch (error) {
         console.log(error)
