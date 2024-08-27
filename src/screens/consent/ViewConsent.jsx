@@ -26,7 +26,7 @@ export default function ViewConsent() {
         setSingleConsentData(res?.data?.consent)
         handleCaseTypeChange(res?.data?.consent?.caseType)
         setCaseType(res?.data?.consent?.caseType)
-        setSummary(res?.data?.template?.summary)
+        setSummary(res?.data?.summary)
 
         // const rest = await getApi("get", `/api/template/questionsByCaseType?caseType=${res?.data?.consent?.caseType}`);
         // setAllQuestions(rest?.data?.questions)
