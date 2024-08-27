@@ -87,7 +87,7 @@ export default function ViewTemplate() {
 {singleConsentData?.imageUrl.map((image,index)=>(
 
 
-<img style={{maxHeight:"400px", maxWidth:"400px"}}  className='object-fit-contain' alt='' key={index} src={image}/>
+<img style={{maxHeight:"400px", width:"400px"}}  className='object-fit-contain' alt='' key={index} src={image}/>
 
 
 ))}
@@ -153,7 +153,7 @@ export default function ViewTemplate() {
 {faq?.imageUrl.map((image,index)=>(
 
 
-<img  style={{maxHeight:"400px", maxWidth:"400px"}}  className='object-fit-contain' alt='' key={index} src={image}/>
+<img  style={{maxHeight:"400px", width:"400px"}}  className='object-fit-contain' alt='' key={index} src={image}/>
 
 
 ))}
@@ -236,7 +236,7 @@ export default function ViewTemplate() {
 {option?.imageUrl.map((image,index)=>(
 
 
-<img style={{maxHeight:"400px", maxWidth:"400px"}}  className='object-fit-contain' alt='' key={index} src={image}/>
+<img style={{maxHeight:"400px", width:"400px"}}  className='object-fit-contain' alt='' key={index} src={image}/>
 
 
 ))}
@@ -270,7 +270,8 @@ export default function ViewTemplate() {
 
 
 
-<div className="col-md-7 height_of_quill">
+<div className="col-md-11 height_of_quill">
+  <h3 className='text-center' >Summary</h3>
 <QuillEditor
             theme="snow"
             value={summary}
