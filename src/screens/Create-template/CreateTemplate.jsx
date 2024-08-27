@@ -92,7 +92,8 @@ function scrollToAndHighlightButton(elementId) {
       deltaForm:deltaContent,
       imageUrl:images,
       faqs:faqs,
-      customFields:customFields
+      customFields:customFields,
+      summary:summary
 
       // Faq Section
 
@@ -101,11 +102,13 @@ function scrollToAndHighlightButton(elementId) {
     console.log(formData)
    
 try {
+  setLoader(true)
   let res= await postApi("post","api/template/submitTemplate",formData)
   console.log(res)
 
   if(res?.data?.status===true){
- 
+   setLoader(true)
+
    Toast.fire({
      icon: "success",
      title: "Template Created"
@@ -442,53 +445,6 @@ const handleSubmitCustomEdit = () => {
 // const handleSubmitCustomEdit = () => {
 
 
-
-//   // Ensure the indices are within the valid range
-//   if (customEditIndex >= 0 && customEditIndex < customFields.length &&
-//       optionIndex >= 0 && optionIndex < customFields[customEditIndex].options.length) {
-//     // Create a new copy of the customFields array
-//     const newCustomFields = [...customFields];
-
-//     // Create a new copy of the specific option array
-//     const newOptions = [...newCustomFields[customEditIndex].options];
-
-//     // Update the specific option with new values
-//     newOptions[optionIndex] = {
-//       ...newOptions[optionIndex],
-//       name: customOptionName,
-//       videoUrl: customOptionVideo,
-//       imageUrl: tempOptionImage,
-//       description:tempOptionDescriptionEdit
-//     };
-
-//     // Replace the options array in the specific custom field
-//     newCustomFields[customEditIndex] = {
-//       ...newCustomFields[customEditIndex],
-//       options: newOptions
-//     };
-
-//     // Update the state with the new custom fields array
-//     setCustomFields(newCustomFields);
-
-//     // Optionally reset editing state
-//     setCustomOptionName('');
-//     setCustomOptionVideo('');
-//     setTempOptionImage([]);
-//     setTempOptionDescriptionEdit('');
-//     // Reset the editing indices if needed
-//     setCustomEditIndex(null);
-//     setOptionIndex(null);
-//   } else {
-//     console.error('Invalid custom field or option index');
-//   }
-// };
-
-
-
-
-
-
-
   function truncateHtml(html, maxLength) {
     const strippedString = html.replace(/(<([^>]+)>)/gi, ""); // Strips HTML tags
     if (strippedString.length > maxLength) {
@@ -502,12 +458,11 @@ const handleSubmitCustomEdit = () => {
   const [key, setkey] = useState()
   const [tempOption, setTempOption] = useState()
   const [tempOptionDescription, setTempOptionDescription] = useState()
+  const [summary, setSummary] = useState()
   const [tempOptionDescriptionEdit, setTempOptionDescriptionEdit] = useState()
   const [tempOptionVideo, setTempOptionVideo] = useState()
   const [tempOptionImage, setTempOptionImage] = useState([])
-  const [keyValues, setKeyVaues] = useState()
 
-  const [options, setOptions] = useState([])
 
  const addThisOption = (e) => {
 e.preventDefault()
@@ -672,7 +627,7 @@ if(tempOption.length<=0){
   return (
     <>
     {loader &&
-      <div className="d-flex w-100 justify-content-center align-items-center">
+      <div style={{minHeight:"80vh"}} className="d-flex w-100  justify-content-center align-items-center">
           <Loader />
       </div>
   }
@@ -1276,6 +1231,18 @@ if(tempOption.length<=0){
             </tbody>
         </table>
         </div>
+
+        <div className="col-md-12 my-3" id="summary">
+    <label htmlFor="faqDescription" className="form-label">Summary</label>
+    <QuillEditor
+      ref={optionsQuill}
+      theme="snow"
+      value={summary}
+      formats={formats}
+      modules={modules}
+      onChange={setSummary}
+    />
+  </div>
 
         <div className="col-12  ">
           <button type="submit" className="btn btn-danger w-100">Submit</button>
