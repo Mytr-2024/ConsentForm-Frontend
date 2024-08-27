@@ -17,6 +17,7 @@ export default function ViewConsent() {
     const [singleConsentData, setSingleConsentData] = useState()
     const [loader, setLoader] = useState(true)
     const {_id}=useParams()
+    const [summary, setSummary] = useState("");
 
     const getConsentData=async()=>{
       try {
@@ -25,6 +26,8 @@ export default function ViewConsent() {
         setSingleConsentData(res?.data?.consent)
         handleCaseTypeChange(res?.data?.consent?.caseType)
         setCaseType(res?.data?.consent?.caseType)
+        setSummary(res?.data?.template?.summary)
+
         // const rest = await getApi("get", `/api/template/questionsByCaseType?caseType=${res?.data?.consent?.caseType}`);
         // setAllQuestions(rest?.data?.questions)
         // // const temp = await getApi("get", `/api/template/getTemplateByCaseType?caseType=${res?.data?.consent?.caseType}`);
@@ -506,6 +509,25 @@ src={viewData?.videoUrl}
 {!singleConsentData?.surgeonSignatureUrl &&    <Link to={`/continueConsent/${_id}`} className='btn btn-warning text-white fw-semibold w-100 mt-3' type="button" >Complete This Form</Link>
 }    <button className='btn btn-primary w-100 mt-3' type="button" onClick={prindPdf} >Print</button>
     </div>
+    
+
+
+
+    <div  className="col-md-10 w-100    px-2 px-sm-3 px-md-5 px-lg-5 mt-3">
+<h3 className='my-2' >Summary</h3>
+<div className="col-md-7 height_of_quill">
+<QuillEditor
+            theme="snow"
+            value={summary}
+            readOnly={true} // Set readOnly to true to disable editing
+            modules={{
+                toolbar: false, // Hide the toolbar
+              }}
+          />
+          </div>
+</div>       
+
+
 </div>
 
  }
