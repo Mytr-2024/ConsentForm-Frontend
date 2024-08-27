@@ -17,7 +17,6 @@ export default function ViewTemplate() {
     const [value, setValue] = useState("");
     const [summary, setSummary] = useState("");
     const quill = useRef();
-
     const [singleConsentData, setSingleConsentData] = useState()
     const [loader, setLoader] = useState(true)
 

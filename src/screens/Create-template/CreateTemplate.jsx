@@ -54,12 +54,18 @@ function scrollToAndHighlightButton(elementId) {
 
   const submitHandler = async(event) => {
     event.preventDefault(); 
+    const editor = quill.current.getEditor();
+    const deltaContent = editor.getContents();
+
 
 //     if(deltaContent?.length<=0){
 // scrollToAndHighlightButton("caseTypeEditor")
 //     }
 
-
+if(deltaContent===""){
+  scrollToAndHighlightButton('editor')
+  return
+}
 
     if(questions?.length<=0){
       scrollToAndHighlightButton('question_add');
@@ -74,16 +80,20 @@ function scrollToAndHighlightButton(elementId) {
       return
     }
 
+   
+    if(summary===""){
+      scrollToAndHighlightButton('summary')
+      return
+    }
 
 
     setLoader(true)
    
-    const editor = quill.current.getEditor();
-    const deltaContent = editor.getContents();
-
+  
     const faqEditor = faqQuill.current.getEditor();
     const faqDeltaContent = faqEditor.getContents();
 
+    
     const formData = {
       caseType: document.getElementById("Ctype").value,
       videoUrl: document.getElementById("videoUrl").value,
@@ -114,7 +124,7 @@ try {
      title: "Template Created"
  });
  setLoader(false)
- navigate('/das')
+ navigate('/templateList')
   }
   else{
     setLoader(false)
@@ -294,10 +304,17 @@ const handleDeleteEditImage = (index) => {
     }
   };
   
-  const addFaq = () => {
+  const addFaq = (e) => {
+    e.preventDefault();
     document.getElementById('faq_btn').classList.remove('highlight')
+    document.getElementById('faqDescription').classList.remove('highlight')
 
-    if(faqTitle?.length<=0 || faqDescription?.length<=0){
+    if(faqTitle===''){
+      scrollToAndHighlightButton('simple_faq_title')
+      return
+    }
+    if(faqDescription?.length<=0){
+      scrollToAndHighlightButton('faqDescription')
       return
     }
 
@@ -374,6 +391,16 @@ const handleDeleteFaqImageEdit = (idx) => {
   
 const handleSubmitEdit = () => {
   // Create a new FAQ object with the updated data
+  document.getElementById('editFaqDescription').classList.remove('highlight')
+  if(faqTitle===''){
+    scrollToAndHighlightButton('faqTitle')
+    return
+  }
+  if(editFaqDescription?.length<=0){
+    scrollToAndHighlightButton('editFaqDescription')
+    return
+  }
+
   const newFaq = {
     title: faqTitle,
     description: editFaqDescription,
@@ -649,12 +676,12 @@ if(tempOption.length<=0){
                         </div>
 
                             <div className="modal-body">
-                            <div className="col-md-12" id="faq">
-    <label htmlFor="faqTitle" className="form-label">FAQ Title</label>
+                            <div className="col-md-12" id="faqTitle">
+    <label htmlFor="faq_input" className="form-label">FAQ Title</label>
     <input
       type="text"
       className="form-control"
-      id="question_input"
+      id="faq_input"
       placeholder="Enter FAQ Title"
       name='faq_title'
       // required= {true}
@@ -662,7 +689,7 @@ if(tempOption.length<=0){
       onChange={(e) => setFaqTitle(e.target.value)}
     />
   </div>
-  <div className="col-md-12 my-3" id="faqDescription">
+  <div className="col-md-12 my-3" id="editFaqDescription">
     <label htmlFor="faqDescription" className="form-label">FAQ Description</label>
     <QuillEditor
       ref={editFaqQuill}
@@ -764,7 +791,7 @@ if(tempOption.length<=0){
           <input
             type="text"
             className="form-control"
-            id="question_input"
+            id="simple_faq_title"
             placeholder="Enter FAQ Title"
             name='faq_title'
             // required={true}
@@ -809,7 +836,7 @@ if(tempOption.length<=0){
     </div>
 
     <div  className="">
-            <div className="col-md-12" id="faqDescription">
+            <div className="col-md-12" id="options">
               <h3 className="text-center">Options</h3>
               <div className="col-md-12">
                 <label htmlFor="name" className="form-label">Name</label>
@@ -1066,7 +1093,7 @@ if(tempOption.length<=0){
   </div>
 
   <div className="col-12">
-    <button id="faq_btn" type="button" className="btn btn-success w-100 my-3" onClick={addFaq}>Add This FAQ</button>
+    <button id="faq_btn" type="button" onClick={addFaq} className="btn btn-success w-100 my-3">Add This FAQ</button>
   </div>
 </div>
 
@@ -1156,7 +1183,7 @@ if(tempOption.length<=0){
 
 
 
-     <div className="col-md-12 my-3" id="faqDescription">
+     <div className="col-md-12 my-3" id="optionDescription">
     <label htmlFor="faqDescription" className="form-label">{tempOption} Description</label>
     <QuillEditor
       ref={optionsQuill}
